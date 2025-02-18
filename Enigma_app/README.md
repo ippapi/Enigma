@@ -1,13 +1,12 @@
-### Frontend structure ###
-frontend/
-│── src/
-│   ├── app/                  # Next.js App Router
-│   ├── components/           # Store reusable components here
-│   ├── lib/                  # Utility functions (API, database helpers)
-│   ├── styles/               # Global styles (CSS, Tailwind)
-│── public/                   # Static assets (images, ...)
-│── next.config.js
-│── package.json
+### Project structure ###  
+* src  
+    * app (contains pages, apis)
+    * components (contains reuseable components)  
+    * lib (contains utility function)  
+    * styles (contains styles for pages)  
+* public (contains image, icon,...)   
+* next.config.js
+* package.json
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
