@@ -2,14 +2,20 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node src/lib/server.js",
     "build": "next build",
-    "start": "next start",
+    "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.7",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.13.0",
+    "mongoose": "^8.10.1",
     "next": "15.1.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -17,6 +23,7 @@
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
+    "@types/node": "^22.13.4",
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
   }
