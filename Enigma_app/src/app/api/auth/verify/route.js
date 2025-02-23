@@ -10,10 +10,6 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
-export const config = {
-    runtime: "nodejs",
-};
-
 // Get JWT_SECRET key
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
 
