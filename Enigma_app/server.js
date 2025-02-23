@@ -5,8 +5,8 @@
 import "dotenv/config";
 import { createServer } from "http";
 import next from "next";
-import dbConnect from "./dbConnect.js";
-import { initializeSocket } from "./socket.js";
+import dbConnect from "./src/lib/dbConnect.js";
+import { initializeSocket } from "./src/lib/socket.js";
 
 // Prepare server info
 const dev = process.env.NODE_ENV !== "production";
