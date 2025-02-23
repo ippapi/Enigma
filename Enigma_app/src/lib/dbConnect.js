@@ -1,13 +1,21 @@
+/* 
+    Create function to connect to cloud mongodb
+
+    - input:
+
+    - output: Connect to the database and return cachec connect
+
+*/
 import mongoose from "mongoose";
 
 // Prepare connection info
 const MONGO_URI = process.env.MONGO_URI;
 
 if(!MONGO_URI){
-    throw new Error("Contact Phong Vu for MONGO_URI");
+    throw new Error("Contact Phong Vu for MONGO_URI hahaha"); 
 }
 
-let cached = global.mongoose || {conn: null, promise: null};
+let cached = global.mongoose || {conn: null, promise: null}; // Store cached connection
 
 // Connect to db async function
 const dbConnect = async () => {
