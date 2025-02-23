@@ -1,3 +1,7 @@
+/* 
+    Create http server to handle socket
+*/
+
 import "dotenv/config";
 import { createServer } from "http";
 import next from "next";
@@ -13,13 +17,17 @@ const app = next({ dev, hostname, port });
 const handler = app.getRequestHandler();
 
 app.prepare().then(async () => {
-  await dbConnect(); // Connect to database
-  const httpServer = createServer(handler); // Initialize server
+    // Ensure connected to database
+    await dbConnect();
 
-  initializeSocket(httpServer); // Initialize socket
+    // Initialize server
+    const httpServer = createServer(handler);
 
-  // Notify server status
-  httpServer.listen(port, () => {
-    console.log(`Server running on http://${hostname}:${port}`);
-  });
+    // Initialize socket
+    initializeSocket(httpServer);
+
+    // Notify server status
+    httpServer.listen(port, () => {
+        console.log(`Server running on http://${hostname}:${port}`);
+    });
 });
