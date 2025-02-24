@@ -54,6 +54,7 @@ const POST = async (req) => {
             const [year, month, day] = param.split("-");
             promptTemplate = `Trả lời bằng tiếng việt, giải thích tổng quan số life path, số destiny, số soul urge, số personality, natural talent, personal year cá nhân của ngày sinh sau theo góc nhìn thần số học ngày ${day} tháng ${month} năm ${year}`;
         }else if(queryType === "stellarium"){
+            const [year, month, day] = param.split("-");
             promptTemplate = `Trả lời bằng tiếng việt, bạn là một chuyên gia xem chiêm tinh học. Giải thích tổng quan ý nghĩa của ngày sinh: ngày ${day} tháng ${month} năm ${year}`;
         }else{
             return new Response(JSON.stringify({ message: "Invalid query type" }), {status: 400});
