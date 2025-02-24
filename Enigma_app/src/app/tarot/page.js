@@ -32,7 +32,7 @@ export default function ChatPage() {
                 >
                     <option value="tarot">Tarot</option>
                     <option value="numerology">Numerology</option>
-                    <option value="starmap">Stellarium</option>
+                    <option value="stellarium">Stellarium</option>
                 </select>
                 
                 {queryType !== "tarot" && (
