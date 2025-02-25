@@ -115,24 +115,24 @@ const RotatingStars = () => {
   }, [])
 
   useFrame(() => {
-    // Rotate both star layers, but in opposite directions
+    setVelocity((prev) => ({ x: prev.x * 0.99, y: prev.y * 0.99})) 
     close_stars.current.rotation.x += velocity.y * 0.2
     close_stars.current.rotation.y += velocity.x * 0.2
 
     far_stars.current.rotation.x -= velocity.y * 0.1 // Opposite movement
     far_stars.current.rotation.y -= velocity.x * 0.1
 
-    // Friction to create smooth sliding
-    setVelocity((prev) => ({ x: prev.x * 0.99, y: prev.y * 0.99})) 
+    close_stars.current.rotation.x = close_stars.current.rotation.y += 0.0003
+    far_stars.current.rotation.x = far_stars.current.rotation.y -= 0.0003
   })
 
   return (
     <>
       <group ref={close_stars} position={[-50, 0, 0]}>
-        <Stars radius={0} depth={80} count={50} factor={2} saturation={0} />
+        <Stars radius={0} depth={80} count={50} factor={5} saturation={0} fade/>
       </group>
       <group ref={far_stars}>
-        <Stars radius={80} depth={20} count={200} factor={3} fade />
+        <Stars radius={80} depth={20} count={200} factor={8} fade />
       </group>
     </>
   )
