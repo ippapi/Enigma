@@ -116,14 +116,11 @@ const RotatingStars = () => {
 
   useFrame(() => {
     setVelocity((prev) => ({ x: prev.x * 0.99, y: prev.y * 0.99})) 
-    close_stars.current.rotation.x += velocity.y * 0.2
-    close_stars.current.rotation.y += velocity.x * 0.2
+    close_stars.current.rotation.x += velocity.y * 0.2 + 0.0002
+    close_stars.current.rotation.y += velocity.x * 0.2 + 0.0002
 
-    far_stars.current.rotation.x -= velocity.y * 0.1 // Opposite movement
-    far_stars.current.rotation.y -= velocity.x * 0.1
-
-    close_stars.current.rotation.x = close_stars.current.rotation.y += 0.0003
-    far_stars.current.rotation.x = far_stars.current.rotation.y -= 0.0003
+    far_stars.current.rotation.x -= velocity.y * 0.1 + 0.0001
+    far_stars.current.rotation.y -= velocity.x * 0.1 + 0.0001
   })
 
   return (
