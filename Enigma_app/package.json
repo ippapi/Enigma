@@ -12,6 +12,9 @@
   "dependencies": {
     "@clerk/nextjs": "^6.12.0",
     "@google/generative-ai": "^0.22.0",
+    "@react-three/drei": "^10.0.1",
+    "@react-three/fiber": "^9.0.4",
+    "@types/three": "^0.173.0",
     "bcryptjs": "^3.0.2",
     "cookie": "^1.0.2",
     "cookie-parser": "^1.4.7",
@@ -23,7 +26,8 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "socket.io": "^4.8.1",
-    "socket.io-client": "^4.8.1"
+    "socket.io-client": "^4.8.1",
+    "three": "^0.173.0"
   },
   "devDependencies": {
     "@types/node": "^22.13.4",
