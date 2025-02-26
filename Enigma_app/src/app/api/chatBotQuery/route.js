@@ -7,6 +7,7 @@
 */
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { NextResponse } from "next/server";
 
 function drawTarotCards() {
     const tarotCards = [
@@ -66,10 +67,7 @@ const POST = async (req) => {
         // Send request to Gemini
         const result = await model.generateContent(promptTemplate);
         const formattedText =  result.response.text().replace(/\*\*/g, "<br>");
-        return new Response(JSON.stringify({ reply: formattedText || "No response" }), {
-            status: 200,
-            headers: { "Content-Type": "application/json" },
-        });
+        return NextResponse.json({reply: formattedText || "No response"}, {status: 200});
     }catch(error){
         return new Response(JSON.stringify({ message: "Error processing request ${error}" }), {status: 500});
     }
