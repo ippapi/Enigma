@@ -9,7 +9,7 @@ const socket_url = process.env.NEXT_PUBLIC_SOCKET_URL;
 
 // Initialize socket info
 const socket = io(socket_url, {
-    transports: ["websocket"], 
+    transports: ["websocket"],
     reconnectionAttempts: 5,
     reconnectionDelay: 2000,
 });
