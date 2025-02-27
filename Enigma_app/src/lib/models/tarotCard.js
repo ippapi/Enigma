@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const TarotCardSchema = new mongoose.Schema({
+    card_index: {type: String, required: true},
     name: { type: String, required: true },
     number: { type: String, required: true },
     arcana: { type: String },
