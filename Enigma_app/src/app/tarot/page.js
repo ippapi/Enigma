@@ -2,8 +2,6 @@
 import { useState } from "react";
 
 export default function ChatPage() {
-    const [queryType, setQueryType] = useState("tarot");
-    const [param, setParam] = useState("");
     const [reply, setReply] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -12,7 +10,6 @@ export default function ChatPage() {
         const response = await fetch("/api/chatBotQuery", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ queryType, param }),
         });
 
         const data = await response.json();
@@ -22,29 +19,8 @@ export default function ChatPage() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
-            <h1 className="text-2xl font-bold mb-4 text-black">AI Chatbot</h1>
+            <h1 className="text-2xl font-bold mb-4 text-black">AI tarot reader</h1>
             <div className="w-full max-w-md bg-white shadow-md rounded-lg p-4 border border-gray-300">
-                <label className="block text-black font-semibold mb-2">Select a Topic:</label>
-                <select 
-                    value={queryType} 
-                    onChange={(e) => setQueryType(e.target.value)} 
-                    className="w-full p-2 border border-gray-400 rounded mb-4 bg-white text-black"
-                >
-                    <option value="tarot">Tarot</option>
-                    <option value="numerology">Numerology</option>
-                    <option value="stellarium">Stellarium</option>
-                </select>
-                
-                {queryType !== "tarot" && (
-                    <input
-                        type="date"
-                        value={param}
-                        onChange={(e) => setParam(e.target.value)}
-                        placeholder="Ask your question..."
-                        className="w-full p-2 border border-gray-400 rounded mb-4 bg-white text-black"
-                    />
-                )}
-
                 <button 
                     onClick={sendMessage} 
                     disabled={loading}
