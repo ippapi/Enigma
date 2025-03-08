@@ -6,7 +6,7 @@ const TarotCardSchema = new mongoose.Schema({
     number: { type: String, required: true },
     arcana: { type: String },
     suit: { type: String},
-    img: { type: String},
+    img: { type: String },
     fortune_telling: { type: [String]},
     keywords: { type: [String]},
     meanings: {
