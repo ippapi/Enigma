@@ -1,0 +1,56 @@
+.chinhsach_header {
+  padding-top: 9%;
+}
+.chinhsach_header h1 {
+  position: relative;
+  font-size: 50px;
+  font-weight: 600;
+}
+.chinhsach_header hr {
+  position: relative;
+  top: 4.5vw;
+  left: -2vw;
+  color:var(--origin2-color);
+}
+.chinhsach_header .content {
+  width: 100vw;
+  padding: 5%;
+}
+.chinhsach_header .content ol li {
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.chinhsach_header .content .ol_1 p {
+  margin-left: -26px;
+  text-align: justify;
+}
+.chinhsach_header .content .ol_a p {
+  text-align: justify;
+  margin-left: -52px;
+}
+.chinhsach_header .content .ol_a ul li {
+  margin-left: -52px;
+}
+.chinhsach_header .content ul li {
+  font-weight: 400;
+  list-style-type: square;
+}
+.chinhsach_header .content table {
+  text-align: center;
+  margin: auto;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+.chinhsach_header .content p {
+  font-size: 17px;
+  text-align: justify;
+}
+.chinhsach_header .content li {
+  font-size: 17px;
+}
+.chinhsach_header .content td {
+  width: 20vw;
+  padding: 10px;
+  border: 1px solid black;
+}

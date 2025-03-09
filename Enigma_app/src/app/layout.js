@@ -4,7 +4,7 @@ import Footer from "@/components/footer";
 
 export const metadata = {
   title: "Enigma",
-  description: "Web bói toán lừa bịp",
+  description: "Web Tarot kết nối reader và khách hàng",
 };
 
 export default function RootLayout({ children }) {

@@ -1,0 +1,60 @@
+p {
+  font-size: 18px;
+}
+.sign {
+  display: flex;
+  margin-top: 1%;
+}
+.sign-image {
+  width: 60%;
+  height: 60%;
+}
+.sign-form_text {
+  text-align: center;
+  width: 23vw;
+  margin: 10% 40%;
+}
+.sign-form_text h3 {
+  font-weight: 600;
+}
+.sign-form_text p {
+  margin: 0;
+  margin-top: 15px;
+  font-size: 16px;
+}
+.sign-form_text span {
+  font-weight: 600;
+  font-size: 16px;
+}
+.sign-form_text textarea {
+  margin-top: 4px;
+  border: none;
+  width: 23vw;
+  box-shadow: 0px 0px 2px var(--detail-color);
+  padding: 10px;
+}
+.sign-form_text select {
+  margin-top: 4px;
+  width: 23vw;
+  height: 7vh;
+  border: none;
+  box-shadow: 0px 0px 2px var(--detail-color);
+  padding: 10px;
+}
+.sign-button {
+  margin-top: 20px;
+} 
+.sign-button button{
+  display: block;
+  padding: 10px;
+  margin: 20px auto;
+}
+.sign-button input {
+  box-shadow: none;
+  font-size: 20px;
+  height: auto;
+}
+.sign-button .other_button {
+  background-color: var(--origin1-color);
+  color: white;
+}
