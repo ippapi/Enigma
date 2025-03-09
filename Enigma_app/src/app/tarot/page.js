@@ -7,7 +7,7 @@ export default function ChatPage() {
 
     const sendMessage = async () => {
         setLoading(true);
-        const response = await fetch("/api/chatBotQuery", {
+        const response = await fetch("/api/protected/chatBotQuery", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
         });

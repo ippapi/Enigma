@@ -37,7 +37,7 @@ const AuthPage = () => {
         if (!res.ok) return setError(data.error);
 
         setMessage(data.message || "Success!");
-        if (isLogin) window.location.href = "/chat";
+        if (isLogin) window.location.href = "/";
     };
 
     return (

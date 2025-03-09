@@ -30,16 +30,30 @@ const POST = async (req) => {
         if (!isMatch) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 }); // Response if not match
 
         // Generate jwt token
-        const token = generateToken(user);
+        const token = await generateToken(user, "1h");
+        const refreshToken = await generateToken(user, "24h");
+
+        user.refreshToken = await bcrypt.hash(refreshToken, 10);
+        await user.save();
 
         // Create response with token saved in cookie
         const response = NextResponse.json({ message: "Login successful" });
         response.cookies.delete("token"); // Delete old token
+        response.cookies.delete("refreshToken"); // Delete old refreshToken
         response.cookies.set("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
-            path: "/"
+            path: "/",
+            maxAge: 3600,
+
+        });
+        response.cookies.set("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/",
+            maxAge: 86400,
         });
 
         return response;

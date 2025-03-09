@@ -8,10 +8,11 @@
 
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { jwtVerify } from "jose";
 
 // Get JWT_SECRET key
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
+const secret = new TextEncoder().encode(SECRET_KEY);
 
 const GET = async (req) => {
     try {
@@ -25,8 +26,8 @@ const GET = async (req) => {
         }
 
         // Decode jwt token
-        const decoded = jwt.verify(token, SECRET_KEY);
-        return NextResponse.json({ user: decoded }, { status: 200 }); // Response decoded info
+        const { payload } = await jwtVerify(token, secret);
+        return NextResponse.json({ user: payload }, { status: 200 }); // Response decoded info
     } catch (error) {
         return NextResponse.json({ error: "Invalid token" }, { status: 403 }); // Response if got error
     }

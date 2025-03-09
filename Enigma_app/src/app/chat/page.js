@@ -39,7 +39,7 @@ const chat = () => {
         socket.connect();
 
         // Fetch for all messages in database
-        fetch("/api/messages")
+        fetch("/api/protected/messages")
             .then((res) => res.json())
             .then((data) => setReceivedMessages(data))
             .catch((err) => console.error("Error fetching messages:", err));
@@ -65,7 +65,7 @@ const chat = () => {
 
         try {
             // POST newMessage to write on database
-            const res = await fetch("/api/messages", {
+            const res = await fetch("/api/protected/messages", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newMessage),

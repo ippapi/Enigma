@@ -18,6 +18,7 @@ const UserSchema = new mongoose.Schema({
     bio: {type: String},
     isActive: {type: Boolean, default: true},
     isOnline: {type: Boolean, default: false},
+    refreshToken: {type: String},
 }, { timestamps: true });
 
 export default mongoose.models.User || mongoose.model("User", UserSchema);

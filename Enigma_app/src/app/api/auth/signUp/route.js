@@ -36,20 +36,31 @@ const POST = async (req) => {
             name: name,
             username: username,
             email: email,
-            password: hashedPassword
+            password: hashedPassword,
+            role: "user"
         });
 
         // Generate token
-        const token = generateToken(user);
+        const token = await generateToken(user);
+        const refreshToken = await generateToken(user, "24h");
+
+        user.refreshToken = await bcrypt.hash(refreshToken, 10);
+        await user.save();
 
         // Create response with token saved in cookie
         const response = NextResponse.json({ message: "Sign up successful" });
-        response.cookies.delete("token"); 
+        response.cookies.delete("token"); // Delete old token
+        response.cookies.delete("refreshToken"); // Delete old refreshToken
         response.cookies.set("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
-            maxAge: 7 * 24 * 60 * 60,
+            path: "/"
+        });
+        response.cookies.set("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
             path: "/"
         });
         
