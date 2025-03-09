@@ -20,7 +20,7 @@ const POST = async (req) => {
         const random_cards = getThreeCard()
 
         const card_info = await Promise.all(random_cards.map(async (number) => {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_SOCKET_URL}/api/tarotCard/${number}`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_SOCKET_URL}/api/protected/tarotCard/${number}`, {
                     method: "GET",
                     headers: { "Content-Type": "application/json" },
                 });
