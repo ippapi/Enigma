@@ -1,0 +1,155 @@
+.tarot_detail {
+  margin-top: 10%;
+}
+.tarot_detail p {
+  color: var(--detail-color);
+}
+.product {
+  display: flex;
+  position: relative;
+  left: 5vw;
+}
+.product .show {
+  width: 40%;
+}
+.product .show .img_show {
+  width: 100%;
+}
+.product-img {
+  display: flex;
+}
+.product .show .img_show img {
+  margin: 1%;
+  width: 24%;
+}
+
+.image-slideshow {
+  width: 100%;
+  margin-right: 20px;
+}
+
+.image-slideshow img {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 0;
+  display: none;
+  max-width: 100%;
+}
+.image-slideshow img:first-child {
+  display: block;
+}
+
+.product-img img {
+  cursor: pointer;
+}
+.detail {
+  margin-left: 10%;
+}
+.detail h1,
+.detail b,
+.detail h3 {
+  font-weight: 600;
+  margin: 0;
+}
+
+.detail .color {
+  display: block;
+  width: 1.2vw;
+  height: 1.2vw;
+  margin: 1%;
+  margin-top: 0;
+  border-radius: 50%;
+}
+.detail .color:active,
+.detail .color.selected {
+  border: 1px solid black;
+}
+#brown {
+  background-color: brown;
+}
+#beige {
+  background-color: bisque;
+}
+#blue {
+  background-color: rgb(0, 72, 0);
+}
+.content-body,
+.content-footer {
+  margin-top: 10%;
+}
+.content-footer .flex {
+  margin-top: 5%;
+}
+.detail-btn {
+  position: relative;
+  padding: 5%;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--origin1-color);
+  color: white;
+  top:3vw;
+}
+.detail-btn:hover {
+  background-color: var(--origin2-color);
+  color: black;
+}
+.filter {
+  overflow: hidden;
+  background-color: var(--origin1-color);
+  margin-top: 5%;
+  display: flex;
+  padding: 0;
+  justify-content: space-evenly;
+}
+
+.filter p {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 0px;
+  margin: 0;
+  width: 34%;
+}
+
+.filter p:hover,
+.filter p.selected {
+  background-color: var( --origin2-color);
+  color: black;
+}
+.filter-content {
+  margin-top: 2%;
+} 
+.filter-content img {
+  width: 100%;
+} 
+.filter-content ul {
+  list-style-type: "-";
+}
+.filter-content p {
+  font-size: 17px;
+  text-indent: 40px;
+}
+#delivery img {
+  width: 45%;
+  position: relative;
+  left: 25%;
+}
+.review { 
+  display: grid;
+  grid-template-columns: 1fr 19fr;
+  gap: 10px;
+  font-size: 17px;
+}
+.review img {
+  width: 50px;
+  height: auto;
+  border-radius: 500px;
+}
+.review-tag {
+  margin-top: 11px;
+  margin-top: 11px;
+}
+.line {
+  border: 1px solid black;
+}
+

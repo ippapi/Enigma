@@ -1,0 +1,58 @@
+.link{
+  text-decoration: none;
+  padding: 0;
+  border: none;
+  background: none;
+  font-size: 20px;
+  color: black;
+}
+.Tintuc {
+  margin: 30px;
+  margin-top: 10%;
+}
+.Tintuc h1{
+  position: relative;
+  font-size: 30px;
+  font-weight: 600;
+  margin-left: 30px;
+  margin-bottom: 25px;
+} 
+
+.Tintuc hr{
+  position: relative;
+  top: 4.5vw;
+  left: -2vw;
+  width: 20%;
+  color: var(--origin2-color);
+  margin-left: 30px;
+}
+.Tintuc .chuabiet{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap:30px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+mautin{
+  padding: 3px;
+}
+.mautin img{
+  width: 100%;
+  height: auto;
+}
+.mautin h2{
+  font-size: 21px;
+  font-weight: bold;
+  text-align: center;
+  padding: 4px;
+}
+.mautin p{
+  font-size: 13px;
+}
+.Tintuc .ramat {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap:40px;
+  margin-left: 20px;
+  margin-right: 20px;
+}

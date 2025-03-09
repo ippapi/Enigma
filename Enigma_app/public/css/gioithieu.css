@@ -1,0 +1,142 @@
+.bg {
+  position: fixed;
+  top: 0;
+  z-index: -1;
+}
+.bg img {
+  width: 100vw;
+  height: 100vh;
+}
+
+.white-bg {
+  background-color: white;
+  z-index: -5;
+}
+.gioithieu_header {
+  padding-top: 10%;
+}
+.gioithieu_header h1 {
+  position: relative;
+  font-size: 50px;
+  font-weight: 600;
+  margin: 30px;
+}
+.gioithieu_header hr {
+  position: relative;
+  top: 4.5vw;
+  left: -2vw;
+  width: 20%;
+  color: #D4BEE4;
+}
+.gioithieu_header .content {
+  width: 50vw;
+  padding: 5%;
+}
+.gioithieu_header .content .title::after {
+  height: 20px;
+  width: 20px;
+  left: -0.5vw;
+}
+.gioithieu_header .content h2 {
+  font-size: 30px;
+}
+.gioithieu_header .content p {
+  text-align: justify;
+  font-size: 17px;
+  color: var(--detail-color);
+  margin: 5% 1%;
+}
+.gioithieu_header img {
+  width: 30vw;
+  height: 100%;
+}
+.opa-div {
+  width: 100vw;
+  height: 60vh;
+  opacity: 0;
+}
+.gioithieu_body,
+.cotloi {
+  border-bottom: 1px solid var(--detail-color);
+  margin-left: 100px;
+}
+.gioithieu_body .item,
+.cotloi_body .item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 25vw;
+}
+
+.gioithieu_body .item img,
+.gioithieu_body .item h1,
+.gioithieu_body .item p,
+.cotloi_body .item h1,
+.cotloi_body .item p {
+  color: var(--title-color);
+  font-size: 17px;
+  margin-bottom: 5%;
+}
+.gioithieu_body .item img {
+  width: 12vw;
+}
+.gioithieu_body .item p {
+  text-align: justify;
+  color: var(--detail-color);
+  width: 69%;
+}
+.gioithieu_body .item h1,
+.cotloi_body .item h1 {
+  font-size: 20px;
+}
+
+.cotloi .item .image-container {
+  width: 20vw;
+
+  overflow: hidden;
+  margin-bottom: 5%;
+}
+.cotloi .item .image-container img {
+  width: 20vw;
+  transition: transform 0.5s ease;
+}
+.cotloi .item .image-container:hover img {
+  transform: scale(1.2);
+}
+
+.cotloi h1 {
+  text-align: center;
+  font-size: 45px;
+  color: var(--detail-color);
+  font-weight: 600;
+  margin-bottom: 4%;
+}
+.cotloi_body .item p,
+.gioithieu_body .item p {
+  text-align: justify;
+  color: var(--detail-color);
+  width: 80%;
+  height: 10vh;
+}
+.location {
+  margin-top: 30%;
+  justify-content: space-around;
+}
+.location .content {
+  width: 50%;
+  margin: 0;
+}
+.location .content p,
+.location .content b,
+.location .content li {
+  text-align: justify;
+  font-size: 17px;
+}
+.location h1 {
+  margin: 1%;
+  color: var(--detail-color);
+}
+.location p {
+  margin: 4%;
+}

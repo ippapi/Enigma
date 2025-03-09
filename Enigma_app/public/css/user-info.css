@@ -1,0 +1,129 @@
+.user-header{
+    margin-top: 12%;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+.image-preview {
+    width: 50px;
+    height: 50px;
+    border: 1px solid gray;
+    border-radius: 50%;
+    overflow: hidden;
+}
+ 
+.image-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.left{
+    background-color: #e6dfeb;
+    padding: 5%;
+}
+
+.left_header{
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding-bottom: 20px;
+    width: 90%;
+}
+.left_header p{
+    margin-left: 10px;
+}
+
+.left_header .grid {
+    display: grid;
+    grid-template-columns: 1fr  2fr;
+    gap:10px;
+}
+
+.left_header #name {
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.lef-content .list{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+.lef-content .list-ul {
+    margin: 0;
+    padding-left: 35px;
+}
+.lef-content .list-ul li{
+    list-style: none;
+    padding: 10px;
+}
+.lef-content .list p{
+    margin: 0;
+    margin-left: 10px;
+    
+}
+.lef-content .list i{
+    font-size: 1vw;
+}
+
+.right{
+   padding-left: 5%;
+}
+.right-header{
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 5px; 
+}
+
+.right-content{
+    display: grid;
+    grid-template-columns: 4fr 2fr;
+    margin: 4%;
+}
+.right-content label{
+    font-size: 16px;
+}
+.right-content td{
+    padding: 10px;
+    font-size: 16px;
+}
+.right .right-text{
+    border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+.right .right-text select{
+    width: 8vw;
+    height: 4vh;
+}
+
+#imgFile {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%; 
+    border: 2px solid #ccc; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.right-img{
+    margin-left: 5%;
+}
+
+.right-img label {
+    display: block;
+    margin-top: 10px; 
+    margin-left: auto;
+    margin-right: auto;
+    padding: 9px 12px;
+    background-color: var(--origin1-color);
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 50%;
+}
+
+label:hover {
+    background-color: var(--origin2-color);
+    color: black;
+}

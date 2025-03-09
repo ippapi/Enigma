@@ -1,0 +1,220 @@
+.sanpham_banner {
+  margin-top: 8%;
+  width: 100vw;
+}
+.sanpham_banner img {
+  width: 100%;
+}
+.sanpham_category {
+  margin-top: 3%;
+}
+.sanpham_category h1 { 
+  color: var(--detail-color);
+  font-weight: 600;
+}
+.category_items {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+}
+.category_item {
+  margin-top: 10%;
+}
+.img-container {
+  overflow: hidden;
+  width: 12vw;
+  height: 12vw;
+}
+.category_items img {
+  width: 12vw;
+  height: 12vw;
+  transition: transform 0.3s ease;
+}
+.category_items img:hover {
+  transform: scale(1.2);
+}
+.category_items a {
+  text-decoration: none;
+}
+.category_items p {
+  margin-top: 3%;
+  width: 12vw;
+  font-size: 15px;
+  color: var(--detail-color);
+}
+.sanpham_newrelease {
+  margin-top: 5%;
+}
+.sanpham_newrelease h1 {
+  padding-left: 10%;
+  font-weight: 600;
+  position: relative;
+  margin-bottom: 3%;
+}
+.sanpham_newrelease h1::after {
+  content: "";
+  width: 17%;
+  height: 20px;
+  background: var(--highlight-color);
+  left: 9%;
+  top: 60%;
+  bottom: 0;
+  z-index: -1;
+  position: absolute;
+}
+.session_1 {
+  display: flex;
+}
+.session_1 .session_1-left {
+  width: 50%;
+}
+.session_1 .session_1-left img {
+  width: 100%;
+  height: 100%;
+}
+.session_1 .session_1-right {
+  width: 50%;
+  padding: 0 5%;
+  display: grid;
+  grid-template-columns: 18vw 18vw;
+}
+.session_1 .session_1-right .product-card {
+  width: 24%;
+  margin-bottom: 5%;
+}
+.session_1 .session_1-right #add-cart {
+  left: 280%;
+}
+.product-card,
+.product-image,
+.product-details {
+  position: relative;
+}
+.product-card .soldout {
+  display: block;
+  width: 15vw;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  top: 0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 18px;
+  position: absolute;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.product-card img,
+.product-card h2,
+.product-card p,
+.product-card .price {
+  width: 15vw;
+}
+.product-card h2 {
+  margin-top: 0.5vw;
+  margin-bottom: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
+}
+.product-card .discount-tag {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3vw;
+  height: 3vw;
+  font-weight: 600;
+  z-index: 10;
+  background-color: var(--highlight-color);
+}
+.product-card .discount-tag::before {
+  content: "-";
+}
+.product-card .discount-tag::after {
+  content: "%";
+}
+.product-card p {
+  margin: 0;
+  font-weight: 300;
+  color: var(--detail-color);
+}
+.product-card .price {
+  margin-top: 0.3vw;
+}
+.product-card .price span {
+  font-size: 20px;
+  color: var(--title-color);
+}
+.product-card .price .original-price {
+  text-decoration: line-through;
+  font-weight: 600;
+  font-size: 13px;
+  margin-left: 5%;
+}
+.price .discount-price::after,
+.price .original-price::after {
+  content: "đ";
+  text-decoration: underline;
+}
+.session_2 {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  padding: 0 10%;
+  margin-left: 5vw;
+}
+.session_2 #add-cart {
+  left: 78%;
+}
+.session_2 .product-card {
+  margin-bottom: 4.2%;
+}
+.product-image img {
+  object-fit: cover;
+  transition: opacity 0.8s ease;
+}
+.product-image .hover-image {
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+}
+.product-image:hover .original-image {
+  opacity: 0;
+}
+.product-image:hover .hover-image,
+.product-image:hover .soldout {
+  opacity: 1;
+}
+
+.product_slide-container .product-card {
+  margin: 0 2.5%;
+}
+.product_slide h1 {
+  font-weight: 600;
+  color: var(--detail-color);
+  margin: 3% 0;
+}
+.product-card,
+.product-card:hover {
+  text-decoration: none;
+  color: black;
+}
+.product-card .product-details #add-cart {
+  position: absolute;
+  top: 20%;
+  right: 0%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  z-index: 10;
+  transition: opacity 0.8s ease;
+}
+
+.product-card:hover .product-details #add-cart {
+  opacity: 1;
+}
+#add-cart:hover {
+  color: var(--detail-color);
+}
