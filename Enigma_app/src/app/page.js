@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Canvas } from "@react-three/fiber";
 import Scene from "@/components/threejs/threeModelViewer";
-import TarotCard from "@/components/threejs/flipCard";
+import FlipCard from "@/components/threejs/flipCard";
+import RotatingCard from "@/components/threejs/rotateCard";
 
 export default function Home() {
     const [number] = useState(3); // Number is fixed, no need for setNumber
@@ -34,7 +36,7 @@ export default function Home() {
     return (
         <div>
             <Scene />
-            {card ? <TarotCard front={card.img} /> : <p>Loading...</p>}
+            {card ? <FlipCard front={card.img} /> : <p>Loading...</p>}
         </div>
     );
 }

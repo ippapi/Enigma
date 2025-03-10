@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-import { Stars, Trail, Line, Text3D, useTexture, Environment, OrbitControls } from "@react-three/drei";
+import { Stars, Trail, Line, useTexture } from "@react-three/drei";
+import RotatingCard from "./rotateCard";
+
 import * as THREE from "three";
 
 const planet_texture = [
@@ -13,28 +15,6 @@ const planet_texture = [
   "./planet_texture/Uranus_texture.jpeg", 
   "./planet_texture/Neptune_texture.jpeg"
 ]
-
-const Sun = () => {
-  const texture = useLoader(THREE.TextureLoader, "./planet_texture/Sun_texture.jpeg");
-  const sunRef = useRef();
-  useFrame(({clock}) => {
-    sunRef.current.rotation.y = clock.getElapsedTime() * 0.1;
-  })
-  return (
-      <mesh ref={sunRef} position={[0, 0, 0]}>
-          <pointLight 
-        position={[0, 0, 0]} 
-        intensity={20} 
-        distance={300}
-        decay={0.15}  
-        color="white"
-      />
-        <sphereGeometry args={[36, 64, 64]} />
-        <meshBasicMaterial map={texture} />
-      </mesh>
-  );
-}
-
 
 function Planet({ texturePath, position, size }) {
   const texture = useLoader(THREE.TextureLoader, texturePath);
@@ -115,7 +95,7 @@ const RotatingStars = () => {
   }, [])
 
   useFrame(() => {
-    setVelocity((prev) => ({ x: prev.x * 0.99, y: prev.y * 0.99})) 
+    setVelocity((prev) => ({ x: prev.x * 0.95, y: prev.y * 0.95})) 
     close_stars.current.rotation.x += velocity.y * 0.2 + 0.0002
     close_stars.current.rotation.y += velocity.x * 0.2 + 0.0002
 
@@ -125,45 +105,136 @@ const RotatingStars = () => {
 
   return (
     <>
-      <group ref={close_stars} position={[-50, 0, 0]}>
-        <Stars radius={0} depth={80} count={50} factor={5} saturation={0} fade/>
+      <group ref={close_stars}>
+        <Stars radius={0} depth={30} count={100} factor={3} saturation={0} fade/>
       </group>
       <group ref={far_stars}>
-        <Stars radius={80} depth={20} count={200} factor={8} fade />
+        <Stars radius={30} depth={50} count={600} factor={5} fade />
       </group>
     </>
   )
-}
+};
+
+const Aura = () => {
+  const auraRef = useRef();
+  const rayRef = useRef();
+
+  const auraMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+          time: { value: 0.0 },
+          color: { value: new THREE.Color(1.0, 0.8, 0.5) },
+          intensity: { value: 1.75 }, // Light intensity
+          glow: { value: 1.55 }, // Glow effect
+      },
+      vertexShader: `
+          varying vec2 vUv;
+          uniform float time;
+          
+          void main() {
+              vUv = uv;
+              vec3 pos = position;
+              pos.z += sin(time + uv.y * 10.0) * 0.02; // Slight distortion
+              gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+          }
+      `,
+      fragmentShader: `
+          uniform vec3 color;
+          uniform float time;
+          uniform float intensity;
+          uniform float glow;
+          varying vec2 vUv;
+          
+          void main() {
+              float radial = length(vUv - 0.5) * 2.0;
+              float fade = smoothstep(1.0, 0.2, radial);
+              float pulse = sin(time * 2.0) * 0.1 + 0.9;
+              vec3 finalColor = color * intensity * pulse * fade;
+              gl_FragColor = vec4(finalColor, fade * glow);
+          }
+      `,
+      transparent: true
+  });
+
+  const raysMaterial = new THREE.ShaderMaterial({
+    uniforms: {
+        time: { value: 0.0 },
+        color: { value: new THREE.Color(1.0, 0.7, 0.4) },
+        intensity: { value: 1.2 }
+    },
+    vertexShader: `
+        varying vec2 vUv;
+        void main() {
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    `,
+    fragmentShader: `
+        uniform vec3 color;
+        uniform float time;
+        uniform float intensity;
+        varying vec2 vUv;
+        
+        void main() {
+            float angle = atan(vUv.y - 0.5, vUv.x - 0.5) + time * 0.5; // Rotating rays
+            float noise = fract(sin(dot(vUv.xy + time * 0.1, vec2(12.9898, 78.233))) * 43758.5453); // Adding noise
+            float rays = (sin(angle * 20.0 + time) * 0.3 + 0.7) * (0.9 + 0.1 * noise);
+            float fade = smoothstep(1.0, 0.2, length(vUv - 0.5) * 2.0);
+            
+            vec3 finalColor = color * intensity * rays * fade;
+            gl_FragColor = vec4(finalColor, fade);
+        }
+    `,
+    transparent: true
+});
+
+  useFrame(({ clock }) => {
+    const time = clock.elapsedTime;
+
+    if (auraRef.current) {
+      auraMaterial.uniforms.time.value = time;
+    }
+
+    if (rayRef.current) {
+      rayRef.current.material.uniforms.time.value = clock.getElapsedTime();
+      rayRef.current.rotation.z = clock.getElapsedTime() * 0.2; // Rotating the rays
+    }
+  });
+
+  return (<group rotation ={[-Math.PI / 2, 0, 0]}>
+      <mesh ref={auraRef} position={[0, 0, -50]}>
+        <planeGeometry args={[300, 300]} />
+        <primitive attach="material" object={auraMaterial} />
+      </mesh>
+      <mesh ref={rayRef} position={[0, 0, -60]}>
+        <planeGeometry args={[400, 400]} />
+        <primitive attach="material" object={raysMaterial} />
+      </mesh>
+  </group>);
+};
 
 export default function Scene() {
   const lightRef = useRef();
+
   return (
-    <div className="w-screen h-[700px] pt-20 pb-20">
-      <Canvas className="w-full h-full bg-black" shadows camera={{ position: [0, 200, 0], up: [0, 10, 0]}}>
+    <div className="w-screen h-screen pt-20 pb-20">
+      <Canvas className="w-full h-full bg-black" shadows camera={{ position: [0, 160, 0], up: [0, 10, 0]}}>
         <RotatingStars />
-        <group rotation={[Math.PI / 1.5, Math.PI / 36, -Math.PI / 6]} position={[-50, 0, 0]}>
-          <Sun lightRef={lightRef} />
-          <Planet texturePath={planet_texture[0]} position={[50, 0, 0]} size={1} />
-          <Planet texturePath={planet_texture[1]} position={[60, 0, 0]} size={1.5} />
-          <Planet texturePath={planet_texture[2]} position={[70, 0, 0]} size={2} />
-          <Planet texturePath={planet_texture[3]} position={[80, 0, 0]} size={1.2} />
-          <Planet texturePath={planet_texture[4]} position={[90, 0, 0]} size={4} />
-          <Planet texturePath={planet_texture[5]} position={[100, 0, 0]} size={3.5} />
-          <Planet texturePath={planet_texture[6]} position={[110, 0, 0]} size={3} />
-          <Planet texturePath={planet_texture[7]} position={[125, 0, 0]} size={2.8} />
+        <group>
+          <ambientLight intensity={1} />
+          <Aura />
+          <group rotation ={[Math.PI/2, 0, 0]}>
+            <RotatingCard />
+          </group>
+          <Planet texturePath={planet_texture[0]} position={[100, 0, 0]} size={2} />
+          <Planet texturePath={planet_texture[1]} position={[120, 0, 0]} size={3} />
+          <Planet texturePath={planet_texture[2]} position={[140, 0, 0]} size={4} />
+          <Planet texturePath={planet_texture[3]} position={[160, 0, 0]} size={2.4} />
+          <Planet texturePath={planet_texture[4]} position={[180, 0, 0]} size={8} />
+          <Planet texturePath={planet_texture[5]} position={[200, 0, 0]} size={7} />
+          <Planet texturePath={planet_texture[6]} position={[220, 0, 0]} size={6} />
+          <Planet texturePath={planet_texture[7]} position={[240, 0, 0]} size={5.6} />
           <Background />
           <CameraLightSync lightRef={lightRef} />
-          <group rotation={[Math.PI / 1.5, 0, -Math.PI / 7]}>
-            <Text3D 
-              font={"./helvetiker_bold.typeface.json"} 
-              size={30} 
-              height={1} 
-              position={[36, 36, -72]} 
-            >
-                Enigma
-                <meshStandardMaterial color="white" metalness={0.7} roughness={0.1} />
-            </Text3D>
-          </group>
         </group>
       </Canvas>
     </div>

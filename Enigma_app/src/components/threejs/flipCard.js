@@ -64,7 +64,7 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
   );
 }
 
-export default function TarotCard({ front }) {
+export default function FlipCard({ front }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [startAnimation, setStartAnimation] = useState(false);
