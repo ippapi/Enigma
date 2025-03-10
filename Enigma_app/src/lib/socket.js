@@ -29,7 +29,7 @@ const initializeSocket = (httpServer) => {
             // Listen to client send message event
             socket.on("sendMessage", (message) => {
                 io.emit("messageReceived", {
-                    user: message.user,
+                    senderName: message.senderName,
                     message: message.message,
                 }); // Emit that message to all client
             });

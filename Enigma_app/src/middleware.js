@@ -65,10 +65,10 @@ export async function middleware(req) {
                 decoded = null;
             }
 
-            if (!decoded && refreshToken) {
+            if (!decoded || refreshToken) {
                 const refreshed = await attemptTokenRefresh(refreshToken, req.url);
                 if (refreshed) return refreshed;
-            }            
+            }
 
             // Check if user is an admin for admin routes
             if (url.pathname.startsWith("/admin") && decoded.role !== "admin") {
@@ -94,12 +94,17 @@ const attemptTokenRefresh = async (refreshToken, reqUrl) => {
         });
 
         if (!refreshResponse.ok) {
-            console.log("Refresh token invalid");
-            return null; // Refresh failed
+            console.log("Refresh token invalid, clearing cookies...");
+            return clearTokensAndRedirect(reqUrl);
         }
 
         const setCookieHeader = refreshResponse.headers.get("set-cookie");
         const newToken = setCookieHeader?.match(/token=([^;]+)/)?.[1];
+
+        if (!newToken) {
+            console.log("No new token returned, clearing cookies...");
+            return clearTokensAndRedirect(reqUrl);
+        }
 
         const response = NextResponse.next();
         response.cookies.set("token", newToken, {
@@ -109,11 +114,33 @@ const attemptTokenRefresh = async (refreshToken, reqUrl) => {
             path: "/"
         });
 
-        return response; // Return updated response
+        return response;
     } catch (error) {
         console.error("Token refresh error:", error);
-        return null;
+        return clearTokensAndRedirect(reqUrl);
     }
+};
+
+const clearTokensAndRedirect = (reqUrl) => {
+    const response = NextResponse.redirect(new URL("/auth", reqUrl));
+
+    response.cookies.set("token", "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+        expires: new Date(0), // Force expiration
+    });
+
+    response.cookies.set("refreshToken", "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+        path: "/",
+        expires: new Date(0), // Force expiration
+    });
+
+    return response;
 };
 
 // Apply middleware to protected routes and login page

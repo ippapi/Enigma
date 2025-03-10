@@ -22,7 +22,7 @@ const POST = async (req) => {
         if (!username || !password) return NextResponse.json({ error: "Missing fields" }, { status: 400 }); // Response if username or password is missing
 
         // Search for user with input username
-        const user = await User.findOne({ username }); // Query from database with username
+        const user = await User.findOne({$or: [{username: username}, {email: username}]}); // Query from database with username
         if (!user) return NextResponse.json({ error: "Invalid credentials" }, { status: 401 }); // Response if found no user
 
         // Validate password

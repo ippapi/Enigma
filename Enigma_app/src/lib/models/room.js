@@ -5,7 +5,15 @@
 import mongoose from "mongoose";
 
 const RoomSchema = new mongoose.Schema({
+    id: {type: String, required: true},
     status: { type: String, enum: ["active", "closed"], default: "waiting" },
+    enable_user: [
+        {
+            id: {type: String, required: true},
+            name: {type: String, required: true},
+            role: {type: String, required: true},
+        }
+    ],
     messages: [
         {
           senderId: { type: String, required: true },

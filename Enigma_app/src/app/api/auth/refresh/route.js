@@ -1,9 +1,12 @@
+import dbConnect from "@/lib/dbConnect";
 import bcrypt from "bcryptjs";
 import { verifyToken, generateToken } from "@lib/auth";
 import { NextResponse } from "next/server";
 import User from "@/lib/models/user";
 
 const POST = async (req) => {
+    await dbConnect();
+
     try {
         // Get refresh token from cookies
         const refreshToken = req.cookies.get("refreshToken")?.value;
