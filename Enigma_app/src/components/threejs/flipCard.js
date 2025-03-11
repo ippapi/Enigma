@@ -55,7 +55,7 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
   );
 }
 
-export default function FlipCard({ front, name, rotation, position }) {
+export default function FlipCard({ front, name = "the card", rotation=[0, 0, 0], position=[0, 0, 0] }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [startAnimation, setStartAnimation] = useState(false);
