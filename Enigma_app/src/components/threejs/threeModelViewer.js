@@ -146,8 +146,8 @@ const Aura = () => {
           
           void main() {
               float radial = length(vUv - 0.5) * 2.0;
-              float fade = smoothstep(1.0, 0.2, radial);
-              float pulse = sin(time * 2.0) * 0.1 + 0.9;
+              float fade = smoothstep(1.0, 0.35, radial);
+              float pulse = sin(90.0 + time * 0.7) * 0.3 + 0.7;
               vec3 finalColor = color * intensity * pulse * fade;
               gl_FragColor = vec4(finalColor, fade * glow);
           }
@@ -217,7 +217,7 @@ export default function Scene() {
 
   return (
     <div className="w-screen h-screen pt-20 pb-20">
-      <Canvas className="w-full h-full bg-black" shadows camera={{ position: [0, 160, 0], up: [0, 10, 0]}}>
+      <Canvas className="w-full h-full bg-transparent" shadows camera={{ position: [0, 200, 0], up: [0, 10, 0]}}>
         <RotatingStars />
         <group>
           <ambientLight intensity={1} />
@@ -225,15 +225,16 @@ export default function Scene() {
           <group rotation ={[Math.PI/2, 0, 0]}>
             <RotatingCard />
           </group>
-          <Planet texturePath={planet_texture[0]} position={[100, 0, 0]} size={2} />
-          <Planet texturePath={planet_texture[1]} position={[120, 0, 0]} size={3} />
-          <Planet texturePath={planet_texture[2]} position={[140, 0, 0]} size={4} />
-          <Planet texturePath={planet_texture[3]} position={[160, 0, 0]} size={2.4} />
-          <Planet texturePath={planet_texture[4]} position={[180, 0, 0]} size={8} />
-          <Planet texturePath={planet_texture[5]} position={[200, 0, 0]} size={7} />
-          <Planet texturePath={planet_texture[6]} position={[220, 0, 0]} size={6} />
-          <Planet texturePath={planet_texture[7]} position={[240, 0, 0]} size={5.6} />
-          <Background />
+          <group rotation ={[-Math.PI/2.15, 0, 0]}>
+            <Planet texturePath={planet_texture[0]} position={[100, 0, 0]} size={1} />
+            <Planet texturePath={planet_texture[1]} position={[110, 0, 0]} size={1.5} />
+            <Planet texturePath={planet_texture[2]} position={[120, 0, 0]} size={2} />
+            <Planet texturePath={planet_texture[3]} position={[130, 0, 0]} size={1.2} />
+            <Planet texturePath={planet_texture[4]} position={[140, 0, 0]} size={4} />
+            <Planet texturePath={planet_texture[5]} position={[150, 0, 0]} size={3.5} />
+            <Planet texturePath={planet_texture[6]} position={[160, 0, 0]} size={3} />
+            <Planet texturePath={planet_texture[7]} position={[170, 0, 0]} size={2.8} />
+          </group>
           <CameraLightSync lightRef={lightRef} />
         </group>
       </Canvas>

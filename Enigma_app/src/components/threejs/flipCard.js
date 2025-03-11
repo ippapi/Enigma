@@ -1,15 +1,15 @@
 'use client';
 
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { TextureLoader, MathUtils } from 'three';
 
 function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startAnimation }) {
   const cardRef = useRef();
-  const [rotationY, setRotationY] = useState(0);
+  const [rotationY, setRotationY] = useState(Math.PI);
   const [positionZ, setPositionZ] = useState(0);
   const [animationStep, setAnimationStep] = useState(-1);
-  const targetRotation = isFlipped ? Math.PI : 0;
+  const targetRotation = isFlipped ? 0 : Math.PI;
   const frontTexture = useLoader(TextureLoader, frontImage);
   const backTexture = useLoader(TextureLoader, backImage);
 
@@ -20,25 +20,16 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
     
     if (cardRef.current) {
       if (animationStep === 0) {
-        setPositionZ((prev) => MathUtils.lerp(prev, 1.5, 0.05)); // Slower zoom in
-        if (Math.abs(positionZ - 1.5) < 0.01) setAnimationStep(1);
+        setPositionZ((prev) => MathUtils.lerp(prev, 1.2, 0.1)); // Faster zoom in
+        if (Math.abs(positionZ - 1.2) < 0.01) setAnimationStep(1);
       } else if (animationStep === 1) {
         setRotationY((prev) => {
-          const overshoot = targetRotation + (isFlipped ? 0.35 : -0.35);
-          let newRotation = MathUtils.lerp(prev, overshoot, 0.1); // Slower rotation
-          if (Math.abs(newRotation - overshoot) < 0.01) {
-            setAnimationStep(2);
-          }
+          let newRotation = MathUtils.lerp(prev, targetRotation, 0.2); // Faster rotation
+          if (Math.abs(newRotation - targetRotation) < 0.05) setAnimationStep(2);
           return newRotation;
         });
       } else if (animationStep === 2) {
-        setRotationY((prev) => {
-          let newRotation = MathUtils.lerp(prev, targetRotation, 0.08); // Even slower return rotation
-          if (Math.abs(newRotation - targetRotation) < 0.01) setAnimationStep(3);
-          return newRotation;
-        });
-      } else if (animationStep === 3) {
-        setPositionZ((prev) => MathUtils.lerp(prev, 0, 0.05)); // Slower zoom out
+        setPositionZ((prev) => MathUtils.lerp(prev, 0, 0.1)); // Faster zoom out
         if (Math.abs(positionZ) < 0.01) {
           setAnimationStep(-1);
           onFlipComplete();
@@ -64,7 +55,7 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
   );
 }
 
-export default function FlipCard({ front }) {
+export default function FlipCard({ front, name, rotation, position }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [startAnimation, setStartAnimation] = useState(false);
@@ -75,25 +66,33 @@ export default function FlipCard({ front }) {
       setStartAnimation(true);
       setTimeout(() => {
         setIsFlipped((prev) => !prev);
-      }, 200); // Slight delay before state flip
+      }, 100); // Faster flip trigger
     }
   };
 
   return (
-    <div className="w-64 h-96 cursor-pointer" onClick={handleClick}>
+    <div className="mx-5 my-20 w-69 h-96 cursor-pointer" onClick={handleClick}>
       <Canvas className="w-full h-full" camera={{ position: [0, 0, 5] }}>
+        <group rotation={rotation} position={position}>
+          <RotatingCard
+            frontImage={front || "./front.jpg"}
+            backImage="./back.jpg"
+            isFlipped={isFlipped}
+            startAnimation={startAnimation}
+            onFlipComplete={() => {
+              setIsAnimating(false);
+              setStartAnimation(false);
+            }}
+          />
+        </group>
         <ambientLight intensity={0.5} />
-        <RotatingCard
-          frontImage={front || "./front.jpg"}
-          backImage="./back.jpg"
-          isFlipped={isFlipped}
-          startAnimation={startAnimation}
-          onFlipComplete={() => {
-            setIsAnimating(false);
-            setStartAnimation(false);
-          }}
-        />
       </Canvas>
+
+
+      {/* Show name input when flipped */}
+      {isFlipped && (
+        <p className="mt-4 text-lg font-bold">{name}</p>
+      )}
     </div>
   );
 }

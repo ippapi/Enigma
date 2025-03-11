@@ -9,40 +9,25 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextResponse } from "next/server";
 
-const getThreeCard = () => {
-    let numbers = Array.from({ length: 78 }, (_, i) => i);
-    numbers.sort(() => Math.random() - 0.5);
-    return numbers.slice(0, 3);
-}
-
 const POST = async (req) => {
     try {
-        const random_cards = getThreeCard()
-
-        const card_info = await Promise.all(random_cards.map(async (number) => {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_SOCKET_URL}/api/protected/tarotCard/${number}`, {
-                    method: "GET",
-                    headers: { "Content-Type": "application/json" },
-                });
-    
-                return response.json();
-            })
-        );
+        const body = await req.json();
+        const {cardInfo} = body;
 
         const promptTemplate = `
             Bạn đã rút được 3 lá bài tarot lần lượt là: 
             
-            ${card_info[0].name}, ${card_info[1].name}, ${card_info[2].name} 
+            ${cardInfo[0].name}, ${cardInfo[1].name}, ${cardInfo[2].name} 
             
             . Dịch và sử dụng ý nghĩa tích cực của lần lượt 3 lá: 
             
-            ${card_info[0].meanings.light}, ${card_info[1].meanings.light}, ${card_info[2].meanings.light}
+            ${cardInfo[0].meanings.light}, ${cardInfo[1].meanings.light}, ${cardInfo[2].meanings.light}
             
             . Dịch và sử dụng ý nghĩa tiêu cực của lần lượt 3 lá: 
 
-            ${card_info[0].meanings.shadow}, ${card_info[1].meanings.shadow}, ${card_info[2].meanings.shadow};
+            ${cardInfo[0].meanings.shadow}, ${cardInfo[1].meanings.shadow}, ${cardInfo[2].meanings.shadow};
 
-            Viết ngắn gọn dự đoán thông điệp của tuần này theo format: [thông tin tích cực] tuy nhiên [thông tin tiêu cực].
+            Viết ngắn gọn dự đoán thông điệp của ngày hôm nay theo format: [thông tin tích cực] tuy nhiên [thông tin tiêu cực].
         `;
         
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Canvas } from "@react-three/fiber";
 import Scene from "@/components/threejs/threeModelViewer";
 import FlipCard from "@/components/threejs/flipCard";
 import RotatingCard from "@/components/threejs/rotateCard";
@@ -34,7 +33,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div>
+        <div className="bg-pink-900">
             <Scene />
             {card ? <FlipCard front={card.img} /> : <p>Loading...</p>}
         </div>

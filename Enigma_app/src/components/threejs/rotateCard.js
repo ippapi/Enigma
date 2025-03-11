@@ -21,11 +21,11 @@ const RotatingCard = () => {
   return (<>
     <group ref={cardRef}>
       <mesh position={[0, 0, 0.01]}>
-        <planeGeometry args={[50, 80]} />
+        <planeGeometry args={[80, 128]} />
         <meshBasicMaterial map={front_texture} side={2} />
       </mesh>
       <mesh rotation-y={Math.PI} position={[0, 0, -0.5]}>
-        <planeGeometry args={[50, 80]} />
+        <planeGeometry args={[80, 128]} />
         <meshBasicMaterial map={back_texture} side={2} />
       </mesh>
     </group>

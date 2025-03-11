@@ -80,7 +80,6 @@ const chat = () => {
             // If POST got error, stop function
             if(!res.ok) throw new Error("Failed to send message");
 
-            console.log(newMessage);
             socket.emit("sendMessage", newMessage);
 
             // Clear input
