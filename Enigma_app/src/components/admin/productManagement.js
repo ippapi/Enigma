@@ -1,0 +1,292 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+
+// Image Modal Component
+const ImageModal = ({ images, currentIndex, onClose, onNext, onPrev, onSelect }) => {
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+      <div className="bg-white p-4 rounded-lg relative max-w-lg w-full">
+        <button onClick={onClose} className="absolute top-2 right-2 text-xl">&times;</button>
+        <img src={images[currentIndex]} alt="Product" className="w-full h-80 object-contain" />
+        <div className="flex justify-between mt-2">
+          <button onClick={onPrev} className="px-4 py-2 bg-gray-300 rounded">Prev</button>
+          <button onClick={onNext} className="px-4 py-2 bg-gray-300 rounded">Next</button>
+        </div>
+        <div className="flex gap-2 mt-4 overflow-x-auto">
+          {images.map((img, idx) => (
+            <img
+              key={idx}
+              src={img}
+              alt="Thumbnail"
+              className={`w-16 h-16 object-cover cursor-pointer rounded ${idx === currentIndex ? 'border-2 border-blue-500' : ''}`}
+              onClick={() => onSelect(idx)}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ProductCard = ({ product, onOpenModal, onEdit }) => {
+  return (
+    <div className="border p-4 rounded-lg shadow-md">
+      <h2 className="text-lg font-semibold">{product.name}</h2>
+      <p className="text-sm text-gray-600">{product.description}</p>
+      <div className="mt-2 cursor-pointer" onClick={() => onOpenModal(product.images)}>
+        {product.images.length > 0 && (
+          <img
+            src={product.images[0]}
+            alt={product.name}
+            className="w-full h-40 object-cover rounded"
+          />
+        )}
+      </div>
+      <p className="mt-2 font-medium">${product.price}</p>
+      <button onClick={() => onEdit(product)} className="mt-2 text-blue-500">Edit</button>
+    </div>
+  );
+};
+
+const ProductManagement = () => {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);  // Current page
+  const [limit] = useState(10);         // Number of products per page
+  const [totalPages, setTotalPages] = useState(1);  // Total number of pages
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const [isAddFormOpen, setIsAddFormOpen] = useState(false);
+  const [editProduct, setEditProduct] = useState(null);
+
+  const [productName, setProductName] = useState('');
+  const [productDescription, setProductDescription] = useState('');
+  const [productPrice, setProductPrice] = useState('');
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/product?page=${page}&limit=${limit}`);
+      const data = await res.json();
+      const formattedProducts = data.products.map((product) => ({
+        ...product,
+        images: product.images.map((img) => `data:image/png;base64,${img}`),
+      }));
+      setProducts(formattedProducts);
+      setTotalPages(Math.ceil(data.total / limit));  // Calculate total pages
+    } catch (error) {
+      console.error('Failed to fetch products', error);
+    }
+    setLoading(false);
+  };
+
+  // Handle page change
+  const goToNextPage = () => {
+    if (page < totalPages) {
+      setPage(page + 1);
+    }
+  };
+
+  const goToPreviousPage = () => {
+    if (page > 1) {
+      setPage(page - 1);
+    }
+  };
+
+  // Handle Add Product
+  const handleAddProduct = async (e) => {
+    e.preventDefault();
+    const newProduct = {
+      name: productName,
+      description: productDescription,
+      price: parseFloat(productPrice),
+    };
+    
+    try {
+      const res = await fetch('/api/product', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newProduct),
+      });
+      if (res.ok) {
+        fetchProducts();  // Refetch products after adding new one
+        setIsAddFormOpen(false);  // Close the Add Product form
+      }
+    } catch (error) {
+      console.error('Failed to add product', error);
+    }
+  };
+
+  // Handle Edit Product
+  const handleEditProduct = async (e) => {
+    e.preventDefault();
+    const updatedProduct = {
+      name: productName,
+      description: productDescription,
+      price: parseFloat(productPrice),
+    };
+    
+    try {
+      const res = await fetch(`/api/product/${editProduct._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedProduct),
+      });
+      if (res.ok) {
+        fetchProducts();  // Refetch products after editing
+        setIsAddFormOpen(false);  // Close the form
+        setEditProduct(null); // Reset edit state
+      }
+    } catch (error) {
+      console.error('Failed to edit product', error);
+    }
+  };
+
+  // Open Modal
+  const openModal = (images) => {
+    setSelectedImages(images);
+    setCurrentImageIndex(0);
+    setIsModalOpen(true);
+  };
+
+  // Close Modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  // Next Image in Modal
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % selectedImages.length);
+  };
+
+  // Previous Image in Modal
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => (prev - 1 + selectedImages.length) % selectedImages.length);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [page]); // Fetch products every time the page changes
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Product Management</h1>
+
+      <button
+        onClick={() => setIsAddFormOpen(true)}
+        className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+      >
+        Add Product
+      </button>
+
+      {isAddFormOpen && (
+        <form onSubmit={editProduct ? handleEditProduct : handleAddProduct} className="bg-white p-6 rounded shadow-md">
+          <h2 className="text-xl font-semibold mb-4">{editProduct ? 'Edit Product' : 'Add Product'}</h2>
+          <label className="block mb-2">Name</label>
+          <input
+            type="text"
+            value={productName}
+            onChange={(e) => setProductName(e.target.value)}
+            required
+            className="border p-2 w-full mb-4"
+          />
+          <label className="block mb-2">Description</label>
+          <textarea
+            value={productDescription}
+            onChange={(e) => setProductDescription(e.target.value)}
+            required
+            className="border p-2 w-full mb-4"
+          />
+          <label className="block mb-2">Price</label>
+          <input
+            type="number"
+            value={productPrice}
+            onChange={(e) => setProductPrice(e.target.value)}
+            required
+            className="border p-2 w-full mb-4"
+          />
+          <div className="flex justify-between">
+            <button
+              type="submit"
+              className="bg-green-500 text-white px-4 py-2 rounded"
+            >
+              {editProduct ? 'Save Changes' : 'Add Product'}
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setIsAddFormOpen(false);
+                setEditProduct(null);  // Reset edit product when closing the form
+              }}
+              className="bg-red-500 text-white px-4 py-2 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {products.map((product) => (
+            <ProductCard
+              key={product._id}
+              product={product}
+              onOpenModal={openModal}
+              onEdit={(product) => {
+                setEditProduct(product);
+                setProductName(product.name);
+                setProductDescription(product.description);
+                setProductPrice(product.price);
+                setIsAddFormOpen(true);
+              }}
+            />
+          ))}
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      <div className="flex justify-between mt-4">
+        <button
+          onClick={goToPreviousPage}
+          disabled={page === 1}
+          className="px-4 py-2 bg-gray-300 rounded"
+        >
+          Prev
+        </button>
+        <span className="flex items-center">
+          Page {page} of {totalPages}
+        </span>
+        <button
+          onClick={goToNextPage}
+          disabled={page === totalPages}
+          className="px-4 py-2 bg-gray-300 rounded"
+        >
+          Next
+        </button>
+      </div>
+
+      {isModalOpen && (
+        <ImageModal
+          images={selectedImages}
+          currentIndex={currentImageIndex}
+          onClose={closeModal}
+          onNext={nextImage}
+          onPrev={prevImage}
+          onSelect={(index) => setCurrentImageIndex(index)}
+        />
+      )}
+    </div>
+  );
+};
+
+export default ProductManagement;

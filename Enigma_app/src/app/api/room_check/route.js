@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Room from "@/lib/models/room";
-import { verifyToken } from "@/lib/auth";  // Ensure token verification
+import { verifyToken } from "@/lib/auth";
 
 const GET = async (req) => {
     await dbConnect();

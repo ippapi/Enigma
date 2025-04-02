@@ -1,11 +1,3 @@
-/* 
-    Middleware to protect site, help routing when and when not authorized
-
-    - input: routing request
-
-    - output: Redirect if routing request match with cases
-*/
-
 import { NextResponse } from "next/server";
 import { verifyToken } from "./lib/auth";
 
@@ -22,70 +14,98 @@ export async function middleware(req) {
         .find((c) => c.startsWith("refreshToken="))
         ?.split("=")[1];
 
+    const { pathname } = req.nextUrl;
+    const method = req.method; // GET, POST, etc.
+
+    // **Public Routes (No authentication needed)**
+    const publicRoutes = ["/", "/product"];
+    if (publicRoutes.includes(pathname)) {
+        return NextResponse.next();
+    }
+
+    // **Public API Routes (No authentication needed for GET)**
+    if (pathname.startsWith("/api/product") && method === "GET") {
+        return NextResponse.next();
+    }
+
+    if (req.nextUrl.pathname === "/api/auth/refresh") {
+        return NextResponse.next();
+    }
+
+    let user;
     if (!token && refreshToken) {
-        const refreshResponse = await fetch(new URL("/api/auth/refresh", req.url), {
-            method: "POST",
-            credentials: "include",
-            headers: { cookie: `refreshToken=${refreshToken}` },
-        });
+        console.log("No access token found, trying refresh...");
+        const refreshedResponse = await refreshAccessToken(refreshToken, req.url);
+        if (refreshedResponse) return refreshedResponse;
+    }
     
-        if (!refreshResponse.ok) {
-            console.log("Refresh token invalid");
-            return null; // Refresh failed
-        }
-
-        const setCookieHeader = refreshResponse.headers.get("set-cookie");
-        const newToken = setCookieHeader?.match(/token=([^;]+)/)?.[1];
-
-        const response = NextResponse.redirect(new URL("/", req.url));
-        response.cookies.set("token", newToken, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            path: "/"
-        });
-
-        return response; // Return updated response
-    }
-
-    // Redirect logged-in users away from /auth
-    if (token && url.pathname === "/auth") {
-        return NextResponse.redirect(new URL("/", req.url));
-    }
-
-    // Protected pages (Require authentication)
-    const protectedPages = ["/chat", "/admin"];
-    if (protectedPages.includes(url.pathname)) {
+    if (token) {
         try {
-            let decoded;
-            try {
-                decoded = await verifyToken(token);
-            } catch (error) {
-                console.log("Token expired, attempting to refresh...");
-                decoded = null;
-            }
-
-            if (!decoded || refreshToken) {
-                const refreshed = await attemptTokenRefresh(refreshToken, req.url);
-                if (refreshed) return refreshed;
-            }
-
-            // Check if user is an admin for admin routes
-            if (url.pathname.startsWith("/admin") && decoded.role !== "admin") {
-                return NextResponse.redirect(new URL("/auth", req.url));
-            }
-
-            return NextResponse.next(); // Proceed to the next request
+            user = await verifyToken(token);
         } catch (error) {
+            console.log("Token expired, attempting refresh...");
+            if (refreshToken) {
+                const refreshedResponse = await refreshAccessToken(refreshToken, req.url);
+                if (refreshedResponse) return refreshedResponse;
+            }
             return NextResponse.redirect(new URL("/auth", req.url));
         }
     }
 
-    return NextResponse.next(); // Allow request to continue
+    // **Protected User Routes (Requires Authentication)**
+    const protectedUserRoutes = [
+        "/booking",
+        "/api/booking/user",
+        "/cart",
+        "/api/cart",
+        "/room",
+        "/api/room",
+        "/profile",
+        "/api/user"
+    ];
+    if (protectedUserRoutes.some((route) => pathname.startsWith(route))) {
+        if (!user) return unauthorizedResponse();
+    }
+
+    // **Protected Reader Routes (Requires "READER" Role)**
+    const protectedReaderRoutes = [
+        "/booking",
+        "/api/booking/reader",
+        "/room",
+        "/api/room",
+        "/profile",
+    ];
+    if (protectedReaderRoutes.some((route) => pathname.startsWith(route))) {
+        if (!user || (user.role !== "READER" && user.role !== "ADMIN")) {
+            return unauthorizedResponse();
+        }
+    }
+
+    // **Protected Admin Routes (Requires "ADMIN" Role)**
+    const protectedAdminRoutes = ["/admin", "/api/admin", "/api/user/promote"];
+    if (protectedAdminRoutes.some((route) => pathname.startsWith(route))) {
+        if (!user || user.role !== "ADMIN") return unauthorizedResponse();
+    }
+
+    // **Protect Specific Methods for Admins**
+    if (pathname.startsWith("/api/product")) {
+        if (
+            (method === "POST" && pathname === "/api/product") || // Restrict POST /api/product
+            (["PUT", "DELETE"].includes(method) && pathname.match(/^\/api\/product\/\w+$/)) // Restrict PUT, DELETE /api/product/[product_id]
+        ) {
+            if (!user || user.role !== "ADMIN") return unauthorizedResponse();
+        }
+    }
+
+    if (pathname === "/api/tarotCart" && method === "POST") {
+        if (!user || user.role !== "ADMIN") return unauthorizedResponse();
+    }
+
+    return NextResponse.next();
 }
 
-// Function to attempt token refresh
-const attemptTokenRefresh = async (refreshToken, reqUrl) => {
+// Function to refresh token
+const refreshAccessToken = async (refreshToken, reqUrl) => {
     try {
         const refreshResponse = await fetch(new URL("/api/auth/refresh", reqUrl), {
             method: "POST",
@@ -93,63 +113,41 @@ const attemptTokenRefresh = async (refreshToken, reqUrl) => {
             credentials: "include",
         });
 
-        if (!refreshResponse.ok) {
-            console.log("Refresh token invalid, clearing cookies...");
-            return clearTokensAndRedirect(reqUrl);
-        }
+        if (!refreshResponse.ok) return clearTokensAndRedirect(reqUrl);
 
         const setCookieHeader = refreshResponse.headers.get("set-cookie");
         const newToken = setCookieHeader?.match(/token=([^;]+)/)?.[1];
 
-        if (!newToken) {
-            console.log("No new token returned, clearing cookies...");
-            return clearTokensAndRedirect(reqUrl);
-        }
+        if (!newToken) return clearTokensAndRedirect(reqUrl);
 
         const response = NextResponse.next();
         response.cookies.set("token", newToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
-            path: "/"
+            path: "/",
+            maxAge: 3600,
         });
 
         return response;
     } catch (error) {
-        console.error("Token refresh error:", error);
         return clearTokensAndRedirect(reqUrl);
     }
 };
 
+// Function to clear tokens and redirect
 const clearTokensAndRedirect = (reqUrl) => {
     const response = NextResponse.redirect(new URL("/auth", reqUrl));
-
-    response.cookies.set("token", "", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        path: "/",
-        expires: new Date(0), // Force expiration
-    });
-
-    response.cookies.set("refreshToken", "", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        path: "/",
-        expires: new Date(0), // Force expiration
-    });
-
+    response.cookies.set("token", "", { expires: new Date(0) });
+    response.cookies.set("refreshToken", "", { expires: new Date(0) });
     return response;
 };
 
-// Apply middleware to protected routes and login page
+// Function to return unauthorized response
+const unauthorizedResponse = () => {
+    return NextResponse.redirect(new URL("/auth", process.env.NEXT_PUBLIC_SOCKET_URL));
+};
+// Middleware Matcher Configuration
 export const config = {
-    matcher: [
-        "/api/protected/:path*", 
-        "/api/admin/:path*", 
-        "/admin/:path*", 
-        "/chat", 
-        "/auth"
-    ],
+    matcher: ["/api/:path*", "/admin/:path*", "/booking/:path*", "/cart/:path*", "/room/:path*", "/profile/:path*"]
 };

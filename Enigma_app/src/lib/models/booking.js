@@ -9,16 +9,32 @@ const BookingSchema = new mongoose.Schema({
     reader: { type: String, required: true },
     room: { type: String },
 
-    time: { type: Date, required: true },
+    time: {
+      type: Date,
+      validate: {
+          validator: function (value) {
+              return value > new Date();
+          },
+          message: "Time must be in the future",
+      },
+    },
     duration: { type: Number, required: true },
 
-    confirmedTime: { type: Date },
+    confirmedTime: {
+      type: Date,
+      validate: {
+          validator: function (value) {
+              return value > new Date();
+          },
+          message: "Confirmed time must be in the future",
+      },
+    },
     confirmedDuration: { type: Date },
 
     status: { 
       type: String, 
-      enum: ["pending", "rescheduled", "scheduled", "completed", "canceled"], 
-      default: "pending" 
+      enum: ["PENDING", "RESCHEDULED", "SCHEDULED", "COMPLETED", "CANCELED"], 
+      default: "PENDING" 
     },
 
     notes: { type: String },

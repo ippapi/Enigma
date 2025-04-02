@@ -5,6 +5,7 @@ import { NextResponse } from "next/server";
 import User from "@/lib/models/user";
 
 const POST = async (req) => {
+    console.log("[DEBUG] Refresh API called!");
     await dbConnect();
 
     try {

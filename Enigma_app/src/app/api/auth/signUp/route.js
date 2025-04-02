@@ -37,7 +37,7 @@ const POST = async (req) => {
             username: username,
             email: email,
             password: hashedPassword,
-            role: "user"
+            role: "USER"
         });
 
         // Generate token

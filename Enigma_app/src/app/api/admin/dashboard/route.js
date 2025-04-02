@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import Order from "@/lib/models/order";
+import Order from "@/lib/models/cart";
 import User from "@/lib/models/user";
 import { NextResponse } from "next/server";
 
@@ -14,10 +14,8 @@ const GET = async (req) => {
         fromDate.setUTCHours(0, 0, 0, 0);
         toDate.setUTCHours(23, 59, 59, 999);
 
-
-
         const sales = await Order.aggregate([
-            { $match: { createdAt: { $gte: fromDate, $lte: toDate } } },
+            { $match: { createdAt: { $gte: fromDate, $lte: toDate }, status: "ORDERED"} },
             { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, sales: { $sum: "$totalPrice" } } },
             { $sort: { _id: 1 } }
         ]);
@@ -29,7 +27,7 @@ const GET = async (req) => {
         ]);
 
         const orders = await Order.aggregate([
-            { $match: { createdAt: { $gte: fromDate, $lte: toDate } } },
+            { $match: { createdAt: { $gte: fromDate, $lte: toDate }, status: "ORDERED" } },
             { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, orders: { $sum: 1 } } },
             { $sort: { _id: 1 } }
         ]);

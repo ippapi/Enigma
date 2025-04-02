@@ -11,13 +11,11 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: true },
     role: {
         type: String,
-        enum: ["user", "reader", "admin"],
-        default: "user",
+        enum: ["USER", "READER", "ADMIN"],
+        default: "USER",
     },
     profilePicture: {type: String},
     bio: {type: String},
-    isActive: {type: Boolean, default: true},
-    isOnline: {type: Boolean, default: false},
     refreshToken: {type: String},
 }, { timestamps: true });
 

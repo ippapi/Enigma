@@ -15,7 +15,7 @@ const JoinRoom = () => {
         setError("");
 
         try {
-            const res = await fetch("/api/protected/room_check", {
+            const res = await fetch("/api/room_check", {
                 method: "GET",
                 headers: { 
                     "Content-Type": "application/json",

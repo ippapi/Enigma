@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 
 const RoomSchema = new mongoose.Schema({
     id: {type: String, required: true},
-    status: { type: String, enum: ["active", "closed"], default: "waiting" },
+    status: { type: String, enum: ["ACTIVE", "CLOSED"], default: "waiting" },
     enable_user: [
         {
             id: {type: String, required: true},

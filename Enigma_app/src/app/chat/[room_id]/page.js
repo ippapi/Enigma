@@ -40,7 +40,7 @@ const chat = () => {
         socket.connect();
 
         // Fetch for all messages in database
-        fetch("/api/protected/room_message", {
+        fetch("/api/room_message", {
             method: "GET",
             headers: { 
                 "Content-Type": "application/json",  
@@ -71,7 +71,7 @@ const chat = () => {
 
         try {
             // POST newMessage to write on database
-            const res = await fetch("/api/protected/room_message", {
+            const res = await fetch("/api/room_message", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(newMessage),

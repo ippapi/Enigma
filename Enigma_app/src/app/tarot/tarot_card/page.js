@@ -19,7 +19,7 @@ export default function TarotLookupPage() {
         setCard(null);
 
         try {
-            const response = await fetch(`/api/protected/tarotCard/${number}`, {
+            const response = await fetch(`/api/tarotCard/${number}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });

@@ -4,6 +4,7 @@ const Sidebar = ({ setActiveTab, activeTab }) => {
             <ul>
                 {[
                     { name: "Dashboard", key: "dashboard" },
+                    { name: "Orders", key: "orders" },
                     { name: "Products", key: "products" },
                     { name: "Users", key: "users" },
                 ].map((item) => (

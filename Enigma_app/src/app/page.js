@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Scene from "@/components/threejs/threeModelViewer";
 import FlipCard from "@/components/threejs/flipCard";
-import RotatingCard from "@/components/threejs/rotateCard";
 
 export default function Home() {
     const [number] = useState(3); // Number is fixed, no need for setNumber
@@ -12,7 +11,7 @@ export default function Home() {
     const fetchCard = async () => { // Add `async` here
         console.log("Fetching card...");
         try {
-            const response = await fetch(`/api/protected/tarotCard/${number}`, {
+            const response = await fetch(`/api/tarotCard/${number}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });

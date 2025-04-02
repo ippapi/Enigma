@@ -19,7 +19,7 @@ export default function ChatPage() {
         setCardNums(selectedCards);
 
         const card_info = await Promise.all(selectedCards.map(async (number) => {
-            const response = await fetch(`/api/protected/tarotCard/${number}`, {
+            const response = await fetch(`/api/tarotCard/${number}`, {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
@@ -29,7 +29,7 @@ export default function ChatPage() {
         setCardInfo(card_info);
         setLoading(true);
         
-        const response = await fetch("/api/protected/chatBotQuery", {
+        const response = await fetch("/api/chatBotQuery", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ cardInfo: card_info }),
