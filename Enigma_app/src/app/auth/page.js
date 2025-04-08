@@ -41,26 +41,27 @@ const AuthPage = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-            <div className="w-96 bg-white p-6 rounded shadow">
-                <h2 className="text-2xl font-bold mb-4">{isLogin ? "Login" : "Sign Up"}</h2>
+        <div className="flex flex-col items-center justify-center min-h-screen">
+            <div className="w-[800px] p-[30px] h-[600px] bg-white rounded-[50px] shadow relative">
+                <h2 className="text-2xl font-bold mb-2 text-center">{isLogin ? "Login" : "Sign Up"}</h2>
+                <p className="text-center text-gray-500">See what Tarot Enigma is capable of for free</p>
                 {error && <p className="text-red-500">{error}</p>}
                 {message && <p className="text-green-500">{message}</p>}
                 
-                <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+                <form onSubmit={handleSubmit} className="flex flex-col gap-5 items-center mt-12">
                     {!isLogin && (
                         <>
-                            <input type="text" name="name" placeholder="Full Name" required className="input" onChange={handleChange} />
-                            <input type="email" name="email" placeholder="Email" required className="input" onChange={handleChange} />
+                            <input type="text" name="name" placeholder="Full Name" required className="input bg-[#4B297138] h-12 w-[500px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                            <input type="email" name="email" placeholder="Email" required className="input bg-[#4B297138] h-12 w-[500px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
                         </>
                     )}
-                    <input type="text" name="username" placeholder="Username" required className="input" onChange={handleChange} />
-                    <input type="password" name="password" placeholder="Password" required className="input" onChange={handleChange} />
-                    <button type="submit" className="bg-blue-500 text-white p-2 rounded">{isLogin ? "Login" : "Sign Up"}</button>
+                    <input type="text" name="username" placeholder="Username" required className="input bg-[#4B297138] h-12 w-[500px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                    <input type="password" name="password" placeholder="Password" required className="input bg-[#4B297138] h-12 w-[500px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                    <button type="submit" className="bg-[#581C87] h-10 w-[500px] text-white p-2 rounded-[100px] hover:bg-pink-500 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-8">{isLogin ? "Login" : "Sign Up"}</button>
                 </form>
 
-                <p className="mt-4">
-                    {isLogin ? "No account?" : "Already have an account?"}{" "}
+                <p className="mt-16 text-center absolute bottom-4 left-1/2 transform -translate-x-1/2">
+                    {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
                     <button className="text-blue-500" onClick={() => setIsLogin(!isLogin)}>
                         {isLogin ? "Sign Up" : "Login"}
                     </button>

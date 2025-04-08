@@ -9,8 +9,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
     return (<html lang="en">
-        <body>
-              {children}
+        <body 
+          className="min-h-screen bg-repeat-y bg-top bg-cover"
+          style={{ backgroundImage: "url('/images/Home/Background.png')" }}>
+            {children}
         </body>
     </html>);
 };

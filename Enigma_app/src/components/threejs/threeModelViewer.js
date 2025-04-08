@@ -40,7 +40,6 @@ function Planet({ texturePath, position, size }) {
 
   return (
     <>
-      <Trail local width={10} length={20} color={"yellow"} attenuation={(t) => t * t} target={trailRef}/>
       <Line points={orbitPath} color="white" lineWidth={0.5} />
       <mesh ref={trailRef} visible={false} />
       <mesh ref={planetRef} position={position}>
@@ -226,14 +225,14 @@ export default function Scene() {
             <RotatingCard />
           </group>
           <group rotation ={[-Math.PI/2.15, 0, 0]}>
-            <Planet texturePath={planet_texture[0]} position={[100, 0, 0]} size={1} />
-            <Planet texturePath={planet_texture[1]} position={[110, 0, 0]} size={1.5} />
-            <Planet texturePath={planet_texture[2]} position={[120, 0, 0]} size={2} />
-            <Planet texturePath={planet_texture[3]} position={[130, 0, 0]} size={1.2} />
-            <Planet texturePath={planet_texture[4]} position={[140, 0, 0]} size={4} />
-            <Planet texturePath={planet_texture[5]} position={[150, 0, 0]} size={3.5} />
-            <Planet texturePath={planet_texture[6]} position={[160, 0, 0]} size={3} />
-            <Planet texturePath={planet_texture[7]} position={[170, 0, 0]} size={2.8} />
+            <Planet texturePath={planet_texture[0]} position={[100, 0, 0]} size={1.5} />
+            <Planet texturePath={planet_texture[1]} position={[110, 0, 0]} size={2} />
+            <Planet texturePath={planet_texture[2]} position={[120, 0, 0]} size={2.5} />
+            <Planet texturePath={planet_texture[3]} position={[130, 0, 0]} size={1.7} />
+            <Planet texturePath={planet_texture[4]} position={[140, 0, 0]} size={4.5} />
+            <Planet texturePath={planet_texture[5]} position={[150, 0, 0]} size={4.0} />
+            <Planet texturePath={planet_texture[6]} position={[160, 0, 0]} size={3.5} />
+            <Planet texturePath={planet_texture[7]} position={[170, 0, 0]} size={3.3} />
           </group>
           <CameraLightSync lightRef={lightRef} />
         </group>

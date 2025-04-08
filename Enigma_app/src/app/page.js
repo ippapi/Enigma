@@ -32,7 +32,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="bg-pink-900">
+        <div>
             <Scene />
             {card ? <FlipCard front={card.img} /> : <p>Loading...</p>}
         </div>
