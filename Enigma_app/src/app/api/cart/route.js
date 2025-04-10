@@ -28,7 +28,7 @@ const GET = async (req) => {
         const status = searchParams.get("status") || "ACTIVE";
         
         let cart = await Cart.findOne({ userId, status }).populate("items.product");
-        if (!cart) {
+        if (!cart && status == "ACTIVE") {
             cart = await Cart.create({ userId, items: [], status: "ACTIVE" });
         }
         return NextResponse.json(cart);
