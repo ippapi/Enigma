@@ -15,8 +15,8 @@ const RotatingCard = () => {
     }
   });
 
-  const front_texture = useLoader(TextureLoader, '/front.jpg');
-  const back_texture = useLoader(TextureLoader, '/back.jpg');
+  const front_texture = useLoader(TextureLoader, '/images/Home/TheLover-01.png');
+  const back_texture = useLoader(TextureLoader, '/images/Home/TheLover-02.png');
 
   return (<>
     <group ref={cardRef}>
