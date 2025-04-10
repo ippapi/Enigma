@@ -20,6 +20,7 @@ export default function AdminPage() {
         {activeTab === "products" && <Card><ProductManagement /></Card>}
         {activeTab === "users" && <Card><UserManagement /></Card>}
       </main>
+      <Footer />
     </div>
   );
 }

@@ -69,6 +69,7 @@ export default function TarotLookupPage() {
                     <p><strong>Meaning:</strong> {card.meanings?.light?.join(", ")}</p>
                 </div>
             )}
+            <Footer />
         </div>
     );
 }
