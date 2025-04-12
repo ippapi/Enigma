@@ -1,32 +1,22 @@
+import { Search } from 'lucide-react'; 
+
 const Header = () => {
   return (
-    <header className="bg-white text-black p-5 shadow-md">
-      <div className="container mx-auto flex justify-between items-center">
-        {}
-        <div className="text-xl font-bold">
-          <img src="Enigma\Enigma_app\public\images\Giới thiệu\logotarot-01.png" alt="Logo" className="h-10" />
-        </div>
-        {}
-        <nav>
-          <ul className="flex space-x-6">
-            <li>
-              <a href="#" className="hover:underline">Trang chủ</a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">Sản phẩm</a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">Xem Tarot</a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">Booking</a>
-            </li>
-            <li>
-              <a href="#" className="hover:underline">Ưu đãi</a>
-            </li>
-          </ul>
-        </nav>
+    <header className="bg-transparent absolute top-0 left-0 w-full z-50 text-white py-4 px-8 flex justify-between items-center font-light tracking-wider">
+      {/* Logo */}
+      <div className="text-xl tracking-wide ">
+        Tarot Enigma
       </div>
+
+      {/* Menu items */}
+      <nav className="flex items-center space-x-6 text-sm uppercase">
+        <Search className="w-5 h-5 cursor-pointer" />
+        <a href="#" className="hover:text-gray-300 transition">Shop</a>
+        <a href="#" className="hover:text-gray-300 transition">Booking</a>
+        <a href="#" className="hover:text-gray-300 transition">Discount</a>
+        <a href="#" className="hover:text-gray-300 transition">Shopping Cart</a>
+        <a href="#" className="hover:text-gray-300 transition">Contacts</a>
+      </nav>
     </header>
   );
 };

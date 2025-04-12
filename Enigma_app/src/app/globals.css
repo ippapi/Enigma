@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@fontsource/inter"; 
 
 :root {
   --background-light: #ffffff;
@@ -10,12 +11,17 @@
 }
 
 body {
-  @apply transition-colors duration-300;
   background: var(--background-light);
   color: var(--foreground-light);
+  transition-property: background, color;
+  transition-duration: 300ms;
 }
 
 .dark body {
   background: var(--background-dark);
   color: var(--foreground-dark);
+}
+
+html {
+  font-family: 'Inter', sans-serif;
 }
