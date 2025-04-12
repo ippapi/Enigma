@@ -1,9 +1,10 @@
 import dbConnect from "@/lib/dbConnect";
 import { verifyToken } from "@/lib/auth";
 import User from "@/lib/models/user";
+import { NextResponse } from "next/server";
 
 const GET = async (req) => {
-    await connectToDB();
+    await dbConnect();
     try {
         const token = req.cookies.get("token")?.value;
         const user = await verifyToken(token);
@@ -12,7 +13,7 @@ const GET = async (req) => {
         }
         const userId = user.id;
 
-        const userData = await User.findById(user.id).select("-password");
+        const userData = await User.findById(userId).select("-password");
         return NextResponse.json(userData);
     } catch (error) {
         console.error(error);

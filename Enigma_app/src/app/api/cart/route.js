@@ -3,6 +3,7 @@ import Cart from "@/lib/models/cart";
 import Product from "@/lib/models/product";
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
+import { verifyToken } from "@/lib/auth";
 
 const calculateTotalPrice = async (cart) => {
     let totalPrice = 0;
@@ -27,9 +28,9 @@ const GET = async (req) => {
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status") || "ACTIVE";
         
-        let cart = await Cart.findOne({ userId, status }).populate("items.product");
+        let cart = await Cart.findOne({user: userId, status }).populate("items.product");
         if (!cart && status == "ACTIVE") {
-            cart = await Cart.create({ userId, items: [], status: "ACTIVE" });
+            cart = await Cart.create({user: userId, items: [], status: "ACTIVE" });
         }
         return NextResponse.json(cart);
     } catch (error) {
@@ -59,14 +60,16 @@ const POST = async (req) => {
         
         let cart = await Cart.findOne({ user: userId, status: "ACTIVE" }).populate("items.product").session(session);
         if (!cart) {
-            cart = await Cart.create([{ user: userId, items: [], status: "ACTIVE" }], { session });
+            cart = new Cart({ user: userId, items: [], status: "ACTIVE" });
         }
         
-        const existingItem = cart.items.find(item => item.product.equals(productId));
-        if (existingItem) {
-            existingItem.quantity = Math.min(existingItem.quantity + quantity, product.stock);
-        } else {
-            cart.items.push({ product: productId, quantity });
+        if (cart.items && Array.isArray(cart.items)) {
+            const existingItem = cart.items.find(item => item.product.equals(productId));
+            if (existingItem) {
+                existingItem.quantity = Math.min(existingItem.quantity + quantity, product.stock);
+            } else {
+                cart.items.push({ product: productId, quantity });
+            }
         }
         
         await cart.save({ session });

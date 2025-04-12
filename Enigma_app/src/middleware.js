@@ -64,8 +64,15 @@ export async function middleware(req) {
         "/api/user"
     ];
     if (protectedUserRoutes.some((route) => pathname.startsWith(route))) {
-        if (!user) return unauthorizedResponse();
-    }
+        if (!user) {
+            const isApi = pathname.startsWith('/api')
+            if (isApi) {
+            return NextResponse.json({ message: 'Unauthorized' }, { status: 403 })
+            } else {
+            return unauthorizedResponse() // redirect
+            }
+        }
+    }      
 
     // **Protected Reader Routes (Requires "READER" Role)**
     const protectedReaderRoutes = [

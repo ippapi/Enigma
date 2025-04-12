@@ -19,7 +19,6 @@ export default function Home() {
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
             const data = await response.json();
-            console.log("Fetched card:", data);
 
             setCard(data); // Now we correctly update state
         } catch (err) {
