@@ -25,8 +25,9 @@ const PUT = async (req, { params }) => {
     await dbConnect();
     try {
         const { product_id } = await params;
-        const body = await req.json();
-        const product = await Product.findByIdAndUpdate(product_id, body, { new: true, runValidators: true });
+        const {name, description, price, stock, images} = await req.json();
+        console.log(images.map(img => img.length)); 
+        const product = await Product.findByIdAndUpdate(product_id, {name: name, description: description, price: price, stock: stock, images: images}, { new: true, runValidators: true });
         if (!product) {
             return NextResponse.json({ message: "Product not found" }, { status: 404 });
         }

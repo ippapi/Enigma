@@ -25,8 +25,9 @@ const GET = async (req) => {
 
         const users = await User.find(filter).skip(skip).limit(limit);
         const total = await User.countDocuments(filter);
+        const totalPages = Math.ceil(total / limit)
 
-        return NextResponse.json({ users, total, page, limit });
+        return NextResponse.json({ users, total, page, limit, totalPages });
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: error.message }, { status: 500 });

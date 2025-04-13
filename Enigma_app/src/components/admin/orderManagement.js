@@ -13,7 +13,7 @@ const PaymentManagement = () => {
             .then((res) => res.json())
             .then((data) => {
                 setPayments(data.data); // Set the payment data
-                setTotal(data.total || 0);
+                setTotal(data.pagination.totalPages || 0);
             })
             .catch((err) => console.error("Error fetching data:", err));
     }, [page, limit]);
@@ -72,14 +72,14 @@ const PaymentManagement = () => {
                         {payments.map((payment) => {
                             const cart = payment.cartId;
                             const itemNames = cart.items
-                                .map(item => `${item.name || item.title || "Unnamed"} x ${item.quantity}`)
+                                .map(item => `${item.product.name || "Unnamed"} x ${item.quantity}`)
                                 .join(", ");
 
                             return (
                                 <tr key={cart._id} className="border">
-                                    <td className="border p-2 text-center">{cart.user || "Guest"}</td>
+                                    <td className="border p-2 text-center">{cart.user.name || "Guest"}</td>
                                     <td className="border p-2">{itemNames}</td>
-                                    <td className="border p-2 text-center">${payment.totalPrice?.toFixed(2)}</td>
+                                    <td className="border p-2 text-center">{payment.totalPrice?.toFixed(2)} VND</td>
                                     <td className="border p-2">{payment.phone || "-"}</td>
                                     <td className="border p-2">{payment.address || "-"}</td>
                                     <td className="border p-2 flex space-x-2 justify-center">
@@ -89,13 +89,13 @@ const PaymentManagement = () => {
                                                     onClick={() => updateCartStatus(cart._id, "COMPLETED")}
                                                     className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition"
                                                 >
-                                                    Mark as Completed
+                                                    Hustle
                                                 </button>
                                                 <button
                                                     onClick={() => updateCartStatus(cart._id, "CANCELED")}
                                                     className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
                                                 >
-                                                    Cancel Order
+                                                    Scam
                                                 </button>
                                             </>
                                         )}
@@ -107,9 +107,6 @@ const PaymentManagement = () => {
                 </table>
             </div>
 
-    
-
-            {/* Display current page and total pages */}
             <div className="flex justify-between items-center mt-4">
                 <button
                     disabled={page <= 1}

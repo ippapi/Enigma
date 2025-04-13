@@ -18,7 +18,7 @@ const GET = async (req) => {
             {
               $match: {
                 createdAt: { $gte: fromDate, $lte: toDate },
-                status: "COMPLETED",
+                status: { $in: ["ORDERED", "COMPLETED"] },
               },
             },
             {

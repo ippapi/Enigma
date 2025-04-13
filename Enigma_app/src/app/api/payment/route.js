@@ -3,6 +3,15 @@ import Payment from '@/lib/models/payment';
 import Cart from '@/lib/models/cart';
 import { NextResponse } from 'next/server';
 
+const calculateTotalPrice = (cart) => {
+  return cart.items.reduce((total, item) => {
+    if (item.product && item.product.price) {
+      return total + (item.product.price * item.quantity);
+    }
+    return total;
+  }, 0);
+};
+
 const GET = async (req) => {
   await dbConnect();
   try {
@@ -11,11 +20,22 @@ const GET = async (req) => {
     const limit = parseInt(searchParams.get('limit')) || 10;
     const skip = (page - 1) * limit;
 
-    // Get all payment records and populate the cartId field (cart data will be populated directly)
     const payments = await Payment.find({})
-      .populate('cartId')  // Populate cartId with the related Cart document
-      .skip(skip)          // Apply pagination
-      .limit(limit);       // Limit the number of records returned
+    .populate({
+      path: 'cartId',
+      populate: [
+        {
+          path: 'user',
+          select: 'name', // Only include user's name
+        },
+        {
+          path: 'items.product',
+          select: 'name price', // Only include needed product fields
+        }
+      ]
+    })
+    .skip(skip)
+    .limit(limit);
 
     // Define custom sort order for cart status
     const statusOrder = {
@@ -41,7 +61,7 @@ const GET = async (req) => {
           cartId: payment.cartId, // Ensure this is populated
           phone: payment.phone,
           address: payment.addr,
-          totalPrice: payment.totalPrice, // Total price from the payment
+          totalPrice: calculateTotalPrice(payment.cartId),
         }
     });
 

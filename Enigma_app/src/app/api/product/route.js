@@ -27,8 +27,8 @@ const GET = async (req) => {
 const POST = async (req) => {
     await dbConnect();
     try {
-        const body = await req.json();
-        const product = new Product(body);
+        const {name, description, price, stock, images} = await req.json();
+        const product = new Product({name: name, description: description, price: price, stock: stock, images: images });
         await product.save();
         
         return NextResponse.json(product, { status: 201 });

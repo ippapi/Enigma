@@ -1,6 +1,5 @@
-'use client';
-
 import { useState, useEffect } from 'react';
+import ImageUploader from '../product/imageUploader';
 
 // Image Modal Component
 const ImageModal = ({ images, currentIndex, onClose, onNext, onPrev, onSelect }) => {
@@ -35,15 +34,24 @@ const ProductCard = ({ product, onOpenModal, onEdit }) => {
       <h2 className="text-lg font-semibold">{product.name}</h2>
       <p className="text-sm text-gray-600">{product.description}</p>
       <div className="mt-2 cursor-pointer" onClick={() => onOpenModal(product.images)}>
-        {product.images.length > 0 && (
-          <img
-            src={product.images[0]}
-            alt={product.name}
-            className="w-full h-40 object-cover rounded"
-          />
+        {/* Display first image, or show a gallery of images */}
+        {product.images.length > 0 ? (
+          <div className="flex overflow-x-auto">
+            {product.images.map((image, index) => (
+              <img
+                key={index}
+                src={image} // Base64 image string
+                alt={`product-image-${index}`}
+                className="w-20 h-20 object-cover rounded mr-2"
+              />
+            ))}
+          </div>
+        ) : (
+          <p>No images available</p>
         )}
       </div>
-      <p className="mt-2 font-medium">${product.price}</p>
+      <p className="mt-2 font-medium">Stock: {product.stock}</p>
+      <p className="mt-2 font-medium">Price: {product.price} VND</p>
       <button onClick={() => onEdit(product)} className="mt-2 text-blue-500">Edit</button>
     </div>
   );
@@ -65,6 +73,8 @@ const ProductManagement = () => {
   const [productName, setProductName] = useState('');
   const [productDescription, setProductDescription] = useState('');
   const [productPrice, setProductPrice] = useState('');
+  const [productStock, setProductStock] = useState(0);
+  const [productImages, setProductImages] = useState(null);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -73,10 +83,10 @@ const ProductManagement = () => {
       const data = await res.json();
       const formattedProducts = data.products.map((product) => ({
         ...product,
-        images: product.images.map((img) => `data:image/png;base64,${img}`),
+        images: product.images.map((img) => `${img}`),
       }));
       setProducts(formattedProducts);
-      setTotalPages(Math.ceil(data.total / limit));  // Calculate total pages
+      setTotalPages(Math.ceil(data.total / limit));
     } catch (error) {
       console.error('Failed to fetch products', error);
     }
@@ -103,14 +113,13 @@ const ProductManagement = () => {
       name: productName,
       description: productDescription,
       price: parseFloat(productPrice),
+      stock: parseInt(productStock),
+      images: productImages,
     };
-    
+
     try {
       const res = await fetch('/api/product', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(newProduct),
       });
       if (res.ok) {
@@ -129,14 +138,13 @@ const ProductManagement = () => {
       name: productName,
       description: productDescription,
       price: parseFloat(productPrice),
+      stock: parseInt(productStock),
+      images: productImages,
     };
     
     try {
       const res = await fetch(`/api/product/${editProduct._id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(updatedProduct),
       });
       if (res.ok) {
@@ -147,6 +155,10 @@ const ProductManagement = () => {
     } catch (error) {
       console.error('Failed to edit product', error);
     }
+  };
+
+  const handleImageSelect = (images) => {
+    setProductImages(images);
   };
 
   // Open Modal
@@ -212,6 +224,16 @@ const ProductManagement = () => {
             required
             className="border p-2 w-full mb-4"
           />
+          <label className="block mb-2">Stock</label>
+          <input
+            type="number"
+            value={productStock}
+            onChange={(e) => setProductStock(e.target.value)}
+            required
+            className="border p-2 w-full mb-4"
+          />
+          <label className="block mb-2">Images</label>
+          <ImageUploader initialImages={productImages} onImageSelect={handleImageSelect} />
           <div className="flex justify-between">
             <button
               type="submit"
@@ -247,6 +269,8 @@ const ProductManagement = () => {
                 setProductName(product.name);
                 setProductDescription(product.description);
                 setProductPrice(product.price);
+                setProductStock(product.stock);
+                setProductImages(product.images);
                 setIsAddFormOpen(true);
               }}
             />

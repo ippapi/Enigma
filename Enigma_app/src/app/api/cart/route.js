@@ -27,7 +27,7 @@ const GET = async (req) => {
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status") || "ACTIVE";
         
-        let cart = await Cart.findOne({user: userId, status }).populate("items.product");
+        let cart = await Cart.findOne({user: userId, status }).populate("user").populate("items.product");
         var totalPrice;
         if (!cart && status == "ACTIVE") {
             cart = await Cart.create({user: userId, items: [], status: "ACTIVE" });

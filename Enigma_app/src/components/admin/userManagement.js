@@ -35,7 +35,7 @@ const userManagement = () => {
             const data = await response.json();
             if (response.ok) {
                 setUsers(data.users || []);
-                setTotal(data.total || 0);
+                setTotal(data.totalPages || 0);
             } else {
                 throw new Error(data.error || "Failed to fetch users");
             }
