@@ -15,13 +15,14 @@ const Footer = () => {
 
         {/* Nội dung bên phải */}
         <div className="w-full max-w-4xl">
-        <h2 className="text-4xl font-bold bg-clip-text text-transparent mb-6 inline-block tracking-wider text-center md:text-left"
+        <h2 className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-normal text-center md:text-left"
           style={{
-            backgroundImage: 'linear-gradient(150deg, #00A1C7, #F5559E, #ED7D0C)'
-          }}
-        >
+            backgroundImage: 'linear-gradient(150deg, #00A1C7, #F5559E, #ED7D0C)',
+            fontFamily: 'Anton, sans-serif'
+          }}>
           MORE INFO
         </h2>
+
 
 
           <p className="text-lg text-gray-400 mb-4 leading-relaxed">
