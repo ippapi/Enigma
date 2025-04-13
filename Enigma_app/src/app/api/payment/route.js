@@ -4,59 +4,61 @@ import Cart from '@/lib/models/cart';
 import { NextResponse } from 'next/server';
 
 const GET = async (req) => {
-    await dbConnect();
-    try {
-        const { searchParams } = new URL(req.url);
-        const page = parseInt(searchParams.get('page')) || 1;
-        const limit = parseInt(searchParams.get('limit')) || 10;
-        const skip = (page - 1) * limit;
+  await dbConnect();
+  try {
+    const { searchParams } = new URL(req.url);
+    const page = parseInt(searchParams.get('page')) || 1;
+    const limit = parseInt(searchParams.get('limit')) || 10;
+    const skip = (page - 1) * limit;
 
-        // Get all payment records
-        const payments = await Payment.find({});
+    // Get all payment records and populate the cartId field (cart data will be populated directly)
+    const payments = await Payment.find({})
+      .populate('cartId')  // Populate cartId with the related Cart document
+      .skip(skip)          // Apply pagination
+      .limit(limit);       // Limit the number of records returned
 
-        // Collect all unique cart IDs from payment records
-        const cartIds = payments
-            .filter(payment => payment.cartId) // Ensure cartId exists
-            .map(payment => payment.cartId);
+    // Define custom sort order for cart status
+    const statusOrder = {
+      "ORDERED": 1,
+      "COMPLETED": 2,
+      "CANCELED": 3
+    };
 
-        // Fetch carts based on cartIds, sorted by status, and implement pagination
-        const carts = await Cart.find({ _id: { $in: cartIds } })
-            .sort({ status: 1 }) // Sort by status (you can use '1' for ascending, '-1' for descending)
-            .skip(skip)           // Skip the first 'skip' records
-            .limit(limit);        // Limit the number of records returned
+    // Sort the payments by the status of the populated cart
+    const sortedPayments = payments.filter(payment => payment.cartId) // Filter out payments without cartId
+      .sort((a, b) => {
+        const statusA = a.cartId.status;
+        const statusB = b.cartId.status;
+        return statusOrder[statusA] - statusOrder[statusB];
+      });
 
-        // Fetch total number of carts (for pagination metadata)
-        const totalCarts = await Cart.countDocuments({ _id: { $in: cartIds } });
+    // Calculate total number of payments for pagination metadata
+    const totalPayments = await Payment.countDocuments();
 
-        // Combine the cart data and payment data into one response
-        const result = carts.map(cart => {
-            // Find the corresponding payment for this cart
-            const payment = payments.find(payment => payment.cartId.toString() === cart._id.toString());
+    const result = sortedPayments.map(payment => {
+      return {
+          id: payment._id,
+          cartId: payment.cartId, // Ensure this is populated
+          phone: payment.phone,
+          address: payment.addr,
+          totalPrice: payment.totalPrice, // Total price from the payment
+        }
+    });
 
-            return {
-                cart: {
-                    user: cart.user,
-                    items: cart.items, // Items are already in the cart
-                    status: cart.status
-                },
-                payment
-            };
-        });
-
-        return NextResponse.json({
-            data: result,
-            pagination: {
-                page,
-                limit,
-                totalPages: Math.ceil(totalCarts / limit),
-                totalCarts
-            }
-        });
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
-    }
-}
+    return NextResponse.json({
+      data: result,
+      pagination: {
+        page,
+        limit,
+        totalPages: Math.ceil(totalPayments / limit),
+        totalPayments
+      }
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
+  }
+};
 
 
 const POST = async (req) => {
@@ -64,42 +66,77 @@ const POST = async (req) => {
 
   try {
     const { addr, cartId, phone } = await req.json();
-
-    try {
-      const response = await fetch(`/api/cart`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cartId: cartId,
-          status: 'ORDERED',
-        }),
-      });
-
-      if (!response.ok) {
-        console.error('Cart update failed:', await response.json());
-        return NextResponse.json({ error: 'Cart update failed' }, { status: 500 });
-      }
-
-      const cartData = await response.json();
-      console.log('Cart updated successfully:', cartData);
-
-      const payment = await Payment.create({
-        addr,
-        cartId,
-        phone,
-      });
-
-      return NextResponse.json({ message: 'Payment and cart update successful', payment });
-    } catch (error) {
-      console.error('Error updating cart:', error);
-      return NextResponse.json({ error: 'Failed to update cart', details: error.message }, { status: 500 });
+    const token = req.cookies.get("token")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized: No token provided" }, { status: 401 });
     }
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SOCKET_URL}/api/cart`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        cartId: cartId,
+        status: 'ORDERED',
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('Cart update failed:', await response.json());
+      return NextResponse.json({ error: 'Cart update failed' }, { status: 500 });
+    }
+
+    const cartData = await response.json();
+    console.log('Cart updated successfully:', cartData);
+
+    const payment = await Payment.create({
+      addr,
+      cartId,
+      phone,
+    });
+
+    return NextResponse.json({ message: 'Payment and cart update successful', payment });
   } catch (error) {
-    console.error('Payment creation error:', error);
-    return NextResponse.json({ error: 'Payment creation failed', details: error.message }, { status: 500 });
+    console.error('Error updating cart:', error);
+    return NextResponse.json({ error: 'Failed to update cart', details: error.message }, { status: 500 });
   }
 };
 
-export {GET, POST};
+const PATCH = async (req) => {
+  await dbConnect();
+
+  try {
+    const { cartId, status } = await req.json();
+    const token = req.cookies.get("token")?.value;
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized: No token provided" }, { status: 401 });
+    }
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SOCKET_URL}/api/cart`, {
+      method: 'PATCH',
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        cartId: cartId,
+        status: status,
+      }),
+    });
+
+    if (!response.ok) {
+      console.error('Order update failed:', await response.json());
+      return NextResponse.json({ error: 'Order update failed' }, { status: 500 });
+    }
+
+    const cartData = await response.json();
+
+    return NextResponse.json({ message: 'Order update successful', cartData });
+  } catch (error) {
+    console.error('Error updating cart:', error);
+    return NextResponse.json({ error: 'Failed to update order', details: error.message }, { status: 500 });
+  }
+};
+
+
+export {GET, POST, PATCH};

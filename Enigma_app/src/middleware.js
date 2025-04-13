@@ -8,11 +8,11 @@ export async function middleware(req) {
     // Extract token and refreshToken from cookies
     const token = cookieHeader?.split("; ")
         .find((c) => c.startsWith("token="))
-        ?.split("=")[1];
+        ?.split("=")[1] || req.headers.get("Authorization")?.split(" ")[1];
 
     const refreshToken = cookieHeader?.split("; ")
         .find((c) => c.startsWith("refreshToken="))
-        ?.split("=")[1];
+        ?.split("=")[1] || req.headers.get("Authorization")?.split(" ")[1];
 
     const { pathname } = req.nextUrl;
     const method = req.method; // GET, POST, etc.
@@ -100,6 +100,12 @@ export async function middleware(req) {
             (method === "POST" && pathname === "/api/product") || // Restrict POST /api/product
             (["PUT", "DELETE"].includes(method) && pathname.match(/^\/api\/product\/\w+$/)) // Restrict PUT, DELETE /api/product/[product_id]
         ) {
+            if (!user || user.role !== "ADMIN") return unauthorizedResponse();
+        }
+    }
+
+    if (pathname.startsWith("/api/payment")) {
+        if (method === "PATCH" && pathname === "/api/payment") {
             if (!user || user.role !== "ADMIN") return unauthorizedResponse();
         }
     }

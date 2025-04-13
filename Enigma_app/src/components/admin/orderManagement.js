@@ -16,7 +16,7 @@ const PaymentManagement = () => {
                 setTotal(data.total || 0);
             })
             .catch((err) => console.error("Error fetching data:", err));
-    }, [page, limit]); // Fetch payments whenever the page changes
+    }, [page, limit]);
 
     const updateCartStatus = async (cartId, status) => {
         const res = await fetch("/api/payment", {
@@ -25,15 +25,15 @@ const PaymentManagement = () => {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                cartId, // The associated cartId
-                status, // Either "COMPLETED" or "CANCELED"
+                cartId: cartId,
+                status: status,
             }),
         });
 
         if (res.ok) {
             const updatedPayment = await res.json();
             setPayments(payments.map(payment =>
-                payment.cart._id === updatedPayment.updatedCart._id ? updatedPayment : payment
+                payment.cartId._id === updatedPayment.cartId._id ? updatedPayment : payment
             ));
         } else {
             console.error("Failed to update cart status");
@@ -55,50 +55,59 @@ const PaymentManagement = () => {
     return (
         <div className="p-6">
             <h1 className="text-3xl font-semibold mb-4">Payment Management</h1>
-
+    
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-300">
                     <thead className="bg-gray-200">
                         <tr>
-                            <th className="border p-2 w-1/4">User</th>
-                            <th className="border p-2 w-1/6">Items</th>
-                            <th className="border p-2 w-1/6">Total Qty</th>
-                            <th className="border p-2 w-1/6">Status</th>
-                            <th className="border p-2 w-1/3">Actions</th>
+                            <th className="border p-2 w-1/6">User</th>
+                            <th className="border p-2 w-1/3">Items</th>
+                            <th className="border p-2 w-1/12">Total</th>
+                            <th className="border p-2 w-1/6">Phone</th>
+                            <th className="border p-2 w-1/4">Address</th>
+                            <th className="border p-2 w-1/4">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {payments.map((payment) => (
-                            <tr key={payment.cart._id} className="border">
-                                <td className="border p-2">{payment.cart.user || "Guest"}</td>
-                                <td className="border p-2 text-center">{payment.cart.items.length} items</td>
-                                <td className="border p-2 text-center">
-                                    {payment.cart.items.reduce((sum, item) => sum + item.quantity, 0)}
-                                </td>
-                                <td className="border p-2 text-center">{payment.cart.status}</td>
-                                <td className="border p-2 flex space-x-2 justify-center">
-                                    {payment.cart.status === "ORDERED" && (
-                                        <>
-                                            <button
-                                                onClick={() => updateCartStatus(payment.cart._id, "COMPLETED")}
-                                                className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition"
-                                            >
-                                                Mark as Completed
-                                            </button>
-                                            <button
-                                                onClick={() => updateCartStatus(payment.cart._id, "CANCELED")}
-                                                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
-                                            >
-                                                Cancel Order
-                                            </button>
-                                        </>
-                                    )}
-                                </td>
-                            </tr>
-                        ))}
+                        {payments.map((payment) => {
+                            const cart = payment.cartId;
+                            const itemNames = cart.items
+                                .map(item => `${item.name || item.title || "Unnamed"} x ${item.quantity}`)
+                                .join(", ");
+
+                            return (
+                                <tr key={cart._id} className="border">
+                                    <td className="border p-2 text-center">{cart.user || "Guest"}</td>
+                                    <td className="border p-2">{itemNames}</td>
+                                    <td className="border p-2 text-center">${payment.totalPrice?.toFixed(2)}</td>
+                                    <td className="border p-2">{payment.phone || "-"}</td>
+                                    <td className="border p-2">{payment.address || "-"}</td>
+                                    <td className="border p-2 flex space-x-2 justify-center">
+                                        {cart.status === "ORDERED" && (
+                                            <>
+                                                <button
+                                                    onClick={() => updateCartStatus(cart._id, "COMPLETED")}
+                                                    className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded transition"
+                                                >
+                                                    Mark as Completed
+                                                </button>
+                                                <button
+                                                    onClick={() => updateCartStatus(cart._id, "CANCELED")}
+                                                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition"
+                                                >
+                                                    Cancel Order
+                                                </button>
+                                            </>
+                                        )}
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
+
+    
 
             {/* Display current page and total pages */}
             <div className="flex justify-between items-center mt-4">

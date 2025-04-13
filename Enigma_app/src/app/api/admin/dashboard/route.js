@@ -15,10 +15,44 @@ const GET = async (req) => {
         toDate.setUTCHours(23, 59, 59, 999);
 
         const sales = await Order.aggregate([
-            { $match: { createdAt: { $gte: fromDate, $lte: toDate }, status: "ORDERED"} },
-            { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, sales: { $sum: "$totalPrice" } } },
-            { $sort: { _id: 1 } }
+            {
+              $match: {
+                createdAt: { $gte: fromDate, $lte: toDate },
+                status: "COMPLETED",
+              },
+            },
+            {
+              $unwind: "$items",
+            },
+            {
+              $lookup: {
+                from: "products",
+                localField: "items.product",
+                foreignField: "_id",
+                as: "productDetails",
+              },
+            },
+            {
+              $unwind: "$productDetails",
+            },
+            {
+              $addFields: {
+                totalPricePerItem: {
+                  $multiply: ["$items.quantity", "$productDetails.price"],
+                },
+              },
+            },
+            {
+              $group: {
+                _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                sales: { $sum: "$totalPricePerItem" },
+              },
+            },
+            {
+              $sort: { _id: 1 },
+            },
         ]);
+          
 
         const users = await User.aggregate([
             { $match: { createdAt: { $gte: fromDate, $lte: toDate } } },

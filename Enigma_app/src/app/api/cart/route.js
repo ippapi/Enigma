@@ -5,14 +5,13 @@ import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { verifyToken } from "@/lib/auth";
 
-const calculateTotalPrice = async (cart) => {
-    let totalPrice = 0;
-    for (let item of cart.items) {
-        const product = await Product.findById(item.product);
-        if (!product) continue;
-        totalPrice += product.price * item.quantity;
-    }
-    return totalPrice;
+const calculateTotalPrice = (cart) => {
+    return cart.items.reduce((total, item) => {
+      if (item.product && item.product.price) {
+        return total + (item.product.price * item.quantity);
+      }
+      return total;
+    }, 0);
 };
 
 const GET = async (req) => {
@@ -29,10 +28,14 @@ const GET = async (req) => {
         const status = searchParams.get("status") || "ACTIVE";
         
         let cart = await Cart.findOne({user: userId, status }).populate("items.product");
+        var totalPrice;
         if (!cart && status == "ACTIVE") {
             cart = await Cart.create({user: userId, items: [], status: "ACTIVE" });
+            totalPrice = 0
+        }else{
+            totalPrice = calculateTotalPrice(cart);
         }
-        return NextResponse.json(cart);
+        return NextResponse.json({cart: cart, totalPrice: totalPrice});
     } catch (error) {
         console.error(error);
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -89,13 +92,13 @@ const PUT = async (req) => {
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
-        const token = req.cookies.get("token")?.value;
+        const { cartId, status } = await req.json();
+        var token = req.cookies.get("token")?.value || req.headers.get("Authorization")?.split(" ")[1];
         const user = await verifyToken(token);
         if (!user) {
             return NextResponse.json({ message: "Invalid token" }, { status: 403 });
         }
         const userId = user.id;
-        const { cartId, status } = await req.json();
         
         let cart = await Cart.findOne({ _id: cartId, user: userId }).populate("items.product").session(session);
         if (!cart) {
@@ -181,21 +184,22 @@ const payWithMoMo = async (cart) => {
     try {
         if (!cart) return false;
         const totalPrice = await calculateTotalPrice(cart);
-        const momoResponse = await fetch("https://test-payment.momo.vn/v2/gateway/api/create", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                amount: totalPrice,
-                orderId: cart._id,
-                orderInfo: "Payment for cart",
-                returnUrl: "https://your-site.com/payment-success",
-                notifyUrl: "https://your-site.com/api/payment-notify"
-            })
-        });
+        // const momoResponse = await fetch("https://test-payment.momo.vn/v2/gateway/api/create", {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json" },
+        //     body: JSON.stringify({
+        //         amount: totalPrice,
+        //         orderId: cart._id,
+        //         orderInfo: "Payment for cart",
+        //         returnUrl: "https://your-site.com/payment-success",
+        //         notifyUrl: "https://your-site.com/api/payment-notify"
+        //     })
+        // });
         
-        if (!momoResponse.ok) return false;
-        const momoData = await momoResponse.json();
-        return momoData.payUrl ? momoData.payUrl : false;
+        // if (!momoResponse.ok) return false;
+        // const momoData = await momoResponse.json();
+        // return momoData.payUrl ? momoData.payUrl : false;
+        return true;
     } catch (error) {
         console.error(error);
         return false;
