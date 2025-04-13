@@ -50,17 +50,17 @@ const AuthPage = () => {
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5 items-center mt-12">
                         {!isLogin && (
                             <>
-                                <input type="text" name="name" placeholder="Full Name" required className="input bg-[#4B297138] h-12 w-[300px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
-                                <input type="email" name="email" placeholder="Email" required className="input bg-[#4B297138] h-12 w-[300px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
-                                <input type="text" name="username" placeholder="Username" required className="input bg-[#4B297138] h-12 w-[300px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                                <input type="text" name="name" placeholder="Full Name" required className="input p-3 border-b-2 border-black bg-[#D7D0E0] text-white h-12 w-[300px]  focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                                <input type="email" name="email" placeholder="Email" required className="input p-3 border-b-2 border-black bg-[#D7D0E0] text-white h-12 w-[300px]  focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                                <input type="text" name="username" placeholder="Username" required className="input  h-12 w-[300px] p-3 border-b-2 border-black bg-[#D7D0E0] text-white focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
                             </>
                         )}
                         {isLogin && (
                             <>
-                                <input type="text" name="username" placeholder="Username or email" required className="input bg-[#4B297138] h-12 w-[300px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                                <input type="text" name="username" placeholder="Username or email" required className="input h-12 w-[300px] p-3 border-b-2 border-black bg-[#D7D0E0] text-white focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
                             </>
                         )}
-                        <input type="password" name="password" placeholder="Password" required className="input bg-[#4B297138] h-12 w-[300px] rounded-[10px] border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                        <input type="password" name="password" placeholder="Password" required className="input p-3 border-b-2 border-black bg-[#D7D0E0] text-white h-12 w-[300px] focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
                         <button type="submit" className="bg-[#581C87] h-10 w-[300px] text-white p-2 rounded-[100px] hover:bg-pink-500 hover:border-pink-400 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-8 mb-8">{isLogin ? "Login" : "Sign Up"}</button>
                     </form>
 
