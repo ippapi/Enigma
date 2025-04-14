@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 
-export default function BookingActions({ booking, onUpdate }) {
+export default function BookingActions({tab, booking, onUpdate }) {
   const [time, setTime] = useState(booking.time);
   const [duration, setDuration] = useState(booking.duration);
   const [loading, setLoading] = useState(false);
 
-  const handleUpdate = async (status) => {
+  const handleUpdate = async (newStatus = booking.status) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/booking/update', {
+      const res = await fetch('/api/booking/user', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           bookingId: booking._id,
-          status,
+          status: newStatus,
           time,
-          duration
+          duration,
         }),
       });
 
@@ -36,27 +36,29 @@ export default function BookingActions({ booking, onUpdate }) {
 
   return (
     <div className="space-y-2">
-      <div className="flex flex-col gap-2">
-        <label className="text-sm">Thời gian:</label>
-        <input
-          type="datetime-local"
-          className="border px-2 py-1 rounded"
-          value={new Date(time).toISOString().slice(0, 16)}
-          onChange={(e) => setTime(new Date(e.target.value).toISOString())}
-        />
-
-        <label className="text-sm">Thời lượng (phút):</label>
-        <input
-          type="number"
-          min="1"
-          className="border px-2 py-1 rounded"
-          value={duration}
-          onChange={(e) => setDuration(Number(e.target.value))}
-        />
-      </div>
-
+      {(tab === "PENDING" || tab === "SCHEDULED") && (
+        <div className="flex flex-col gap-2">
+          <label className="text-sm">Thời gian:</label>
+          <input
+            type="datetime-local"
+            className="border px-2 py-1 rounded"
+            value={new Date(time).toISOString().slice(0, 16)}
+            onChange={(e) => setTime(new Date(e.target.value).toISOString())}
+          />
+  
+          <label className="text-sm">Thời lượng (phút):</label>
+          <input
+            type="number"
+            min="1"
+            className="border px-2 py-1 rounded"
+            value={duration}
+            onChange={(e) => setDuration(Number(e.target.value))}
+          />
+        </div>
+      )}
+  
       <div className="flex gap-2 mt-2">
-        {booking.status === "PENDING" && (
+        {tab === "PENDING" && (
           <button
             disabled={loading}
             className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
@@ -65,8 +67,8 @@ export default function BookingActions({ booking, onUpdate }) {
             {loading ? "Đang huỷ..." : "Huỷ"}
           </button>
         )}
-
-        {booking.status === "SCHEDULED" && (
+  
+        {tab === "SCHEDULED" && (
           <>
             <button
               disabled={loading}
@@ -84,7 +86,16 @@ export default function BookingActions({ booking, onUpdate }) {
             </button>
           </>
         )}
+
+      {tab === "SCHEDULED" && booking.room && (
+        <button
+          className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600"
+          onClick={() => router.push(`/room/${booking.room}`)}
+        >
+          Vào phòng
+        </button>
+      )}
       </div>
     </div>
-  );
+  );  
 }

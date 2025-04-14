@@ -15,7 +15,10 @@ const BookingSchema = new mongoose.Schema({
         ref: "User",
         required: true 
     },
-    room: { type: String },
+    room: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Room",
+    },
 
     time: {
       type: Date,
@@ -28,17 +31,6 @@ const BookingSchema = new mongoose.Schema({
     },
     duration: { type: Number, required: true },
 
-    confirmedTime: {
-      type: Date,
-      validate: {
-          validator: function (value) {
-              return value > new Date();
-          },
-          message: "Confirmed time must be in the future",
-      },
-    },
-    confirmedDuration: { type: Date },
-
     status: { 
       type: String, 
       enum: ["PENDING", "SCHEDULED", "COMPLETED", "CANCELED"], 
@@ -49,7 +41,5 @@ const BookingSchema = new mongoose.Schema({
   },
   { timestamps: true }
 );
-
-BookingSchema.index({user: 1, reader: 1, confirmedTime: 1}, { unique: true, sparse: true });
 
 export default mongoose.models.Booking || mongoose.model("Booking", BookingSchema);

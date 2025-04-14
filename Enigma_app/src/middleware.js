@@ -18,13 +18,17 @@ export async function middleware(req) {
     const method = req.method; // GET, POST, etc.
 
     // **Public Routes (No authentication needed)**
-    const publicRoutes = ["/", "/booking", "/product"];
+    const publicRoutes = ["/", "/product"];
     if (publicRoutes.includes(pathname)) {
         return NextResponse.next();
     }
 
     // **Public API Routes (No authentication needed for GET)**
     if (pathname.startsWith("/api/product") && method === "GET") {
+        return NextResponse.next();
+    }
+
+    if(pathname === "/booking"){
         return NextResponse.next();
     }
 

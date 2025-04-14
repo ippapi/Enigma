@@ -15,7 +15,7 @@ const GET = async (req, { params }) => {
         const { roomId } = await params;
         if (!roomId) return NextResponse.json({ message: "Room ID missing" }, { status: 400 });
 
-        const room = await Room.findOne({ id: roomId, status: "ACTIVE" });
+        const room = await Room.findOne({ _id: roomId, status: "ACTIVE" });
         if (!room) return NextResponse.json({ message: "No room found" }, { status: 404 });
 
         const isEnabled = room.enable_user.some((u) => u.id === user.id);

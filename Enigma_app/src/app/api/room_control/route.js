@@ -1,23 +1,19 @@
-/* 
-    Message route: Create POST, GET method to handle display room chat
-
-    - GET method: Send room info to client sides
-        + input: 
-        + output: Response found room to client sides
-
-    - POST method: Send message to server side and save in room
-        + input: {user, message, room_id}: user info, message and which room they send
-        + output: Response result of write room change to database
-*/
-
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/dbConnect";
 import Room from "@/lib/models/room";
+import { verifyToken } from "@/lib/auth";
 
-// GET METHOD: Get old messages from database
 const GET = async (req) => {
-    await dbConnect(); // Create connection
+    await dbConnect();
+
     try {
+        const token = req.cookies.get("token")?.value;
+    
+        const user = await verifyToken(token);
+        if (!user) {
+            return NextResponse.json({ message: "Invalid token" }, { status: 403 });
+        }
+
         const room_id = req.headers.get("x-room-id");
         if (!room_id)
             return NextResponse.json({ message: "Room ID missing" }, { status: 400 });
@@ -26,13 +22,21 @@ const GET = async (req) => {
         if (!room)
             return NextResponse.json({ message: "No room found" }, { status: 404 });
 
-        return NextResponse.json(room); // Response found room
-    }catch(error){
-        return NextResponse.json({ error: "Internal server error" }, { status: 500 }); // Response if error
+        const isEnabled = room.enable_user.some(
+            (u) => u.id === user.id && u.role === user.role
+        );
+
+        if (!isEnabled) {
+            return NextResponse.json({ message: "Access denied" }, { status: 403 });
+        }
+
+        return NextResponse.json(room);
+    } catch (error) {
+        console.error("Error fetching room:", error);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 };
 
-// POST METHOD: Post new messages to database
 const POST = async (req) => {
     // Ensure connected to database
     await dbConnect();
@@ -53,7 +57,7 @@ const POST = async (req) => {
 
         // Save new message to database
         const result = await Room.updateOne(
-            {id: room_id},
+            {_id: room_id},
             {$push: {messages: new_message}}
         );
 

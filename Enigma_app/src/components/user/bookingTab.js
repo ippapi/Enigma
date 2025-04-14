@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import BookingActions from '@/components/booking/bookingActions';
+import BookingActions from './bookingActions';
 
-export default function BookingPage() {
+export default function BookingTab({tab}) {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ export default function BookingPage() {
   // ✅ Tách ra thành hàm riêng
   const fetchBookings = async () => {
     try {
-      const res = await fetch('/api/booking/user?status=PENDING');
+      const res = await fetch(`/api/booking/user?status=${tab}`);
       if (!res.ok) {
         if (res.status === 403) {
           router.push("/auth");
@@ -48,7 +48,7 @@ export default function BookingPage() {
       <h1 className="text-2xl font-bold text-center">Lịch sử đặt lịch của bạn</h1>
 
       {bookings.length === 0 ? (
-        <p className="text-center">Bạn chưa có lịch đặt nào.</p>
+        <p className="text-center">Bạn chưa đặt lịch nào.</p>
       ) : (
         <ul className="space-y-4">
           {bookings.map((booking) => (
@@ -60,7 +60,7 @@ export default function BookingPage() {
               <p><strong>Trạng thái:</strong> {booking.status}</p>
 
               {/* ✅ Truyền xuống mỗi booking */}
-              <BookingActions booking={booking} onUpdate={fetchBookings} />
+              <BookingActions tab={tab} booking={booking} onUpdate={fetchBookings} />
             </li>
           ))}
         </ul>

@@ -64,8 +64,8 @@ const PUT = async (req) => {
         }
 
         const validStatusTransitions = {
-            PENDING: ["CANCELED"],
-            SCHEDULED: ["COMPLETED", "CANCELED"],
+            PENDING: ["PENDING", "CANCELED"],
+            SCHEDULED: ["SCHEDULED", "COMPLETED", "CANCELED"],
         };
 
         if (status && validStatusTransitions[booking.status]?.includes(status)) {
@@ -76,23 +76,6 @@ const PUT = async (req) => {
 
         if (time) booking.time = time;
         if (duration) booking.duration = duration;
-
-        if (status === "SCHEDULED") {
-            const userInfo = await User.findById(booking.user);
-            const readerInfo = await User.findById(booking.reader);
-
-            const room = await Room.create({
-                id: uuidv4(),
-                status: "ACTIVE",
-                enable_user: [
-                    { id: booking.user.toString(), name: userInfo?.name || "User", role: userInfo?.role },
-                    { id: booking.reader.toString(), name: readerInfo?.name || "Reader", role: readerInfo?.role }
-                ],
-                messages: []
-            });
-
-            booking.room = room.id;
-        }
 
         await booking.save();
 

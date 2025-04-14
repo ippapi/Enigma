@@ -2,33 +2,33 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import BookingActions from '@/components/reader/bookingActions';
 
-export default function BookingPage() {
+export default function BookingTab({tab}) {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router= useRouter();
 
-  useEffect(() => {
-    // Gửi request đến API để lấy booking
-    const fetchBookings = async () => {
-      try {
-        const res = await fetch('/api/booking/reader?status=PENDING');
-        if (!res.ok) {
-          throw new Error('Failed to fetch bookings');
-        }else if(res.status === 403){
-          alert("Unauthorized or dont have permission")
-          router.push("/auth")
-        }
-        const data = await res.json();
-        setBookings(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+  const fetchBookings = async () => {
+    try {
+      const res = await fetch(`/api/booking/reader?status=${tab}`);
+      if (!res.ok) {
+        throw new Error('Failed to fetch bookings');
+      }else if(res.status === 403){
+        alert("Unauthorized or dont have permission")
+        router.push("/auth")
       }
-    };
+      const data = await res.json();
+      setBookings(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchBookings();
   }, []);
 
@@ -55,6 +55,7 @@ export default function BookingPage() {
               <p><strong>Thời gian kéo dài:</strong> {booking.duration} phút</p>
               <p><strong>Ghi chú:</strong> {booking.notes}</p>
               <p><strong>Trạng thái:</strong> {booking.status}</p>
+              <BookingActions tab={tab} booking={booking} onUpdate={fetchBookings} />
             </li>
           ))}
         </ul>
