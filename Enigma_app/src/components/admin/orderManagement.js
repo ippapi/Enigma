@@ -33,7 +33,7 @@ const PaymentManagement = () => {
         if (res.ok) {
             const updatedPayment = await res.json();
             setPayments(payments.map(payment =>
-                payment.cartId._id === updatedPayment.cartId._id ? updatedPayment : payment
+                payment._id === updatedPayment._id ? updatedPayment : payment
             ));
         } else {
             console.error("Failed to update cart status");
@@ -65,6 +65,7 @@ const PaymentManagement = () => {
                             <th className="border p-2 w-1/12">Total</th>
                             <th className="border p-2 w-1/6">Phone</th>
                             <th className="border p-2 w-1/4">Address</th>
+                            <th className="border p-2 w-1/4">Status</th>
                             <th className="border p-2 w-1/4">Actions</th>
                         </tr>
                     </thead>
@@ -82,6 +83,7 @@ const PaymentManagement = () => {
                                     <td className="border p-2 text-center">{payment.totalPrice?.toFixed(2)} VND</td>
                                     <td className="border p-2">{payment.phone || "-"}</td>
                                     <td className="border p-2">{payment.address || "-"}</td>
+                                    <td className="border p-2">{payment.cartId.status || "-"}</td>
                                     <td className="border p-2 flex space-x-2 justify-center">
                                         {cart.status === "ORDERED" && (
                                             <>

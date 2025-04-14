@@ -5,6 +5,7 @@
 import dbConnect from "@/lib/dbConnect";
 import Booking from "@/lib/models/booking";
 import { NextResponse } from "next/server";
+import { verifyToken } from "@/lib/auth";
 
 const GET = async (req) => {
     await dbConnect();
@@ -18,7 +19,7 @@ const GET = async (req) => {
 
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status");
-        let bookings = await Booking.find({ reader: userId, status });
+        let bookings = await Booking.find({ reader: userId, status }).populate("user");
         return NextResponse.json(bookings);
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -42,7 +43,7 @@ const PUT = async (req) => {
         }
 
         const validStatusTransitions = {
-            PENDING: ["RESCHEDULE", "CANCELED"],
+            PENDING: ["SCHEDULED", "CANCELED"],
             SCHEDULED: ["COMPLETED", "CANCELED"],
         };
 
@@ -62,4 +63,4 @@ const PUT = async (req) => {
     }
 };
 
-export {GET, POST, PUT};
+export {GET, PUT};

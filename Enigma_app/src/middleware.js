@@ -18,7 +18,7 @@ export async function middleware(req) {
     const method = req.method; // GET, POST, etc.
 
     // **Public Routes (No authentication needed)**
-    const publicRoutes = ["/", "/product"];
+    const publicRoutes = ["/", "/booking", "/product"];
     if (publicRoutes.includes(pathname)) {
         return NextResponse.next();
     }
@@ -52,9 +52,14 @@ export async function middleware(req) {
         }
     }
 
+    if (pathname === "/auth" && user) {
+        console.log(req.nextUrl.pathname)
+        return NextResponse.redirect(new URL("/", process.env.NEXT_PUBLIC_SOCKET_URL));
+    }
+
     // **Protected User Routes (Requires Authentication)**
     const protectedUserRoutes = [
-        "/booking",
+        "/booking/scheduler/user",
         "/api/booking/user",
         "/cart",
         "/api/cart",
@@ -76,11 +81,8 @@ export async function middleware(req) {
 
     // **Protected Reader Routes (Requires "READER" Role)**
     const protectedReaderRoutes = [
-        "/booking",
+        "/booking/scheduler/reader",
         "/api/booking/reader",
-        "/room",
-        "/api/room",
-        "/profile",
     ];
     if (protectedReaderRoutes.some((route) => pathname.startsWith(route))) {
         if (!user || (user.role !== "READER" && user.role !== "ADMIN")) {
@@ -162,5 +164,5 @@ const unauthorizedResponse = () => {
 };
 // Middleware Matcher Configuration
 export const config = {
-    matcher: ["/api/:path*", "/admin/:path*", "/booking/:path*", "/cart/:path*", "/room/:path*", "/profile/:path*"]
+    matcher: ["/auth", "/api/:path*", "/admin/:path*", "/booking/:path*", "/cart/:path*", "/room/:path*", "/profile/:path*"]
 };

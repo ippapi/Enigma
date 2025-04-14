@@ -56,7 +56,7 @@ export default function ProfileImageUploader({
   return (
   <div className="relative w-32 h-32 group cursor-pointer overflow-hidden rounded-full">
     <ZoomableImage
-      src={preview || '/default-avatar.png'}
+      src={preview || '/default-avatar.jpg'}
       alt="Profile"
       className="w-full h-full object-cover"
     />

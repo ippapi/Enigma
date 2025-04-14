@@ -5,8 +5,16 @@
 import mongoose from "mongoose";
 
 const BookingSchema = new mongoose.Schema({
-    user: { type: String, required: true },
-    reader: { type: String, required: true },
+    user: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "User",
+        required: true 
+    },
+    reader: { 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "User",
+        required: true 
+    },
     room: { type: String },
 
     time: {
@@ -33,7 +41,7 @@ const BookingSchema = new mongoose.Schema({
 
     status: { 
       type: String, 
-      enum: ["PENDING", "RESCHEDULED", "SCHEDULED", "COMPLETED", "CANCELED"], 
+      enum: ["PENDING", "SCHEDULED", "COMPLETED", "CANCELED"], 
       default: "PENDING" 
     },
 

@@ -40,8 +40,8 @@ const POST = async (req) => {
             role: "USER"
         });
 
-        // Generate token
-        const token = await generateToken(user);
+        // Generate jwt token
+        const token = await generateToken(user, "1h");
         const refreshToken = await generateToken(user, "24h");
 
         user.refreshToken = await bcrypt.hash(refreshToken, 10);
@@ -55,18 +55,21 @@ const POST = async (req) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
-            path: "/"
+            path: "/",
+            maxAge: 3600,
+
         });
         response.cookies.set("refreshToken", refreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
-            path: "/"
+            path: "/",
+            maxAge: 86400,
         });
-        
+
         return response;
     } catch (error) {
-        return NextResponse.json({ error: "Server error" }, { status: 500 }); // Response if got error
+        return NextResponse.json({ error: error.message || "Internal server error" }, { status: 500 });
     }
 };
 

@@ -6,6 +6,7 @@ import dbConnect from "@/lib/dbConnect";
 import Booking from "@/lib/models/booking";
 import Room from "@/lib/models/room";
 import User from "@/lib/models/user";
+import { verifyToken } from "@/lib/auth";
 import { NextResponse } from "next/server";
 
 const GET = async (req) => {
@@ -20,7 +21,7 @@ const GET = async (req) => {
 
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status");
-        let bookings = await Booking.find({ user: userId, status });
+        let bookings = await Booking.find({ user: userId, status }).populate("reader");
         return NextResponse.json(bookings);
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -63,7 +64,7 @@ const PUT = async (req) => {
         }
 
         const validStatusTransitions = {
-            RESCHEDULED: ["SCHEDULED"],
+            PENDING: ["CANCELED"],
             SCHEDULED: ["COMPLETED", "CANCELED"],
         };
 
@@ -101,27 +102,4 @@ const PUT = async (req) => {
     }
 };
 
-const DELETE = async (req) => {
-    await dbConnect();
-    try {
-        const token = req.cookies.get("token")?.value;
-        const user = await verifyToken(token);
-        if (!user) {
-            return NextResponse.json({ message: "Invalid token" }, { status: 403 });
-        }
-        const userId = user.id;
-        
-        const { bookingId } = await req.json();
-        const booking = await Booking.findOne({ _id: bookingId, user: userId, status: "PENDING" });
-        if (!booking) {
-            return NextResponse.json({ error: "Pending booking not found or unauthorized" }, { status: 404 });
-        }
-        
-        await booking.deleteOne();
-        return NextResponse.json({ message: "Booking deleted successfully" });
-    } catch (error) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
-    }
-};
-
-export {GET, POST, PUT, DELETE};
+export {GET, POST, PUT};

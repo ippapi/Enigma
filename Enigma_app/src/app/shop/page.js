@@ -26,10 +26,12 @@ const handleAddToCart = async (productId) => {
   });
 
   const result = await res.json();
-  if (res.ok) {
+  if (res.ok && result.quantity != 0) {
     alert('Added to cart!');
-  } else if (res.status === 403) {
-    router.route('/auth');
+  } else if (res.ok && result.quantity == 0){
+    alert('Oh uh! out of stock!')
+  }else if (res.status === 403) {
+    router.push('/auth');
   } else {
     alert(`Error: ${result.message || result.error}`);
   }

@@ -6,7 +6,7 @@ import ImageUploader from "@/components/user/imageUploader";
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const [formData, setFormData] = useState({});
-  const [pendingOrders, setPendingOrders] = useState([]);
+  const [orderedOrders, setOrderedOrders] = useState([]);
   const [completedOrders, setCompletedOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -21,15 +21,15 @@ export default function ProfilePage() {
       setUser(profileData);
       setFormData(profileData);
 
-      const [pending, completed] = await Promise.all([
-        fetch("/api/cart?status=PENDING", { credentials: "include" }),
+      const [ordered, completed] = await Promise.all([
+        fetch("/api/cart?status=ORDERED", { credentials: "include" }),
         fetch("/api/cart?status=COMPLETED", { credentials: "include" }),
       ]);
-      const pendingData = await pending.json();
-      const completedData = await completed.json();
+      const {carts: orderedData} = await ordered.json();
+      const {carts: completedData} = await completed.json();
 
-      if (Array.isArray(pendingData?.items)) setPendingOrders(pendingData.items);
-      if (Array.isArray(completedData?.items)) setCompletedOrders(completedData.items);
+      if (Array.isArray(orderedData)) setOrderedOrders(orderedData);
+      if (Array.isArray(completedData)) setCompletedOrders(completedData);
 
       setLoading(false);
     };
@@ -122,40 +122,55 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* ĐƠN HÀNG */}
-      <div className="space-y-6">
-        <div>
-          <h3 className="text-xl font-semibold text-yellow-600">📦 Đơn hàng đang giao</h3>
-          {pendingOrders.length > 0 ? (
-            <ul className="space-y-2">
-              {pendingOrders.map((item, idx) => (
-                <li key={idx} className="border rounded p-3">
-                  <p><strong>{item.product?.name}</strong></p>
-                  <p>Số lượng: {item.quantity}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>Không có đơn hàng nào đang giao.</p>
-          )}
-        </div>
-
-        <div>
-          <h3 className="text-xl font-semibold text-green-700">🧾 Lịch sử đơn hàng</h3>
-          {completedOrders.length > 0 ? (
-            <ul className="space-y-2">
-              {completedOrders.map((item, idx) => (
-                <li key={idx} className="border rounded p-3 bg-gray-50">
-                  <p><strong>{item.product?.name}</strong></p>
-                  <p>Số lượng: {item.quantity}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>Không có đơn hàng nào đã giao.</p>
-          )}
-        </div>
+    {/* ĐƠN HÀNG */}
+    <div className="space-y-6">
+      {/* Đơn hàng đang giao */}
+      <div>
+        <h3 className="text-xl font-semibold text-yellow-600">📦 Đơn hàng đang giao</h3>
+        {orderedOrders.length > 0 ? (
+          <ul className="space-y-4">
+            {orderedOrders.map((order, idx) => (
+              <li key={idx} className="border rounded p-4">
+                <p className="font-semibold mb-2">Đơn hàng {idx + 1}</p>
+                <ul className="space-y-1">
+                  {order.items.map((item, itemIdx) => (
+                    <li key={itemIdx}>
+                      <span>{item.product?.name}</span> - <span>Số lượng: {item.quantity}</span>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Không có đơn hàng nào đang giao.</p>
+        )}
       </div>
+
+      {/* Lịch sử đơn hàng */}
+      <div>
+        <h3 className="text-xl font-semibold text-green-700">🧾 Lịch sử đơn hàng</h3>
+        {completedOrders.length > 0 ? (
+          <ul className="space-y-4">
+            {completedOrders.map((order, idx) => (
+              <li key={idx} className="border rounded p-4 bg-gray-50">
+                <p className="font-semibold mb-2">Đơn hàng {idx + 1}</p>
+                <ul className="space-y-1">
+                  {order.items.map((item, itemIdx) => (
+                    <li key={itemIdx}>
+                      <span>{item.product?.name}</span> - <span>Số lượng: {item.quantity}</span>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>Không có đơn hàng nào đã giao.</p>
+        )}
+      </div>
+    </div>
+
     </div>
   );
 }

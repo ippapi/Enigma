@@ -2,12 +2,14 @@
 import { useState } from "react";
 import Header from "../../components/navBar";
 import Footer from "../../components/footer";
+import { useRouter } from "next/navigation";
 
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [form, setForm] = useState({ name: "", username: "", email: "", password: "" });
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
+    const router = useRouter();
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,7 +36,9 @@ const AuthPage = () => {
         if (!res.ok) return setError(data.error);
 
         setMessage(data.message || "Success!");
-        if (isLogin) window.location.href = "/";
+        if(res.ok){
+            router.push("/");
+        }
     };
 
     return (
@@ -44,8 +48,8 @@ const AuthPage = () => {
                 <div className="w-[500px] p-[30px] bg-white rounded-[50px] shadow relative">
                     <h2 className="text-2xl font-bold mb-2 text-center">{isLogin ? "Login" : "Sign Up"}</h2>
                     <p className="text-center text-gray-500">See what Tarot Enigma is capable of for free</p>
-                    {error && <p className="text-red-500">{error}</p>}
-                    {message && <p className="text-green-500">{message}</p>}
+                    {error && <p className="text-red-500">{typeof error === "string" ? error : error.message}</p>}
+                    {message && <p className="text-green-500">{typeof message === "string" ? message : JSON.stringify(message)}</p>}
 
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5 items-center mt-12">
                         {!isLogin && (
