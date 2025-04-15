@@ -7,11 +7,26 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+      keyframes: {
+        'wave-x-slow': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'wave-x-medium': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
+        'wave-x-fast': {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
       },
-    },
+      animation: {
+        'wave-x-slow': 'wave-x-slow 25s linear infinite',
+        'wave-x-medium': 'wave-x-medium 15s linear infinite',
+        'wave-x-fast': 'wave-x-fast 8s linear infinite',
+      },
+    },         
   },
   plugins: [],
 };
