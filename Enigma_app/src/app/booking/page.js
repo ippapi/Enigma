@@ -1,22 +1,50 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import ReaderCard from '@/components/reader/readerCard';
 import React from "react";
 import Header from "../../components/navBar";
 import Footer from "../../components/footer";
 import AnimatedWave from '../../components/wave/AnimatedWave';
 
 export default function TarotBookingPage() {
+  const [readers, setReaders] = useState([]);
+  const [page, setPage] = useState(1);
+  const router = useRouter();
+
+  useEffect(() => {
+    fetch(`/api/booking?page=${page}&limit=6`)
+      .then((res) => res.json())
+      .then((data) => setReaders(data.readers || []));
+  }, [page]);
+
+  const handleBooking = async (readerId, time, duration, notes) => {
+    const res = await fetch('/api/booking/user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ reader: readerId, time, duration, notes }),
+    });
+
+    const result = await res.json();
+    if (res.ok) {
+      alert('Đặt lịch thành công! Vui lòng chờ reader xác nhận.');
+    } else if (res.status === 403) {
+      router.push('/auth');
+    } else {
+      alert(`Lỗi: ${result.message || result.error}`);
+    }
+  };
+
   return (
-    <div
-      style={{
-        backgroundColor: '#581C87', 
-        color: 'white',   
-        borderRadius: '8px', 
-      }}
-    >
+    <div style={{ backgroundColor: '#581C87', color: 'white', borderRadius: '8px' }}>
       <Header />
 
       {/* Hero Section */}
       <div className="flex flex-col md:flex-row items-center justify-between px-8 py-20 pb-0">
-        {/* Placeholder for Panther Image */}
         <div className="w-full md:w-1/2 flex justify-center mt-5 relative">
           <div
             style={{
@@ -58,10 +86,9 @@ export default function TarotBookingPage() {
       </div>
       <AnimatedWave />
 
-
       {/* Top Tarot Readers */}
       <div className="px-8 py-12" style={{ backgroundColor: '#38255E' }}>
-      <h2
+        <h2
           className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-right"
           style={{
             backgroundImage: 'linear-gradient(150deg, #00A1C7, #F5559E, rgb(241, 197, 154))',
@@ -91,11 +118,8 @@ export default function TarotBookingPage() {
       </div>
 
       {/* Suggested Section */}
-      <div className="px-8 py-12" style={{
-          backgroundImage: 'url("/images/Home/Background.png")',
-          backgroundSize: 'cover',
-        }}>
-      <h2
+      <div className="px-8 py-12" style={{ backgroundImage: 'url("/images/Home/Background.png")', backgroundSize: 'cover' }}>
+        <h2
           className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-right"
           style={{
             backgroundImage: 'linear-gradient(150deg, #00A1C7, #F5559E, rgb(241, 197, 154))',
@@ -104,94 +128,20 @@ export default function TarotBookingPage() {
         >
           SUGGESTED FOR YOU
         </h2>
-        <div className="grid md:grid-cols-3 gap-6 mt-6">
-          {["Shaki Shark", "Hoa Binh Chau", "Ice Cream Nun", "Phong Vu Thanh", "Sang Do Luong Phuong", "Phuong Vo Hoang Thao"].map((name, idx) => (
-            <div key={idx} className="bg-white text-black rounded-xl overflow-hidden shadow-lg relative">
-              <div className="w-full h-48 bg-gray-300">IMAGE</div>
-              <div className="p-4">
-                <span className="text-xs font-semibold text-yellow-600">Pro Reader</span>
-                <span className="text-xs ml-2 font-semibold text-gray-700">Highly rated</span>
-                <h4 className="text-lg font-semibold mt-2">{name}</h4>
-                <p className="text-xs text-gray-600">With her dynamic personality and attentive listening, she is loved by clients for her dedication, empathy, and accuracy.</p>
-              </div>
-              <button className="absolute top-2 right-2">♡</button>
-            </div>
-          ))}
+        <div className="p-6 space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {readers.map((reader) => (
+              <ReaderCard key={reader._id} reader={reader} onBooking={handleBooking} />
+            ))}
+          </div>
+          <div className="flex justify-center space-x-4 mt-6">
+            <button onClick={() => setPage((p) => Math.max(1, p - 1))} className="px-4 py-2 bg-gray-200 rounded">Prev</button>
+            <button onClick={() => setPage((p) => p + 1)} className="px-4 py-2 bg-gray-200 rounded">Next</button>
+          </div>
         </div>
       </div>
 
-      <Footer/>
+      <Footer />
     </div>
   );
 }
-
-//CODE CŨ CHƯA CÓ NHẬP CHUNG DÔ ĐỰT Ở ĐÂY Ạ, XIN ĐỪNG XÓA LỘN
-// 'use client';
-
-// import { useState, useEffect } from 'react';
-// import { useRouter } from 'next/navigation';
-// import ReaderCard from '@/components/reader/readerCard';
-
-// export default function ShopPage() {
-//   const [readers, setReaders] = useState([]);
-//   const [page, setPage] = useState(1);
-//   const router = useRouter();
-
-//   useEffect(() => {
-//     fetch(`/api/booking?page=${page}&limit=6`)
-//       .then((res) => res.json())
-//       .then((data) => setReaders(data.readers || []));
-//   }, [page]);
-
-//   const handleBooking = async (readerId, time, duration, notes) => {
-//     const res = await fetch('/api/booking/user', {
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       credentials: 'include',
-//       body: JSON.stringify({ reader: readerId, time, duration, notes }),
-//     });
-
-//     const result = await res.json();
-//     if (res.ok) {
-//       alert('Đặt lịch thành công! Vui lòng chờ reader xác nhận.');
-//     } else if (res.status === 403) {
-//       router.push('/auth');
-//     } else {
-//       alert(`Lỗi: ${result.message || result.error}`);
-//     }
-//   };
-
-//   return (
-//     <div className="p-6 space-y-6">
-//       <h1 className="text-2xl font-bold text-center">Reader</h1>
-
-//       <h2 className="text-xl font-semibold">Suggested For You</h2>
-//       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-//         {readers.map((reader) => (
-//           <ReaderCard
-//             key={reader._id}
-//             reader={reader}
-//             onBooking={handleBooking}
-//           />
-//         ))}
-//       </div>
-
-//       <div className="flex justify-center space-x-4 mt-6">
-//         <button
-//           onClick={() => setPage((p) => Math.max(1, p - 1))}
-//           className="px-4 py-2 bg-gray-200 rounded"
-//         >
-//           Prev
-//         </button>
-//         <button
-//           onClick={() => setPage((p) => p + 1)}
-//           className="px-4 py-2 bg-gray-200 rounded"
-//         >
-//           Next
-//         </button>
-//       </div>
-//     </div>
-//   );
-// }
