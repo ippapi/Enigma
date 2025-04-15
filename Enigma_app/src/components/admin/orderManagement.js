@@ -73,7 +73,7 @@ const PaymentManagement = () => {
                         {payments.map((payment) => {
                             const cart = payment.cartId;
                             const itemNames = cart.items
-                                .map(item => `${item.product.name || "Unnamed"} x ${item.quantity}`)
+                                .map(item => `${item.product?.name || "Unnamed"} x ${item.quantity}`)
                                 .join(", ");
 
                             return (
@@ -83,7 +83,7 @@ const PaymentManagement = () => {
                                     <td className="border p-2 text-center">{payment.totalPrice?.toFixed(2)} VND</td>
                                     <td className="border p-2">{payment.phone || "-"}</td>
                                     <td className="border p-2">{payment.address || "-"}</td>
-                                    <td className="border p-2">{payment.cartId.status || "-"}</td>
+                                    <td className="border p-2">{payment.cartId?.status || "-"}</td>
                                     <td className="border p-2 flex space-x-2 justify-center">
                                         {cart.status === "ORDERED" && (
                                             <>

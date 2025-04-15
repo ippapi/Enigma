@@ -34,6 +34,14 @@ export default function ReaderCard({ reader, onBooking }) {
         />
       )}
 
+      {!reader.profilePicture && (
+        <img
+          src={'/default-avatar.jpg'}
+          alt={`${reader.name} profile`}
+          className="w-24 h-24 rounded-full object-cover mx-auto"
+        />
+      )}
+
       <h3 className="text-lg font-bold text-center">{reader.name}</h3>
       <p className="text-sm text-gray-600 text-center">{reader.description}</p>
 
