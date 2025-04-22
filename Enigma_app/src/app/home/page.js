@@ -56,7 +56,7 @@ export default function Home() {
 
         <AnimatedWave3/>
       {/* Mission */}
-      <section className="bg-purple-900 px-6 py-16 text-white">
+      <section className="bg-purple-900 px-6 py-20 pl-16 text-white">
       <h2 className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-left"
             style={{
             backgroundImage: 'linear-gradient(-30deg, #00A1C7, #F5559E, #ED7D0C)',
@@ -64,24 +64,41 @@ export default function Home() {
             }}>
             MISSION
         </h2>
-        <p className="text-sm max-w-2xl mb-6">
-          Tarot Enigma allows customers to search for and chat with reputable Tarot readers who have years of experience in the field. More importantly, we provide a platform where everyone can easily book sessions and shop with confidence, without worrying about pricing or quality.
+        <p className="mb-4">Connecting the Tarot Community</p>
+        <p className="text-sm mb-6">
+        Tarot Enigma allows customers to search for and chat with reputable Tarot readers who have years of experience in the field. More importantly, we provide a platform where everyone can easily book sessions and shop with confidence, without worrying about pricing or quality.
         </p>
-        <Image src="/mission-planet.png" alt="Planet" width={600} height={300} className="mx-auto" />
+        <Image src="/images/Home/Mission.png" alt="Planet" width={600} height={300}  />
       </section>
 
       {/* Tarot Reading */}
-      <section className="px-6 py-20 text-center text-white">
-      <h2 className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-left"
+      <section className="flex flex-col px-6 py-20 text-left pl-16 text-white bg-[url('/images/Home/Background.png')] min-h-screen">
+        <div>
+          <h2
+            className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-left"
             style={{
-            backgroundImage: 'linear-gradient(-30deg, #00A1C7, #F5559E, #ED7D0C)',
-            fontFamily: 'Anton, sans-serif',
-            }}>
+              backgroundImage: 'linear-gradient(-30deg, #00A1C7, #F5559E, #ED7D0C)',
+              fontFamily: 'Anton, sans-serif',
+            }}
+          >
             TAROT READING
-        </h2>
-        <p className="text-sm mb-4">Pick a card, and Pink Panther will reveal a random message from the universe just for you!</p>
-        <button className="bg-pink-500 text-white px-4 py-2 rounded">ASK PINK PANTHER</button>
+          </h2>
+          <p className="mb-4">Random messages</p>
+          <p className="text-sm mb-6">
+            Pick a card, and Pink Panther will reveal a random message from the universe just for you!
+          </p>
+          <button className="bg-pink-500 text-white px-4 py-2 rounded mb-10">ASK PINK PANTHER</button>
+        </div>
+        <div className="flex flex-1 flex-col md:flex-row items-start gap-10">
+          <div className="flex-1 pt-[50px]">
+            <p className="mb-4">Bỏ mí lá bài lật lật trang Tarot dô đây</p>
+          </div>
+          <div className="flex-1 flex items-end justify-center">
+            <img src="/images/Home/Tarot reading.png" alt="Pink Panther" className="w-full max-w-sm" />
+          </div>
+        </div>
       </section>
+
 
       <Footer/>
     </div>
