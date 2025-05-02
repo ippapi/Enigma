@@ -1,6 +1,6 @@
 const AnimatedWave = () => {
     return (
-      <div className="relative w-full h-[35rem] overflow-hidden bg-background mt-0">
+      <div className="relative w-full h-[35rem] overflow-hidden bg-background mt-0 bottom-0">
         {/* Sóng 1 - Biên độ lớn nhất, chậm nhất */}
         <div className="absolute bottom-0 left-0 w-[200%] h-full opacity-30 animate-wave-x-slow">
           <svg
