@@ -39,7 +39,7 @@ export default function ReaderCard({ reader, onBooking }) {
           className="w-full h-full object-cover"
         />
       </div>
-
+ 
       {/* Tiêu đề "Pro Reader" */}
       <div className="text-xs font-semibold text-purple-600 tracking-wider">PRO READER</div>
 

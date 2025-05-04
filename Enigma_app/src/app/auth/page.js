@@ -50,7 +50,7 @@ const AuthPage = () => {
                     <p className="text-center text-gray-500">See what Tarot Enigma is capable of for free</p>
                     {error && <p className="text-red-500">{typeof error === "string" ? error : error.message}</p>}
                     {message && <p className="text-green-500">{typeof message === "string" ? message : JSON.stringify(message)}</p>}
-
+                    
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5 items-center mt-12">
                         {!isLogin && (
                             <>

@@ -9,7 +9,7 @@ export default function BookingTab({tab}) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router= useRouter();
-
+ 
   const fetchBookings = async () => {
     try {
       const res = await fetch(`/api/booking/reader?status=${tab}`);
@@ -41,7 +41,7 @@ export default function BookingTab({tab}) {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 text-black">
       <h1 className="text-2xl font-bold text-center">Những người đặt lịch với bạn</h1>
 
       {bookings.length === 0 ? (
