@@ -45,7 +45,7 @@ export default function TarotBookingPage() {
       <Header />
 
       {/* Hero Section */}
-      <div className="flex flex-col md:flex-row items-center justify-between px-8 py-20 pb-0">
+      <div className="flex flex-col md:flex-row items-center justify-between px-8 py-20 pb-0 relative z-10">
         <div className="w-full md:w-1/2 text-left space-y-4 ml-[45px]">
           <h2 className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-left"
               style={{
@@ -76,12 +76,16 @@ export default function TarotBookingPage() {
             alignItems: 'center',
           }}>
             <img src="images/Tarot Shop/Pink Panther - Shop.png" alt="Pink Panther"
-                 className="w-[420px] h-[420px] object-cover mt-[50px]" />
+                 className="w-[420px] h-[420px] object-cover mt-[50px] z-0" />
           </div>
         </div>
       </div>
 
-      <AnimatedWave2 />
+      <div className="relative">
+        <AnimatedWave2 />
+      </div>
+
+
 
       {/* Top Tarot Readers */}
       <div className="px-8 py-12 bt-0 pt-0" style={{ backgroundColor: '#957FC1' }}>
@@ -130,7 +134,6 @@ export default function TarotBookingPage() {
               <ProductCard key={product._id} product={product} onAddToCart={handleAddToCart} />
             ))}
           </div>
-          
 
           <div className="flex justify-center space-x-4 mt-6">
             <button onClick={() => setPage(p => Math.max(1, p - 1))} className="px-4 py-2 bg-gray-200 rounded">Prev</button>

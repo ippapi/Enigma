@@ -44,7 +44,7 @@ export default function TarotBookingPage() {
       <Header />
 
       {/* Hero Section */}
-      <div className="flex flex-col md:flex-row items-center justify-between px-8 py-20 pb-0">
+      <div className="flex flex-col md:flex-row items-center justify-between px-8 py-20 pb-0 relative z-10">
         <div className="w-full md:w-1/2 flex justify-center mt-5 relative">
           <div
             style={{
@@ -84,7 +84,9 @@ export default function TarotBookingPage() {
           <button className="text-white px-4 py-2 rounded">BOOKING NOW!</button>
         </div>
       </div>
-      <AnimatedWave />
+      <div className="relative">
+        <AnimatedWave />
+      </div>
 
       {/* Top Tarot Readers */}
       <div className="px-8 py-12" style={{ backgroundColor: '#38255E' }}>

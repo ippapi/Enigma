@@ -54,7 +54,9 @@ export default function Home() {
         </div>
         </section>
 
-        <AnimatedWave3/>
+        <div className="relative">
+        <AnimatedWave3 />
+      </div>
       {/* Mission */}
       <section className="bg-purple-900 px-6 py-20 pl-16 text-white">
       <h2 className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-left"

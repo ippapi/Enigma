@@ -12,7 +12,7 @@ export default function ProductCard({ product, onAddToCart }) {
 
   return (
     <div
-      className="text-white rounded-2xl w-[280px] shadow-xl relative overflow-hidden"
+      className="text-white rounded-2xl w-[300px] shadow-xl relative overflow-hidden"
       style={{
         backgroundImage: 'linear-gradient(150deg, #554080, #7C58C4, #7056A4)'
       }}
