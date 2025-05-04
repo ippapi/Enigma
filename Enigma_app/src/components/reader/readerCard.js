@@ -25,40 +25,41 @@ export default function ReaderCard({ reader, onBooking }) {
   };
 
   return (
-    <div className="border rounded p-4 space-y-3 shadow-sm relative bg-white">
-      {reader.profilePicture && (
-        <img
-          src={reader.profilePicture}
-          alt={`${reader.name} profile`}
-          className="w-24 h-24 rounded-full object-cover mx-auto"
-        />
-      )}
-
-      {!reader.profilePicture && (
-        <img
-          src={'/default-avatar.jpg'}
-          alt={`${reader.name} profile`}
-          className="w-24 h-24 rounded-full object-cover mx-auto"
-        />
-      )}
-
-      <h3 className="text-lg font-bold text-center">{reader.name}</h3>
-      <p className="text-sm text-gray-600 text-center">{reader.description}</p>
-
-      {reader.bio && (
-        <p className="text-xs text-gray-500 mt-2 italic text-center">{reader.bio}</p>
-      )}
-
-      <div className="flex justify-center">
-        <button
-          onClick={handleOpen}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-        >
-          Đặt lịch
-        </button>
+    <div className="border rounded-xl p-6 space-y-4 shadow-md relative bg-white w-64 text-center">
+      {/* Badge "Highly rated" */}
+      <div className="absolute top-4 left-4 bg-yellow-100 text-yellow-800 text-xs font-semibold px-2 py-1 rounded">
+        Highly rated
       </div>
 
-      {/* Modal */}
+      {/* Ảnh đại diện */}
+      <div className="mx-auto w-24 h-24 rounded-full overflow-hidden border-2 border-purple-200">
+        <img
+          src={reader.profilePicture || '/default-avatar.jpg'}
+          alt={`${reader.name} profile`}
+          className="w-full h-full object-cover"
+        />
+      </div>
+
+      {/* Tiêu đề "Pro Reader" */}
+      <div className="text-xs font-semibold text-purple-600 tracking-wider">PRO READER</div>
+
+      {/* Tên reader */}
+      <h3 className="text-xl font-bold text-gray-800">{reader.name}</h3>
+
+      {/* Mô tả */}
+      <p className="text-sm text-gray-600 leading-snug">
+        {reader.description || "With her dynamic personality and attentive listening, she is loved by clients for her dedication, empathy, and accuracy."}
+      </p>
+
+      {/* Nút đặt lịch */}
+      <button
+        onClick={handleOpen}
+        className="mt-4 bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+      >
+        Đặt lịch
+      </button>
+
+      {/* Modal đặt lịch (giữ nguyên) */}
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
           <div className="bg-white rounded-lg p-6 w-[90%] max-w-md space-y-4 shadow-xl">

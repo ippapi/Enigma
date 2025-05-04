@@ -11,7 +11,12 @@ export default function ProductCard({ product, onAddToCart }) {
   const isOutOfStock = product.stock === 0;
 
   return (
-    <div className="bg-gradient-to-b from-[#7a34e0] to-[#9f5de2] text-white rounded-2xl p-6 w-[250px] shadow-xl relative overflow-hidden">
+    <div
+      className="text-white rounded-2xl w-[280px] shadow-xl relative overflow-hidden"
+      style={{
+        backgroundImage: 'linear-gradient(150deg, #554080, #7C58C4, #7056A4)'
+      }}
+    >
       {/* Icon mở rộng */}
       <div className="absolute top-3 left-3 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
         <svg 
@@ -41,18 +46,19 @@ export default function ProductCard({ product, onAddToCart }) {
       <img
         src={imageSrc}
         alt={product.name}
-        className="mx-auto h-48 object-contain mt-6 mb-4 drop-shadow-lg p-4 mb-20"
+        className="mx-auto h-53 object-contain mt-2 mb-2 drop-shadow-lg p-2"
       />
 
       {/* Thông tin sản phẩm */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent rounded-b-xl">
-        <h3 className="text-white font-semibold text-base line-clamp-1">{product.name}</h3>
-        <p className="text-white font-bold text-lg mt-1">{product.price} VND</p>
-        
-        <div className="mt-2 flex items-center justify-between gap-2">
-          <span className={`text-white text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap ${
-            isOutOfStock ? 'bg-gray-500' : 'bg-pink-600'
-          }`}>
+      <div className="mt-4 bg-gradient-to-r from-[#443364] to-[#675688] rounded-b-2xl p-4 space-y-3">
+        <h3 className="text-white font-semibold text-base truncate">{product.name}</h3>
+        <p className="text-white font-bold text-lg">{product.price} VND</p>
+        <div className="flex items-center justify-between gap-2">
+          <span
+            className={`text-white text-xs font-semibold px-2 py-1 rounded-full ${
+              isOutOfStock ? 'bg-gray-500' : 'bg-pink-600'
+            }`}
+          >
             {isOutOfStock ? 'Hết hàng' : 'Best Seller'}
           </span>
           <span className="text-white/80 text-xs text-right truncate">
@@ -60,19 +66,20 @@ export default function ProductCard({ product, onAddToCart }) {
           </span>
         </div>
 
-        {/* Nút thêm vào giỏ hàng */}
+        {/* Nút thêm vào giỏ */}
         <button
           onClick={() => !isOutOfStock && onAddToCart(product._id)}
           disabled={isOutOfStock}
-          className={`mt-3 w-full py-2 rounded-md text-white transition ${
+          className={`w-full py-2 rounded-md text-sm font-medium text-white transition ${
             isOutOfStock
               ? 'bg-gray-400 cursor-not-allowed'
-              : 'bg-purple-400 hover:bg-purple-500'
+              : 'bg-purple-500 hover:bg-purple-600'
           }`}
         >
           {isOutOfStock ? 'Hết hàng rồi công chúa ơi' : 'Thêm vào giỏ'}
         </button>
       </div>
+
     </div>
   );
 }

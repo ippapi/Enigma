@@ -85,7 +85,7 @@ export default function TarotBookingPage() {
 
       {/* Top Tarot Readers */}
       <div className="px-8 py-12 bt-0 pt-0" style={{ backgroundColor: '#957FC1' }}>
-        <h2 className="text-4xl font-black mb-6 inline-block tracking-tighter text-right"
+        <h2 className="text-4xl font-black mb-6 inline-block tracking-tighter text-right ml-10"
             style={{ color: '#3E2362', fontFamily: 'Anton, sans-serif' }}>
           TOP TAROT READER
         </h2>
@@ -116,14 +116,14 @@ export default function TarotBookingPage() {
         backgroundImage: 'url("/images/Home/Background.png")',
         backgroundSize: 'cover',
       }}>
-        <h2 className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-right"
+        <h2 className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-right ml-10"
             style={{
               backgroundImage: 'linear-gradient(150deg, #00A1C7, #F5559E, rgb(241, 197, 154))',
               fontFamily: 'Anton, sans-serif',
             }}>
           SUGGESTED FOR YOU
         </h2>
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 ml-10 mr-10">
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {products.map((product) => (

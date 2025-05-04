@@ -120,7 +120,7 @@ export default function TarotBookingPage() {
       {/* Suggested Section */}
       <div className="px-8 py-12" style={{ backgroundImage: 'url("/images/Home/Background.png")', backgroundSize: 'cover' }}>
         <h2
-          className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-right"
+          className="text-4xl font-black bg-clip-text text-transparent mb-6 inline-block tracking-tighter text-right ml-10"
           style={{
             backgroundImage: 'linear-gradient(150deg, #00A1C7, #F5559E, rgb(241, 197, 154))',
             fontFamily: 'Anton, sans-serif',
@@ -128,8 +128,8 @@ export default function TarotBookingPage() {
         >
           SUGGESTED FOR YOU
         </h2>
-        <div className="p-6 space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="p-6 space-y-6 m-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 ml-10 mr-10">
             {readers.map((reader) => (
               <ReaderCard key={reader._id} reader={reader} onBooking={handleBooking} />
             ))}
