@@ -12,7 +12,7 @@ export default function ProductCard({ product, onAddToCart }) {
 
   return (
     <div
-      className="text-white rounded-2xl w-[300px] shadow-xl relative overflow-hidden"
+      className="text-white rounded-2xl w-auto shadow-xl relative overflow-hidden ml-4 mr-4"
       style={{
         backgroundImage: 'linear-gradient(150deg, #554080, #7C58C4, #7056A4)'
       }}
@@ -46,7 +46,7 @@ export default function ProductCard({ product, onAddToCart }) {
       <img
         src={imageSrc}
         alt={product.name}
-        className="mx-auto h-53 object-contain mt-2 mb-2 drop-shadow-lg p-2"
+        className="mx-auto h-35 object-contain mt-2 mb-2 drop-shadow-lg p-2"
       />
 
       {/* Thông tin sản phẩm */}

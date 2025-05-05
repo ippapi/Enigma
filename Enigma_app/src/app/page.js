@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import { useState, useEffect } from "react";
 import Scene from "@/components/threejs/threeModelViewer";
@@ -15,7 +15,7 @@ export default function Home() {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
-
+ 
             if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
             const data = await response.json();

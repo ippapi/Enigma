@@ -39,9 +39,9 @@ export default function BookingTab({tab}) {
   if (error) {
     return <p>Error: {error}</p>;
   }
-
+ 
   return (
-    <div className="p-6 space-y-6 text-black">
+    <div className="p-6 space-y-6">
       <h1 className="text-2xl font-bold text-center">Những người đặt lịch với bạn</h1>
 
       {bookings.length === 0 ? (

@@ -38,7 +38,7 @@ export default function TarotBookingPage() {
       alert(`Lỗi: ${result.message || result.error}`);
     }
   };
-
+ 
   return (
     <div style={{ backgroundColor: '#581C87', color: 'white', borderRadius: '8px' }}>
       <Header />
