@@ -26,6 +26,11 @@ export default {
         'wave-x-medium': 'wave-x-medium 15s linear infinite',
         'wave-x-fast': 'wave-x-fast 8s linear infinite',
       },
+      fontSize: {
+        '26px': '26px',
+        '27px': '27px',
+        '22px': '22px',
+      },
     },         
   },
   plugins: [],
