@@ -4,8 +4,6 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import ReaderCard from '@/components/reader/readerCard';
 import React from "react";
-import Header from "../../components/navBar";
-import Footer from "../../components/footer";
 import AnimatedWave from '../../components/wave/AnimatedWave';
 
 export default function TarotBookingPage() {
@@ -41,8 +39,6 @@ export default function TarotBookingPage() {
  
   return (
     <div style={{ backgroundColor: '#581C87', color: 'white', borderRadius: '8px' }}>
-      <Header />
-
       {/* Hero Section */}
       <div className="flex flex-col md:flex-row items-center justify-between px-8 py-20 pb-0 relative z-10">
         <div className="w-full md:w-1/2 flex justify-center mt-5 relative">
@@ -142,8 +138,6 @@ export default function TarotBookingPage() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

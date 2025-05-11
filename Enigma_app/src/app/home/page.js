@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import Header from "../../components/navBar";
-import Footer from "../../components/footer";
 import AnimatedWave3 from '../../components/wave/AnimatedWave3';
 import Scene from "@/components/threejs/threeModelViewer";
 
@@ -33,7 +31,6 @@ export default function Home() {
 
   return (
     <div className="bg-gradient-to-b from-[#2f1541] to-[#0b0c2a] text-white font-sans">
-      <Header />
 
       {/* Hero Section */}
       <section className="relative text-center py-20 bg-[url('/images/Home/Background.png')] bg-cover bg-center bg-no-repeat">
@@ -127,8 +124,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      <Footer />
     </div>
   );
 }

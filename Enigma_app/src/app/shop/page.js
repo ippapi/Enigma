@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import Header from "../../components/navBar";
-import Footer from "../../components/footer";
 import AnimatedWave2 from '../../components/wave/AnimatedWave2';
 import ProductCard from '@/components/shop/productCard';
 
@@ -42,7 +40,6 @@ export default function TarotBookingPage() {
 
   return (
     <div style={{ backgroundColor: '#38255E', color: 'white', borderRadius: '8px' }}>
-      <Header />
 
       {/* Hero Section */}
       <div className="flex flex-col md:flex-row items-center justify-between px-8 py-20 pb-0 relative z-10">
@@ -140,10 +137,7 @@ export default function TarotBookingPage() {
             <button onClick={() => setPage(p => p + 1)} className="px-4 py-2 bg-gray-200 rounded">Next</button>
           </div>
         </div>
-        
       </div>
-
-      <Footer />
     </div>
   );
 }

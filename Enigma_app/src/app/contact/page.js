@@ -1,15 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import Header from '../../components/navBar';
-import Footer from '../../components/footer';
 
 export default function ContactUsPage() {
   const [activeTab, setActiveTab] = useState('sales');
 
   return (
     <div className="min-h-screen bg-[#161527] text-white">
-      <Header />
 
       {/* Hero Section */}
       <div
@@ -226,8 +223,6 @@ export default function ContactUsPage() {
           </div>
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 }

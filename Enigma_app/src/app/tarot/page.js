@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
 import FlipCard from "@/components/threejs/flipCard";
-import Header from "../../components/navBar";
-import Footer from "../../components/footer";
 
 const getThreeCard = () => {
     let numbers = Array.from({ length: 78 }, (_, i) => i);
@@ -44,7 +42,8 @@ export default function ChatPage() {
 
     return (
         <div className="min-h-screen flex flex-col">
-            <Header />
+            <div className="bg-black text-white p-7">
+            </div>
             <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
                 <h1 className="text-2xl font-bold mb-4 text-black">AI Tarot Reader</h1>
                 <div className="mt-4 flex justify-center gap-4 text-center">
@@ -70,7 +69,6 @@ export default function ChatPage() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     );
 }

@@ -2,8 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import ImageUploader from "@/components/user/imageUploader";
-import Header from '../../components/navBar';
-import Footer from '../../components/footer';
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
@@ -77,7 +75,6 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-[#161527] text-white">
       <div className="bg-black text-white p-7">
-        <Header/>
       </div>
       <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
         <div className="pt-12 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
@@ -302,7 +299,6 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      <Footer/>
     </div>
   );
 }

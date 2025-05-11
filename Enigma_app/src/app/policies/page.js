@@ -1,14 +1,11 @@
 'use client';
 
 import React from 'react';
-import Header from '../../components/navBar';
-import Footer from '../../components/footer';
 
 export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-[#161527] text-white">
       <div className="bg-black text-white p-7">
-        <Header/>
       </div>
       <div
         className="w-full bg-cover bg-center py-20 text-center pt-6"
@@ -117,8 +114,6 @@ export default function PrivacyPolicyPage() {
         </section>
         </div>
       </div>
-
-      <Footer/>
     </div>
   );
 }

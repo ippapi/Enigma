@@ -1,7 +1,5 @@
 "use client";
 import { useState } from "react";
-import Header from "../../components/navBar";
-import Footer from "../../components/footer";
 import { useRouter } from "next/navigation";
 
 const AuthPage = () => {
@@ -43,7 +41,6 @@ const AuthPage = () => {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <Header />
             <main className="flex flex-1 flex-col items-center justify-center">
                 <div className="w-[500px] p-[30px] bg-white rounded-[50px] shadow relative">
                     <h2 className="text-2xl font-bold mb-2 text-center">{isLogin ? "Login" : "Sign Up"}</h2>
@@ -76,7 +73,6 @@ const AuthPage = () => {
                     </p>
                 </div>
             </main>
-            <Footer />
         </div>
     );
 };
