@@ -12,13 +12,13 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("dashboard");
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex min-h-screen mt-20 mb-10">
       <Sidebar setActiveTab={setActiveTab} activeTab={activeTab} />
-      <main className="flex-1 p-6">
-        {activeTab === "dashboard" && <Card><Dashboard /></Card>}
-        {activeTab === "orders" && <Card><OrderManagement /></Card>}
-        {activeTab === "products" && <Card><ProductManagement /></Card>}
-        {activeTab === "users" && <Card><UserManagement /></Card>}
+      <main className="flex-1 py-6 px-6 me-4 bg-white rounded-xl shadow-lg backdrop-blur-sm">
+        {activeTab === "dashboard" && <Card className="bg-inherit shadow-none"><Dashboard /></Card>}
+        {activeTab === "orders" && <Card className="bg-inherit shadow-none"><OrderManagement /></Card>}
+        {activeTab === "products" && <Card className="bg-inherit shadow-none"><ProductManagement /></Card>}
+        {activeTab === "users" && <Card className="bg-inherit shadow-none"><UserManagement /></Card>}
       </main>
     </div>
   );

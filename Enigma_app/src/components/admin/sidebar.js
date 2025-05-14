@@ -1,6 +1,6 @@
 const Sidebar = ({ setActiveTab, activeTab }) => {
     return (
-      <div className="w-64 bg-white shadow-md p-4">
+        <div className="w-64 py-10 px-6 ms-4 me-6 bg-white text-black rounded-xl shadow-lg">
             <ul>
                 {[
                     { name: "Dashboard", key: "dashboard" },
@@ -10,10 +10,13 @@ const Sidebar = ({ setActiveTab, activeTab }) => {
                 ].map((item) => (
                     <li
                         key={item.key}
-                        className={`p-2 cursor-pointer ${
-                        activeTab === item.key ? "bg-gray-200" : ""
-                    }`}
-                    onClick={() => setActiveTab(item.key)}
+                        className={`p-3 rounded-md cursor-pointer transition-all duration-200 
+                        ${
+                            activeTab === item.key
+                            ? "bg-purple-600 text-white font-semibold"
+                            : "hover:bg-purple-800 hover:text-white"
+                        }`}
+                        onClick={() => setActiveTab(item.key)}
                     >
                         {item.name}
                     </li>

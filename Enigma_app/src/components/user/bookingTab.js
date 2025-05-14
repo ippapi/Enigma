@@ -4,13 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BookingActions from './bookingActions';
 
-export default function BookingTab({tab}) {
+export default function BookingTab({ tab }) {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  // ✅ Tách ra thành hàm riêng
   const fetchBookings = async () => {
     try {
       const res = await fetch(`/api/booking/user?status=${tab}`);
@@ -30,37 +29,37 @@ export default function BookingTab({tab}) {
     }
   };
 
-  // ✅ Gọi trong useEffect
   useEffect(() => {
     fetchBookings();
   }, []);
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  if (loading) return <p className="text-center text-gray-400">Đang tải dữ liệu...</p>;
+  if (error) return <p className="text-center text-red-400">Lỗi: {error}</p>;
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold text-center">Lịch sử đặt lịch của bạn</h1>
+    <div className="p-4 space-y-6 text-gray-100">
+      <h1 className="text-3xl font-bold text-center mb-4">Lịch sử đặt lịch của bạn</h1>
 
       {bookings.length === 0 ? (
-        <p className="text-center">Bạn chưa đặt lịch nào.</p>
+        <p className="text-center text-gray-400">Bạn chưa đặt lịch nào.</p>
       ) : (
         <ul className="space-y-4">
           {bookings.map((booking) => (
-            <li key={booking._id} className="border rounded p-4 space-y-2 shadow-sm">
-              <h3 className="text-lg font-bold">Reader name: {booking.reader.name}</h3>
-              <p><strong>Thời gian:</strong> {new Date(booking.time).toLocaleString()}</p>
-              <p><strong>Thời gian kéo dài:</strong> {booking.duration} phút</p>
-              <p><strong>Ghi chú:</strong> {booking.notes}</p>
-              <p><strong>Trạng thái:</strong> {booking.status}</p>
+            <li
+              key={booking._id}
+              className="bg-[#1f1b3a] bg-opacity-60 border border-gray-600 rounded-xl p-6 shadow-md"
+            >
+              <h3 className="text-xl font-semibold">🔮 {booking.reader.name}</h3>
+              <div className="mt-2 space-y-1 text-sm text-gray-300">
+                <p><span className="font-medium text-gray-400">🕒 Thời gian:</span> {new Date(booking.time).toLocaleString()}</p>
+                <p><span className="font-medium text-gray-400">⏳ Kéo dài:</span> {booking.duration} phút</p>
+                <p><span className="font-medium text-gray-400">📝 Ghi chú:</span> {booking.notes}</p>
+                <p><span className="font-medium text-gray-400">📌 Trạng thái:</span> {booking.status}</p>
+              </div>
 
-              {/* ✅ Truyền xuống mỗi booking */}
-              <BookingActions tab={tab} booking={booking} onUpdate={fetchBookings} />
+              <div className="mt-4">
+                <BookingActions tab={tab} booking={booking} onUpdate={fetchBookings} />
+              </div>
             </li>
           ))}
         </ul>
