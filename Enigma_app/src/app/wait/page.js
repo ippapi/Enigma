@@ -9,7 +9,7 @@ export default function ReaderRegisterWait() {
 
   return (
     <div className="min-h-screen bg-[#161527] text-white">
-      <Header />
+      {/* <Header /> */}
 
       {/* Hero Section */}
       <div

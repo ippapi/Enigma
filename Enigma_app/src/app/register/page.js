@@ -30,7 +30,7 @@ export default function ReaderRegisterPage() {
   };
   return (
     <div className="min-h-screen bg-[#161527] text-white">
-      <Header />
+      {/* <Header /> */}
 
       <div
         className="w-full bg-cover bg-center py-20 text-center relative"
