@@ -1,4 +1,4 @@
-const AnimatedWave2 = () => {
+const AnimatedWave3 = () => {
   return (
     <div className="absolute bottom-[-1px] left-0 w-full h-[10rem] z-20 overflow-hidden">
       {/* Sóng 1 - Biên độ lớn nhất, chậm nhất */}
@@ -47,4 +47,4 @@ const Wave = ({ path }) => (
   </svg>
 );
 
-export default AnimatedWave2;
+export default AnimatedWave3;

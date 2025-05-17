@@ -22,6 +22,20 @@ const GET = async (req) => {
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status");
         let bookings = await Booking.find({ user: userId, status }).populate("reader");
+
+        const now = new Date();
+
+        await Promise.all(bookings.map(async (booking) => {
+            const endTime = new Date(booking.time.getTime() + booking.duration * 60000);
+            if (booking.status !== "COMPLETED" && endTime < now) {
+                booking.time = new Date(Date.now() + 100000);
+                booking.status = "CANCELED";
+                await booking.save();
+            }
+        }));
+
+        bookings = await Booking.find({ user: userId, status }).populate("reader");
+
         return NextResponse.json(bookings);
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

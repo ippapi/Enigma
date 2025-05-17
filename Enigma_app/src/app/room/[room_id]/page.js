@@ -1,13 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import io from "socket.io-client";
+import EmojiPicker from "emoji-picker-react";
 
-// Get socket URL
 const socket_url = process.env.NEXT_PUBLIC_SOCKET_URL;
-
-// Initialize socket
 const socket = io(socket_url, {
   transports: ["websocket"],
   reconnectionAttempts: 5,
@@ -19,11 +17,12 @@ const ChatRoom = () => {
   const router = useRouter();
 
   const [user, setUser] = useState(null);
-  const [roomValid, setRoomValid] = useState(null); // null: loading, false: invalid, true: valid
+  const [roomValid, setRoomValid] = useState(null);
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [sendingMessage, setSendingMessage] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const messageEndRef = useRef(null);
 
-  // Validate room and user
   useEffect(() => {
     const validateRoom = async () => {
       try {
@@ -39,7 +38,7 @@ const ChatRoom = () => {
 
         if (res.ok) {
           setRoomValid(true);
-          setReceivedMessages(data.messages || [])
+          setReceivedMessages(data.messages || []);
         } else {
           setRoomValid(false);
           setReceivedMessages([]);
@@ -63,14 +62,15 @@ const ChatRoom = () => {
     fetchUser();
   }, [room_id]);
 
-  // Initialize chat after room is verified
   useEffect(() => {
     if (roomValid !== true) return;
 
     socket.connect();
 
     socket.on("messageReceived", (newMessage) => {
-      setReceivedMessages((prev) => [...prev, newMessage]);
+      if (newMessage.room_id == room_id) {
+        setReceivedMessages((prev) => [...prev, newMessage]);
+      }
     });
 
     return () => {
@@ -78,6 +78,10 @@ const ChatRoom = () => {
       socket.disconnect();
     };
   }, [roomValid]);
+
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [receivedMessages]);
 
   const sendMessage = async () => {
     if (!sendingMessage.trim() || !user) return;
@@ -105,18 +109,21 @@ const ChatRoom = () => {
     }
   };
 
-  // UI based on room status
+  const handleEmojiSelect = (emojiData) => {
+    setSendingMessage((prev) => prev + emojiData.emoji);
+  };
+
   if (roomValid === null) {
-    return <div className="text-center p-10">🔄 Đang kiểm tra phòng...</div>;
+    return <div className="text-center text-white p-10">🔄 Đang kiểm tra phòng...</div>;
   }
 
   if (!roomValid) {
     return (
-      <div className="text-center p-10 text-red-600">
+      <div className="text-center p-10 text-red-400">
         ❌ Phòng không tồn tại hoặc đã bị huỷ.{" "}
         <button
-          onClick={() => router.push("/join")}
-          className="underline text-blue-600"
+          onClick={() => router.push("/booking")}
+          className="underline text-purple-400 hover:text-purple-300"
         >
           Quay lại trang Join
         </button>
@@ -125,25 +132,48 @@ const ChatRoom = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center p-6">
-      <h1 className="text-xl font-bold mb-4">💬 Chat Room: </h1>
-      <div className="w-full max-w-lg h-80 overflow-y-auto border p-4 mb-4 rounded">
+    <div className="min-h-screen text-white flex flex-col items-center p-6">
+      <h1 className="text-2xl font-bold mb-4">💬 Chat Room</h1>
+
+      <div className="w-full max-w-2xl h-96 overflow-y-auto bg-[#2a243d] border border-purple-700 rounded-lg p-4 shadow-lg mb-4">
         {receivedMessages?.map((msg, idx) => (
-          <p key={idx}>
-            <strong>{msg.senderName}:</strong> {msg.message}
-          </p>
+          <div key={idx} className="mb-2">
+            <span className="font-semibold text-purple-300">{msg.senderName}:</span>{" "}
+            <span>{msg.message}</span>
+          </div>
         ))}
+        <div ref={messageEndRef} />
       </div>
-      <div className="flex gap-2 w-full max-w-lg">
+
+      <div className="relative w-full max-w-2xl mb-2">
+        {showEmojiPicker && (
+          <div className="absolute bottom-16 left-0 z-10">
+            <EmojiPicker
+              onEmojiClick={handleEmojiSelect}
+              theme="dark"
+              searchDisabled
+              width={300}
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="flex gap-2 w-full max-w-2xl">
         <input
           value={sendingMessage}
           onChange={(e) => setSendingMessage(e.target.value)}
-          className="flex-1 border px-3 py-2 rounded"
+          className="flex-1 bg-[#322b4b] text-white border border-purple-600 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
           placeholder="Nhập tin nhắn..."
         />
         <button
+          onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          className="bg-purple-700 hover:bg-purple-600 text-white px-4 py-2 rounded"
+        >
+          😀
+        </button>
+        <button
           onClick={sendMessage}
-          className="bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded"
         >
           Gửi
         </button>

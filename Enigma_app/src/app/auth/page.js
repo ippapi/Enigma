@@ -84,7 +84,10 @@ import { useRouter } from "next/navigation";
 
 const AuthPage = () => {
     const [isLogin, setIsLogin] = useState(true);
-    const [form, setForm] = useState({ firstName: "", lastName: "", email: "", password: "" });
+    const [agree, setAgree] = useState(false);
+    const [isLoging, setIsLoging] = useState(false);
+    const [isRegitering, setIsRegitering] = useState(false);
+    const [form, setForm] = useState({ name: "", username: "", email: "", password: "" });
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const router = useRouter();
@@ -98,10 +101,15 @@ const AuthPage = () => {
         setError("");
         setMessage("");
 
+        if(!isLogin && !agree) return;
+
+        setIsLoging(isLogin);
+        setIsRegitering(!isLogin);
+
         const endpoint = isLogin ? "/api/auth/login" : "/api/auth/signUp";
         const body = isLogin
-            ? { email: form.email, password: form.password }
-            : { firstName: form.firstName, lastName: form.lastName, email: form.email, password: form.password };
+            ? { username: form.username, password: form.password }
+            : { name: form.name, username: form.username, email: form.email, password: form.password };
 
         const res = await fetch(endpoint, {
             method: "POST",
@@ -111,10 +119,17 @@ const AuthPage = () => {
         });
 
         const data = await res.json();
-        if (!res.ok) return setError(data.error);
+        if (!res.ok){
+            setIsLoging(false);
+            setIsRegitering(false);
+            return setError(data.error);
+        }
 
         setMessage(data.message || "Success!");
         if (res.ok) {
+            setAgree(false);
+            setIsLoging(false);
+            setIsRegitering(false);
             router.push("/");
         }
     };
@@ -132,30 +147,20 @@ const AuthPage = () => {
                     <form onSubmit={handleSubmit} className="flex flex-col gap-5 items-center mt-10">
                         {isLogin && (
                             <>
-                                <input type="email" name="email" placeholder="Email*" required className="input text-xl h-16 w-[80%] p-3 border-b-2 border-black bg-[#D7D0E0] text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                                <input type="text" name="username" placeholder="Username or email" required className="input text-xl h-16 w-[80%] p-3 border-b-2 border-black bg-[#D7D0E0] text-black focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
                                 <input type="password" name="password" placeholder="Password*" required className="input mt-4 mb-4 text-xl p-3 border-b-2 border-black bg-[#D7D0E0] text-black h-16 w-[80%] focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
-                                <div className="flex items-center text-xl w-[80%] justify-start">                                    
-                                    <input type="checkbox" className="mr-2 h-8 w-8" />
-                                    <label>I am not a robot.</label>
-                                </div>
                             </>
                         )}
                         {!isLogin && (
                             <>
-                                <div className="flex items-center justify-center bg-white h-12 mb-4 w-[80%] border-[1px] border-black text-black p-2 rounded-[10px] hover:bg-[#F3E8FF]">
-                                    <button className="flex items-center justify-center">
-                                        <img src="https://img.icons8.com/color/24/000000/google-logo.png" alt="Google logo" className="mr-2" />
-                                            Sign up with Google
-                                    </button>
-                                </div>
                                 <div className="flex w-[80%] gap-5">
-                                    <input type="text" name="firstName" placeholder="First Name*" required className="input p-3 border-b-2 border-black bg-[#D7D0E0] text-black h-16 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
-                                    <input type="text" name="lastName" placeholder="Last Name*" required className="input p-3 border-b-2 border-black bg-[#D7D0E0] text-black h-16 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                                    <input type="text" name="name" placeholder="Name*" required className="input p-3 border-b-2 border-black bg-[#D7D0E0] text-black h-16 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
+                                    <input type="text" name="username" placeholder="Username*" required className="input p-3 border-b-2 border-black bg-[#D7D0E0] text-black h-16 w-full focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
                                 </div>
                                 <input type="email" name="email" placeholder="Email*" required className=" mt-4 mb-4 input p-3 border-b-2 border-black bg-[#D7D0E0] text-black h-16 w-[80%] focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
                                 <input type="password" name="password" placeholder="Password*" required className="input mb-4 p-3 border-b-2 border-black bg-[#D7D0E0] text-black h-16 w-[80%] focus:outline-none focus:ring-2 focus:ring-blue-500" onChange={handleChange} />
                                 <div className="flex items-center text-base w-[80%] justify-start">
-                                    <input type="checkbox" className="mr-2 h-8 w-8" />
+                                    <input type="checkbox" className="mr-2 h-8 w-8" onChange={(e) => setAgree(e.target.checked)}/>
                                     <label>
                                     I agree to the{' '}
                                     <a href="/service" className="font-bold">
@@ -169,15 +174,24 @@ const AuthPage = () => {
                                 </div>
                             </>
                         )}
-                        <button type="submit" className="bg-[#581C87] font-semibold text-base h-12 w-[80%] text-white p-2 rounded-[100px] hover:bg-pink-500 hover:border-pink-400 mt-1 mb-1">{isLogin ? "SIGN IN" : "CREATE YOUR TAROT ENIGMA ACCOUNT"}</button>
-                        {isLogin && (
-                            <button type="submit" className="bg-white font-semibold h-12 w-[80%] border-[1px] border-[#581C87] text-black p-2 rounded-[100px] hover:bg-pink-500 hover:border-pink-400" onClick={() => alert("Redirect to reset password page")}>
-                                FORGET MY PASSWORD
-                            </button>
-                        )}
+                        <button 
+                            type="submit" 
+                            className={`
+                                h-12 w-[80%] mt-1 mb-1 p-2 rounded-[100px] text-base font-semibold
+                                transition duration-300 ease-in-out 
+                                ${
+                                  (isLogin ? (isLoging) : (!agree || isRegitering))
+                                    ? "bg-gray-400 text-white cursor-not-allowed"
+                                    : "bg-[#581C87] text-white hover:bg-pink-500 hover:border-pink-400"
+                                }
+                              `}
+                            disabled={isLogin ? (isLoging) : (!agree || isRegitering)}
+                        >
+                            {isLogin ? "SIGN IN" : "CREATE YOUR TAROT ENIGMA ACCOUNT"}
+                        </button>
                         <button
                             className="text-black text-base font-semibold hover:text-[#581C87]"
-                            onClick={() => setIsLogin(!isLogin)}
+                            onClick={() => {setIsLogin(!isLogin); if(isLogin) setAgree(false)}}
                             >
                             {isLogin ? "SIGN UP" : "SIGN IN"}
                         </button>

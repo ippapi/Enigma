@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import AnimatedWave3 from '../../components/wave/AnimatedWave3';
+import AnimatedWave3 from '@/components/wave/AnimatedWave3';
 import Scene from "@/components/threejs/threeModelViewer";
 
 export default function Home() {

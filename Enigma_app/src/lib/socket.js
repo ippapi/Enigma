@@ -29,6 +29,7 @@ const initializeSocket = (httpServer) => {
             // Listen to client send message event
             socket.on("sendMessage", (message) => {
                 io.emit("messageReceived", {
+                    room_id: message.room_id,
                     senderName: message.senderName,
                     message: message.message,
                 }); // Emit that message to all client
