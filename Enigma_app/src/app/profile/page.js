@@ -70,17 +70,15 @@ export default function ProfilePage() {
     }
   };
 
-  if (loading) return <p className="p-6">⏳ Đang tải dữ liệu...</p>;
+  if (loading) return <p className="mt-20 text-center min-h-screen">⏳ Đang tải dữ liệu...</p>;
 
   return (
-    <div className="min-h-screen bg-[#161527] text-white">
-      <div className="bg-black text-white p-7">
-      </div>
-      <div className="bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen mt-20 text-white">
+      <div>
         <div className="pt-12 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           {/* Profile Header */}
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4 animate-fade-in">
+            <h1 className="text-4xl md:text-5xl text-white font-bold text-slate-800 mb-4 animate-fade-in">
               👋 Xin chào, {user?.name}!
             </h1>
             <div className="inline-flex items-center bg-white/90 backdrop-blur-sm px-6 py-2 rounded-full shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
@@ -111,7 +109,7 @@ export default function ProfilePage() {
                   Thông tin cá nhân
                 </h2>
                 
-                <div className="space-y-6">
+                <div>
                   <ImageUploader currentImage={formData.profilePicture} />
                   
                   <div className="grid md:grid-cols-2 gap-4 text-black">

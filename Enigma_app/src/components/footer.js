@@ -2,7 +2,6 @@ const Footer = () => {
   return (
     <footer className="relative bg-[#0f172a] text-gray-300 pt-16 pb-36">
       <div className="flex flex-col md:flex-row items-center justify-center w-full gap-12 text-center md:text-left z-10 relative">
-        {/* Hình ảnh bên trái */}
         <div className="flex-shrink-0">
           <a href="/images/Home/Footer.jpg" target="_blank" rel="noopener noreferrer">
             <img

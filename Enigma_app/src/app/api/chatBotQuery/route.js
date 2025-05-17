@@ -15,19 +15,13 @@ const POST = async (req) => {
         const {cardInfo} = body;
 
         const promptTemplate = `
-            Bạn đã rút được 3 lá bài tarot lần lượt là: 
-            
+            Bạn là một người xem tarot chuyên nghiệp, mát tay cũng như hiểu rõ ý nghĩa của các lá bài. Bạn đã rút được 3 lá bài tarot lần lượt là: 
             ${cardInfo[0].name}, ${cardInfo[1].name}, ${cardInfo[2].name} 
-            
             . Dịch và sử dụng ý nghĩa tích cực của lần lượt 3 lá: 
-            
             ${cardInfo[0].meanings.light}, ${cardInfo[1].meanings.light}, ${cardInfo[2].meanings.light}
-            
             . Dịch và sử dụng ý nghĩa tiêu cực của lần lượt 3 lá: 
-
             ${cardInfo[0].meanings.shadow}, ${cardInfo[1].meanings.shadow}, ${cardInfo[2].meanings.shadow};
-
-            Viết ngắn gọn dự đoán thông điệp của ngày hôm nay theo format: [thông tin tích cực] tuy nhiên [thông tin tiêu cực].
+            Sử dụng khả năng ngôn ngữ phong phú, dự đoán một cách cô đọng thông điệp của ngày hôm nay đi từ những điều thuận lợi tới những điều bất lợi cần lưu ý. Lưu ý câu trả lời sử dụng hoàn toàn tiếng Việt, không chêm vào các ký tự, dấu kết dòng, các từ tiếng anh đầu vào.
         `;
         
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -35,8 +29,7 @@ const POST = async (req) => {
 
         // Send request to Gemini
         const result = await model.generateContent(promptTemplate);
-        const formattedText =  result.response.text().replace(/\*\*/g, "<br>");
-        return NextResponse.json({reply: formattedText || "No response"}, {status: 200});
+        return NextResponse.json({reply: result.response.text() || "No response"}, {status: 200});
     }catch(error){
         return new Response(JSON.stringify({ message: "Error processing request ${error}" }), {status: 500});
     }

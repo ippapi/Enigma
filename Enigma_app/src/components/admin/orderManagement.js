@@ -1,12 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 
+
 const PaymentManagement = () => {
     const [payments, setPayments] = useState([]);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [total, setTotal] = useState(0);
-
 
     useEffect(() => {
         fetch(`/api/payment?page=${page}&limit=${limit}`) // Fetch payments based on the current page and limit
@@ -31,24 +31,9 @@ const PaymentManagement = () => {
         });
 
         if (res.ok) {
-            const updatedPayment = await res.json();
-            setPayments(payments.map(payment =>
-                payment._id === updatedPayment._id ? updatedPayment : payment
-            ));
+            window.location.reload();
         } else {
             console.error("Failed to update cart status");
-        }
-    };
-
-    const goToNextPage = () => {
-        if (page < totalPages) {
-            setPage(page + 1);
-        }
-    };
-
-    const goToPreviousPage = () => {
-        if (page > 1) {
-            setPage(page - 1);
         }
     };
 
@@ -72,6 +57,7 @@ const PaymentManagement = () => {
                     <tbody>
                         {payments.map((payment) => {
                             const cart = payment.cartId;
+                            if (!cart) return null; 
                             const itemNames = cart.items
                                 .map(item => `${item.product?.name || "Unnamed"} x ${item.quantity}`)
                                 .join(", ");

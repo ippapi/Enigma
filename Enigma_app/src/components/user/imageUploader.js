@@ -59,13 +59,13 @@ export default function ProfileImageUploader({
         </div>
       </div>
 
-      {uploading && <p className="text-sm text-blue-500 mt-2">Đang tải ảnh...</p>}
+      {uploading && <p className="text-sm text-blue-500">Đang tải ảnh...</p>}
 
       {/* Modal dán URL */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-            <h2 className="text-lg font-semibold mb-4">Nhập URL ảnh</h2>
+            <h2 className="text-lg font-semibold mb-4">New img</h2>
             <input
               type="text"
               value={urlInput}

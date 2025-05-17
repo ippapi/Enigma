@@ -1,5 +1,6 @@
 import dbConnect from '@/lib/dbConnect';
 import Payment from '@/lib/models/payment';
+import Product from '@/lib/models/product';
 import Cart from '@/lib/models/cart';
 import { NextResponse } from 'next/server';
 

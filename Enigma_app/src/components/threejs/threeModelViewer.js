@@ -105,10 +105,10 @@ const RotatingStars = () => {
   return (
     <>
       <group ref={close_stars}>
-        <Stars radius={0} depth={30} count={100} factor={3} saturation={0} fade/>
+        <Stars radius={30} depth={50} count={50} factor={5} fade/>
       </group>
       <group ref={far_stars}>
-        <Stars radius={30} depth={50} count={600} factor={5} fade />
+        <Stars radius={30} depth={50} count={100} factor={5} fade />
       </group>
     </>
   )

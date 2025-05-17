@@ -4,7 +4,7 @@ import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { useState, useRef } from 'react';
 import { TextureLoader, MathUtils } from 'three';
 
-function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startAnimation }) {
+function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startAnimation, floatOffset = 0 }) {
   const cardRef = useRef();
   const [rotationY, setRotationY] = useState(Math.PI);
   const [positionZ, setPositionZ] = useState(0);
@@ -13,31 +13,35 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
   const frontTexture = useLoader(TextureLoader, frontImage);
   const backTexture = useLoader(TextureLoader, backImage);
 
-  useFrame(() => {
+  useFrame(({ clock }) => {
+    // Floating effect using sine wave
+    const floatY = Math.sin(clock.getElapsedTime() * 2 + floatOffset) * 0.1;
+
     if (animationStep === -1 && startAnimation) {
       setAnimationStep(0);
     }
-    
+
     if (cardRef.current) {
       if (animationStep === 0) {
-        setPositionZ((prev) => MathUtils.lerp(prev, 1.2, 0.1)); // Faster zoom in
+        setPositionZ((prev) => MathUtils.lerp(prev, 1.2, 0.1));
         if (Math.abs(positionZ - 1.2) < 0.01) setAnimationStep(1);
       } else if (animationStep === 1) {
         setRotationY((prev) => {
-          let newRotation = MathUtils.lerp(prev, targetRotation, 0.2); // Faster rotation
+          let newRotation = MathUtils.lerp(prev, targetRotation, 0.2);
           if (Math.abs(newRotation - targetRotation) < 0.05) setAnimationStep(2);
           return newRotation;
         });
       } else if (animationStep === 2) {
-        setPositionZ((prev) => MathUtils.lerp(prev, 0, 0.1)); // Faster zoom out
+        setPositionZ((prev) => MathUtils.lerp(prev, 0, 0.1));
         if (Math.abs(positionZ) < 0.01) {
           setAnimationStep(-1);
           onFlipComplete();
         }
       }
-      
+
       cardRef.current.rotation.y = rotationY;
       cardRef.current.position.z = positionZ;
+      cardRef.current.position.y = floatY;
     }
   });
 
@@ -55,7 +59,7 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
   );
 }
 
-export default function FlipCard({ front, name = "the card", rotation=[0, 0, 0], position=[0, 0, 0] }) {
+export default function FlipCard({ front, name = "the card", rotation = [0, 0, 0], position = [0, 0, 0], floatOffset = 0 }) {
   const [isFlipped, setIsFlipped] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [startAnimation, setStartAnimation] = useState(false);
@@ -66,32 +70,32 @@ export default function FlipCard({ front, name = "the card", rotation=[0, 0, 0],
       setStartAnimation(true);
       setTimeout(() => {
         setIsFlipped((prev) => !prev);
-      }, 100); // Faster flip trigger
+      }, 100);
     }
   };
 
   return (
-    <div className="mx-5 my-20 w-69 h-96 cursor-pointer" onClick={handleClick}>
-      <Canvas className="w-full h-full" camera={{ position: [0, 0, 5] }}>
+    <div className="relative mx-4 w-[200px] h-[320px] cursor-pointer border border-purple-400 rounded-lg shadow-md hover:shadow-purple-600 transition-shadow duration-300" onClick={handleClick}>
+      <Canvas className="w-full h-full rounded-lg" camera={{ position: [0, 0, 5] }}>
         <group rotation={rotation} position={position}>
           <RotatingCard
             frontImage={front || "./front.jpg"}
             backImage="./back.jpg"
             isFlipped={isFlipped}
             startAnimation={startAnimation}
+            floatOffset={floatOffset}
             onFlipComplete={() => {
               setIsAnimating(false);
               setStartAnimation(false);
             }}
           />
         </group>
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={0.6} />
       </Canvas>
-
-
-      {/* Show name input when flipped */}
       {isFlipped && (
-        <p className="mt-4 text-lg font-bold">{name}</p>
+        <p className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-center text-sm text-purple-200 font-semibold drop-shadow-md">
+          {name}
+        </p>
       )}
     </div>
   );

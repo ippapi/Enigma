@@ -25,6 +25,7 @@ const generateToken = async (user, time) => {
         id: user._id,
         email: user.email,
         name: user.username,
+        show_name: user.name,
         role: user.role,
     }
     return await new SignJWT(payload)

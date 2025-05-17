@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import Cart from "@/lib/models/cart";
 import Product from "@/lib/models/product";
+import User from "@/lib/models/user";
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { verifyToken } from "@/lib/auth";
@@ -28,7 +29,7 @@ const GET = async (req) => {
       const { searchParams } = new URL(req.url);
       const status = searchParams.get("status") || "ACTIVE";
   
-      const carts = await Cart.find({ user: userId, status })
+      const carts = await Cart.find({ user: userId, status: status })
         .populate("user")
         .populate("items.product");
   
@@ -167,6 +168,12 @@ const PATCH = async (req) => {
     await dbConnect();
     try {
         const { cartId, status } = await req.json();
+        var token = req.cookies.get("token")?.value || req.headers.get("Authorization")?.split(" ")[1];
+        const user = await verifyToken(token);
+        if (!user) {
+            return NextResponse.json({ message: "Invalid token" }, { status: 403 });
+        }
+        const userId = user.id;
 
         if (status !== "COMPLETED" && status !== "CANCELED") {
             return NextResponse.json(
@@ -185,6 +192,14 @@ const PATCH = async (req) => {
                 { message: "Cart status must be 'ORDERED' to update." },
                 { status: 400 }
             );
+        }
+
+        if (userId != cart.user && user.role != "ADMIN"){
+          return NextResponse.json({ message: "Unauthorized: You are not the owner or admin" }, { status: 403 });
+        }
+
+        if (userId == cart.user && status == "COMPLETED" && user.role != "ADMIN"){
+          return NextResponse.json({ message: "Huh, just wait :))" }, { status: 403 });
         }
 
         const updatedCart = await Cart.findByIdAndUpdate(

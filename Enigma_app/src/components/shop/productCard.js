@@ -1,14 +1,19 @@
 import { useState } from 'react';
-import { Heart } from 'lucide-react';
+import { Heart, Minus, Plus } from 'lucide-react';
 
 export default function ProductCard({ product, onAddToCart }) {
   const [isLiked, setIsLiked] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+
   const imageSrc =
     Array.isArray(product.images) && product.images.length > 0
       ? product.images[0]
       : '/default-product.jpg';
 
   const isOutOfStock = product.stock === 0;
+
+  const increment = () => setQuantity(q => Math.min(q + 1, product.stock || 99));
+  const decrement = () => setQuantity(q => Math.max(1, q - 1));
 
   return (
     <div
@@ -23,7 +28,6 @@ export default function ProductCard({ product, onAddToCart }) {
           className="w-3 h-3 text-white transform -rotate-30" 
           fill="currentColor" 
           viewBox="0 0 24 24"
-          style={{ transform: 'rotate(-30deg)' }}
         >
           <path d="M14 3l-1.41 1.41L18.17 10H4v2h14.17l-5.58 5.59L14 19l8-8z" />
         </svg>
@@ -43,16 +47,19 @@ export default function ProductCard({ product, onAddToCart }) {
       </button>
 
       {/* Ảnh sản phẩm */}
-      <img
-        src={imageSrc}
-        alt={product.name}
-        className="mx-auto h-35 object-contain mt-2 mb-2 drop-shadow-lg p-2"
-      />
+      <div className="overflow-hidden">
+        <img
+          src={imageSrc}
+          alt={product.name}
+          className="mx-auto h-35 object-contain mt-2 mb-2 drop-shadow-lg p-2 transition-transform duration-300 ease-in-out hover:scale-110"
+        />
+      </div>
 
       {/* Thông tin sản phẩm */}
       <div className="mt-4 bg-gradient-to-r from-[#443364] to-[#675688] rounded-b-2xl p-4 space-y-3">
         <h3 className="text-white font-semibold text-base truncate">{product.name}</h3>
         <p className="text-white font-bold text-lg">{product.price} VND</p>
+
         <div className="flex items-center justify-between gap-2">
           <span
             className={`text-white text-xs font-semibold px-2 py-1 rounded-full ${
@@ -66,9 +73,43 @@ export default function ProductCard({ product, onAddToCart }) {
           </span>
         </div>
 
+        {/* Bộ chọn số lượng */}
+        {!isOutOfStock && (
+          <div className="flex items-center justify-between bg-white/10 rounded-md p-1">
+            <button
+              onClick={decrement}
+              className="p-1 rounded hover:bg-white/20 transition"
+            >
+              <Minus className="w-4 h-4 text-white" />
+            </button>
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="[0-9]*"
+              value={quantity}
+              onChange={(e) => {
+                const raw = e.target.value.replace(/[^\d]/g, '');
+                const num = parseInt(raw, 10);
+                if (!isNaN(num)) {
+                  setQuantity(Math.max(1, Math.min(num, product.stock || 99)));
+                } else {
+                  setQuantity(0);
+                }
+              }}
+              className="w-10 text-center bg-transparent text-white text-sm outline-none"
+            />
+            <button
+              onClick={increment}
+              className="p-1 rounded hover:bg-white/20 transition"
+            >
+              <Plus className="w-4 h-4 text-white" />
+            </button>
+          </div>
+        )}
+
         {/* Nút thêm vào giỏ */}
         <button
-          onClick={() => !isOutOfStock && onAddToCart(product._id)}
+          onClick={() => !isOutOfStock && onAddToCart(product._id, quantity)}
           disabled={isOutOfStock}
           className={`w-full py-2 rounded-md text-sm font-medium text-white transition ${
             isOutOfStock
@@ -79,7 +120,6 @@ export default function ProductCard({ product, onAddToCart }) {
           {isOutOfStock ? 'Hết hàng rồi công chúa ơi' : 'Thêm vào giỏ'}
         </button>
       </div>
-
     </div>
   );
 }

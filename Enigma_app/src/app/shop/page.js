@@ -16,14 +16,14 @@ export default function TarotBookingPage() {
       .then((data) => setProducts(data.products || []));
   }, [page]);
 
-  const handleAddToCart = async (productId) => {
+  const handleAddToCart = async (productId, quantity) => {
     const res = await fetch('/api/cart', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
-      body: JSON.stringify({ productId, quantity: 1 }),
+      body: JSON.stringify({ productId, quantity }),
     });
 
     const result = await res.json();
@@ -82,9 +82,6 @@ export default function TarotBookingPage() {
         <AnimatedWave2 />
       </div>
 
-
-
-      {/* Top Tarot Readers */}
       <div className="px-8 py-12 bt-0 pt-0" style={{ backgroundColor: '#957FC1' }}>
         <h2 className="text-4xl font-black mb-6 inline-block tracking-tighter text-right ml-10"
             style={{ color: '#3E2362', fontFamily: 'Anton, sans-serif' }}>
@@ -95,19 +92,37 @@ export default function TarotBookingPage() {
         </p>
         <div className="grid md:grid-cols-3 gap-6">
           <div className="bg-blue-900 rounded-xl p-4 text-center">
-            <div className="w-full h-40 bg-gray-400 mb-4 rounded">IMAGE</div>
+            <div className="w-full aspect-square bg-gray-400 mb-4 rounded overflow-hidden">
+              <img
+                src="https://dl.dropboxusercontent.com/scl/fi/s8lzmyjzic29ynsq69wzc/Phong-Vu-Thanh.jpg?rlkey=2cza2aeseht85o8bz4qh0r9ni&st=1msdhah9&dl=0"
+                alt="Mô tả hình"
+                className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+              />
+            </div>
             <h3 className="font-bold">TOP 2</h3>
             <p>Phong Vu Thanh</p>
           </div>
           <div className="bg-pink-500 rounded-xl p-4 text-center shadow-xl">
-            <div className="w-full h-40 bg-gray-400 mb-4 rounded">IMAGE</div>
+            <div className="w-full aspect-square bg-gray-400 mb-4 rounded overflow-hidden">
+              <img
+                src="https://dl.dropboxusercontent.com/scl/fi/ktrqydfmi40np7r9o0ggl/Shakj-Shark.jpg?rlkey=5spfekq96oghf5kriwydg3eje&st=hxwtctfn&dl=0"
+                alt="Mô tả hình"
+                className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+              />
+            </div>
             <h3 className="font-bold text-white">TOP 1</h3>
             <p className="text-white">BB Cream</p>
           </div>
-          <div className="bg-indigo-700 rounded-xl p-4 text-center">
-            <div className="w-full h-40 bg-gray-400 mb-4 rounded">IMAGE</div>
-            <h3 className="font-bold">TOP 3</h3>
-            <p>Ice Cream Nun</p>
+          <div className="bg-indigo-700 rounded-xl p-4 text-center text-white shadow-md">
+            <div className="w-full aspect-square bg-gray-400 mb-4 rounded overflow-hidden">
+              <img
+                src="https://dl.dropboxusercontent.com/scl/fi/iog6fuux5vmc8c4ovq6fq/Sang-Do-Luong-Phuong.jpg?rlkey=ewywi6iz0qls19w6rs8o2ddbg&st=ctfee6pb&dl=0"
+                alt="Mô tả hình"
+                className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
+              />
+            </div>
+            <h3 className="font-bold text-lg">TOP 3</h3>
+            <p className="text-sm">Ice Cream Nun</p>
           </div>
         </div>
       </div>
