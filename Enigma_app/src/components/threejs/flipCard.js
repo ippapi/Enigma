@@ -76,7 +76,7 @@ export default function FlipCard({ front, name = "the card", rotation = [0, 0, 0
 
   return (
     <div
-      className="relative mx-4 w-[262px] h-[420px] cursor-pointer border border-purple-400 rounded-lg shadow-md hover:shadow-purple-600 transition-shadow duration-300"
+      className="relative mx-2 w-[250px] h-[400px] cursor-pointer border border-purple-400 rounded-lg shadow-md hover:shadow-purple-600 transition-shadow duration-300"
       onClick={handleClick}
     >
       <Canvas className="w-full h-full rounded-lg" camera={{ position: [0, 0, 5] }}>
