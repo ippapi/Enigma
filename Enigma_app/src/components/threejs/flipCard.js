@@ -48,11 +48,11 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
   return (
     <group ref={cardRef}>
       <mesh position={[0, 0, 0.01]}>
-        <planeGeometry args={[2.25 , 3.6]} />
+        <planeGeometry args={[2.375 , 3.8]} />
         <meshBasicMaterial map={frontTexture} side={2} />
       </mesh>
       <mesh rotation-y={Math.PI} position={[0, 0, -0.01]}>
-        <planeGeometry args={[2.25 , 3.6]} />
+        <planeGeometry args={[2.375 , 3.8]} />
         <meshBasicMaterial map={backTexture} side={2} />
       </mesh>
     </group>
