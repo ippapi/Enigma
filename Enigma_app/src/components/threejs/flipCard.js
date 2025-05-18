@@ -48,11 +48,11 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
   return (
     <group ref={cardRef}>
       <mesh position={[0, 0, 0.01]}>
-        <planeGeometry args={[2.5, 4]} />
+        <planeGeometry args={[2.8125 , 4.5]} />
         <meshBasicMaterial map={frontTexture} side={2} />
       </mesh>
       <mesh rotation-y={Math.PI} position={[0, 0, -0.01]}>
-        <planeGeometry args={[2.5, 4]} />
+        <planeGeometry args={[2.8125 , 4.5]} />
         <meshBasicMaterial map={backTexture} side={2} />
       </mesh>
     </group>
@@ -75,12 +75,15 @@ export default function FlipCard({ front, name = "the card", rotation = [0, 0, 0
   };
 
   return (
-    <div className="relative mx-4 w-[200px] h-[320px] cursor-pointer border border-purple-400 rounded-lg shadow-md hover:shadow-purple-600 transition-shadow duration-300" onClick={handleClick}>
+    <div
+      className="relative mx-4 w-[312px] h-[500px] cursor-pointer border border-purple-400 rounded-lg shadow-md hover:shadow-purple-600 transition-shadow duration-300"
+      onClick={handleClick}
+    >
       <Canvas className="w-full h-full rounded-lg" camera={{ position: [0, 0, 5] }}>
         <group rotation={rotation} position={position}>
           <RotatingCard
             frontImage={front || "./front.jpg"}
-            backImage="./back.jpg"
+            backImage="./images/Home/TheLover-02.png"
             isFlipped={isFlipped}
             startAnimation={startAnimation}
             floatOffset={floatOffset}
@@ -93,10 +96,12 @@ export default function FlipCard({ front, name = "the card", rotation = [0, 0, 0
         <ambientLight intensity={0.6} />
       </Canvas>
       {isFlipped && (
-        <p className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-center text-sm text-purple-200 font-semibold drop-shadow-md">
-          {name}
-        </p>
+        <div className="absolute left-1/2 top-full mt-2 transform -translate-x-1/2 text-center w-max px-2">
+          <p className="text-sm text-purple-200 font-semibold whitespace-nowrap drop-shadow-md">
+            {name}
+          </p>
+        </div>
       )}
     </div>
-  );
+  );  
 }
