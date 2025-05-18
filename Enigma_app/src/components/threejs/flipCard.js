@@ -48,11 +48,11 @@ function RotatingCard({ frontImage, backImage, isFlipped, onFlipComplete, startA
   return (
     <group ref={cardRef}>
       <mesh position={[0, 0, 0.01]}>
-        <planeGeometry args={[2.5 , 4]} />
+        <planeGeometry args={[2.25 , 3.6]} />
         <meshBasicMaterial map={frontTexture} side={2} />
       </mesh>
       <mesh rotation-y={Math.PI} position={[0, 0, -0.01]}>
-        <planeGeometry args={[2.5 , 4]} />
+        <planeGeometry args={[2.25 , 3.6]} />
         <meshBasicMaterial map={backTexture} side={2} />
       </mesh>
     </group>
@@ -76,7 +76,7 @@ export default function FlipCard({ front, name = "the card", rotation = [0, 0, 0
 
   return (
     <div
-      className="relative mx-2 w-[250px] h-[400px] cursor-pointer border border-purple-400 rounded-lg shadow-md hover:shadow-purple-600 transition-shadow duration-300"
+      className="relative mx-2 w-[225px] h-[360px] cursor-pointer border border-purple-400 rounded-lg shadow-md hover:shadow-purple-600 transition-shadow duration-300"
       onClick={handleClick}
     >
       <Canvas className="w-full h-full rounded-lg" camera={{ position: [0, 0, 5] }}>
