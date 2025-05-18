@@ -65,9 +65,9 @@ export default function ChatPage() {
         </div>
 
         {/* Reply Section */}
-        <div className="w-full md:w-[48%] bg-black/30 backdrop-blur-md border border-purple-500 rounded-xl p-6 shadow-xl min-h-[500px]">
+        <div className="w-full md:w-[48%] bg-black/30 backdrop-blur-md border border-purple-500 rounded-xl p-6 shadow-xl min-h-[320px]">
           <h2 className="text-xl font-semibold mb-4">Tarot Insights</h2>
-          <div className="bg-black/40 p-4 rounded-lg border border-purple-400 overflow-auto max-h-[500px]">
+          <div className="bg-black/40 p-4 rounded-lg border border-purple-400 overflow-auto max-h-[320px]">
             <p className="whitespace-pre-line text-sm leading-relaxed">
               {reply || "Your fortune will appear here after the cards are drawn..."}
             </p>
