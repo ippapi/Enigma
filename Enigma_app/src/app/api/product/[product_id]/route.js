@@ -15,7 +15,7 @@ const GET = async (req, { params }) => {
         if (!product) {
             return NextResponse.json({ message: "Product not found" }, { status: 404 });
         }
-        return NextResponse.json(product);
+        return NextResponse.json({product});
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }

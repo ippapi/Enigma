@@ -12,7 +12,10 @@ import { NextResponse } from "next/server";
 const POST = async (req) => {
     try {
         const body = await req.json();
-        const {cardInfo} = body;
+        let {cardInfo, userMessage} = body;
+
+        if (!userMessage.trim())
+            userMessage = "Hãy cho tôi biết điều gì đang chờ đợi tôi trong thời gian tới.";
 
         const promptTemplate = `
             Bạn là một người xem tarot chuyên nghiệp, mát tay cũng như hiểu rõ ý nghĩa của các lá bài. Bạn đã rút được 3 lá bài tarot lần lượt là: 
@@ -21,7 +24,7 @@ const POST = async (req) => {
             ${cardInfo[0].meanings.light}, ${cardInfo[1].meanings.light}, ${cardInfo[2].meanings.light}
             . Dịch và sử dụng ý nghĩa tiêu cực của lần lượt 3 lá: 
             ${cardInfo[0].meanings.shadow}, ${cardInfo[1].meanings.shadow}, ${cardInfo[2].meanings.shadow};
-            Sử dụng khả năng ngôn ngữ phong phú, dự đoán một cách cô đọng thông điệp của ngày hôm nay đi từ những điều thuận lợi tới những điều bất lợi cần lưu ý. Lưu ý câu trả lời sử dụng hoàn toàn tiếng Việt, không chêm vào các ký tự, dấu kết dòng, các từ tiếng anh đầu vào.
+            Sử dụng khả năng ngôn ngữ phong phú, cô đọng cùng các thông tin từ các lá bài, trả lời cho thắc mắc của người dùng ${userMessage}, câu trả lời đi từ phân tích những điều thuận lợi tới những điều bất lợi cần lưu ý. Lưu ý: trả lời tự nhiên như người xem tarot thân thiện, tên các lá bài sử dụng bằng tiếng anh, còn các nội dung còn lại hoàn toàn bằng tiếng Việt, không thêm vào cụm từ "ý nghĩa tiêu cực" hay "ý nghĩa tích cực", không chêm vào các ký tự, dấu kết dòng, các từ tiếng anh đầu vào.
         `;
         
         const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);

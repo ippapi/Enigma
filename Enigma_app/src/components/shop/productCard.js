@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Heart, Minus, Plus } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function ProductCard({ product, onAddToCart }) {
   const [isLiked, setIsLiked] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const router = useRouter();
 
   const imageSrc =
     Array.isArray(product.images) && product.images.length > 0
@@ -57,7 +59,15 @@ export default function ProductCard({ product, onAddToCart }) {
 
       {/* Thông tin sản phẩm */}
       <div className="mt-4 bg-gradient-to-r from-[#443364] to-[#675688] rounded-b-2xl p-4 space-y-3">
-        <h3 className="text-white font-semibold text-base truncate">{product.name}</h3>
+        <div className="flex justify-between items-center">
+          <h3 className="text-white font-semibold text-base truncate">{product.name}</h3>
+          <button 
+            onClick={() => router.push(`/shop/${product._id}`)}
+            className="text-white text-sm hover:underline"
+          >
+            Xem chi tiết
+          </button>
+        </div>
         <p className="text-white font-bold text-lg">{product.price} VND</p>
 
         <div className="flex items-center justify-between gap-2">
