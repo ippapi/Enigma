@@ -82,47 +82,75 @@ export default function TarotBookingPage() {
         <AnimatedWave2 />
       </div>
 
-      <div className="px-8 py-12 bt-0 pt-0" style={{ backgroundColor: '#957FC1' }}>
-        <h2 className="text-4xl font-black mb-6 inline-block tracking-tighter text-right ml-10"
-            style={{ color: '#3E2362', fontFamily: 'Anton, sans-serif' }}>
-          TOP TAROT READER
-        </h2>
-        <p className="text-sm mb-6" style={{ color: '#3E2362' }}>
-          Top Tarot Readers with the Highest Ratings and Reviews at Tarot Enigma.
-        </p>
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-blue-900 rounded-xl p-4 text-center">
-            <div className="w-full aspect-square bg-gray-400 mb-4 rounded overflow-hidden">
-              <img
-                src="https://dl.dropboxusercontent.com/scl/fi/s8lzmyjzic29ynsq69wzc/Phong-Vu-Thanh.jpg?rlkey=2cza2aeseht85o8bz4qh0r9ni&st=1msdhah9&dl=0"
-                alt="Mô tả hình"
-                className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
-              />
-            </div>
-            <h3 className="font-bold">TOP 2</h3>
-            <p>Phong Vu Thanh</p>
+      <div className="px-4 py-12 md:px-8 lg:px-16" style={{ backgroundColor: '#957FC1' }}>
+        <div className="max-w-6xl mx-auto">
+          {/* Header Section */}
+          <div className="mb-8 text-left">
+            <h2
+              className="text-4xl md:text-5xl font-black mb-2 inline-block tracking-tight"
+              style={{
+                color: '#38255E', 
+                fontFamily: 'Anton, sans-serif',
+                letterSpacing: '-0.5px',
+              }}
+            >
+              BEST SELLER TAROT DECKS
+            </h2>
+            <p className="text-sm md:text-base opacity-80" style={{ color: '#38255E' }}>
+              Top selling tarot decks in Tarot Enigma
+            </p>
           </div>
-          <div className="bg-pink-500 rounded-xl p-4 text-center shadow-xl">
-            <div className="w-full aspect-square bg-gray-400 mb-4 rounded overflow-hidden">
-              <img
-                src="https://dl.dropboxusercontent.com/scl/fi/ktrqydfmi40np7r9o0ggl/Shakj-Shark.jpg?rlkey=5spfekq96oghf5kriwydg3eje&st=hxwtctfn&dl=0"
-                alt="Mô tả hình"
-                className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
-              />
+
+          {/* Cards Grid */}
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+            {/* Card 1 - TOP 2 */}
+            <div className="bg-amber-500 rounded-xl p-6 text-center transition-all hover:shadow-lg hover:-translate-y-1 hover:shadow-amber-400/30">
+              <div className="w-full aspect-square bg-amber-100 mb-4 rounded-xl overflow-hidden">
+                <img
+                  src="https://dl.dropboxusercontent.com/scl/fi/krxreyh2r3zx2v2w11qct/Angel-Tarot-by-Travis-McHenry-1-removebg-preview.png?rlkey=vyrf16tpngzzxu1u1p40u7ahx&st=y4klbo8p&dl=0"
+                  alt="Angel Tarot"
+                  className="w-full h-full scale-80 object-contain transition-transform duration-500 hover:scale-90"
+                />
+              </div>
+              <h3 className="font-bold text-lg text-amber-900 mb-1">TOP 2</h3>
+              <p className="text-amber-800 font-medium">Angel Tarot</p>
             </div>
-            <h3 className="font-bold text-white">TOP 1</h3>
-            <p className="text-white">BB Cream</p>
-          </div>
-          <div className="bg-indigo-700 rounded-xl p-4 text-center text-white shadow-md">
-            <div className="w-full aspect-square bg-gray-400 mb-4 rounded overflow-hidden">
-              <img
-                src="https://dl.dropboxusercontent.com/scl/fi/iog6fuux5vmc8c4ovq6fq/Sang-Do-Luong-Phuong.jpg?rlkey=ewywi6iz0qls19w6rs8o2ddbg&st=ctfee6pb&dl=0"
-                alt="Mô tả hình"
-                className="w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105"
-              />
+
+            {/* Card 2 - TOP 1 */}
+            <div className="relative rounded-xl p-6 text-center shadow-2xl transition-all hover:-translate-y-1 transform-gpu"
+              style={{
+                background: 'linear-gradient(135deg, #FF6B9E 0%, #FF9A8B 100%)',
+                border: '2px solid rgba(255,255,255,0.2)'
+              }}>
+              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white text-pink-600 px-3 py-1 rounded-full text-xs font-bold shadow-md">
+                BEST RATED
+              </div>
+              <div className="w-full aspect-square bg-pink-100 mb-4 rounded-xl overflow-hidden">
+                <img
+                  src="https://dl.dropboxusercontent.com/scl/fi/i69yyudzhj5vn1k9ozs6r/Azras-Golden-Lenormand-Cards-1-removebg-preview.png?rlkey=2m9olifwe4l1gpy0l2u41ymei&e=1&st=zb3g87lq&dl=0"
+                  alt="Azras Golden"
+                  className="w-full h-full scale-80 object-contain transition-transform duration-500 hover:scale-90"
+                />
+              </div>
+              <h3 className="font-bold text-lg text-white mb-1">TOP 1</h3>
+              <p className="text-white font-medium">Azras Golden</p>
             </div>
-            <h3 className="font-bold text-lg">TOP 3</h3>
-            <p className="text-sm">Ice Cream Nun</p>
+
+            {/* Card 3 - TOP 3 */}
+            <div 
+              className="rounded-xl p-6 text-center transition-all hover:shadow-lg hover:-translate-y-1 hover:shadow-cyan-500/30"
+              style={{ backgroundColor: '#CD845F' }}
+            >
+              <div className="w-full aspect-square bg-amber-100 mb-4 rounded-xl overflow-hidden">
+                <img
+                  src="https://dl.dropboxusercontent.com/scl/fi/nbe8r90dhjehxfr4dz6zt/Cosmic-Law-Chinese-Oracle-Deluxe-Edition-1-removebg-preview.png?rlkey=irn7nipvkkm9w8sycisai91k2&st=9537x7x1&dl=0"
+                  alt="Comic Law"
+                  className="w-full h-full scale-80 object-contain transition-transform duration-500 hover:scale-90"
+                />
+              </div>
+              <h3 className="font-bold text-lg text-white mb-1">TOP 3</h3>
+              <p className="text-cyan-50 font-medium">Comic Law</p>
+            </div>
           </div>
         </div>
       </div>

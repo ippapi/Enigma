@@ -49,7 +49,7 @@ export default function ProfilePage() {
     });
     const data = await res.json();
     if (res.ok) {
-      alert("Cập nhật thành công");
+      alert("Successfully updated");
       setUser(data);
     } else if(res.status === 403){
       router.route('/auth')
@@ -66,7 +66,7 @@ export default function ProfilePage() {
     if (res.ok) {
       router.push("/auth");
     } else {
-      alert("Đăng xuất thất bại!");
+      alert("Failed to log out!");
     }
   };
 
@@ -79,11 +79,11 @@ export default function ProfilePage() {
           {/* Profile Header */}
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-5xl text-white font-bold text-slate-800 mb-4 animate-fade-in">
-              👋 Xin chào, {user?.name}!
+              Hello, {user?.name}!
             </h1>
             <div className="inline-flex items-center bg-white/90 backdrop-blur-sm px-6 py-2 rounded-full shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
               <span className="w-3 h-3 bg-green-500 rounded-full mr-2 animate-pulse"></span>
-              <span className="text-slate-600 font-medium">Đang hoạt động</span>
+              <span className="text-slate-600 font-medium">Active</span>
             </div>
           </div>
 
@@ -106,7 +106,7 @@ export default function ProfilePage() {
                       d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" 
                     />
                   </svg>
-                  Thông tin cá nhân
+                  Profile information
                 </h2>
                 
                 <div>
@@ -119,7 +119,7 @@ export default function ProfilePage() {
                         value={formData.name || ""}
                         onChange={handleChange}
                         className="w-full pl-12 pr-4 py-3 border-0 rounded-lg bg-slate-100 focus:bg-white focus:ring-2 focus:ring-blue-500 transition-all"
-                        placeholder="Họ và tên"
+                        placeholder="Full name"
                       />
                       <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">
                         👤
@@ -143,7 +143,7 @@ export default function ProfilePage() {
                         value={formData.bio || ""}
                         onChange={handleChange}
                         className="w-full pl-12 pr-4 py-3 border-0 rounded-lg bg-slate-100 focus:bg-white focus:ring-2 focus:ring-blue-500 transition-all"
-                        placeholder="Giới thiệu bản thân"
+                        placeholder="Self-introduction"
                         rows="3"
                       />
                       <span className="absolute left-4 top-4 text-slate-500">
@@ -170,7 +170,7 @@ export default function ProfilePage() {
                           d="M5 13l4 4L19 7" 
                         />
                       </svg>
-                      Cập nhật
+                      Update
                     </button>
                     <button
                       onClick={handleLogout}
@@ -189,7 +189,7 @@ export default function ProfilePage() {
                           d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" 
                         />
                       </svg>
-                      Đăng xuất
+                      Log out
                     </button>
                   </div>
                 </div>
@@ -214,7 +214,7 @@ export default function ProfilePage() {
                       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
                     />
                   </svg>
-                  Đơn hàng đang giao
+                   In delivery
                 </h3>
                 
                 {orderedOrders.length > 0 ? (
@@ -241,7 +241,7 @@ export default function ProfilePage() {
                   </div>
                 ) : (
                   <div className="text-center p-6 bg-slate-50 rounded-lg">
-                    <p className="text-slate-400">📭 Không có đơn hàng nào đang giao</p>
+                    <p className="text-slate-400">There are no orders in progress</p>
                   </div>
                 )}
               </div>
@@ -262,7 +262,7 @@ export default function ProfilePage() {
                       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" 
                     />
                   </svg>
-                  Lịch sử đơn hàng
+                  Order history
                 </h3>
                 
                 {completedOrders.length > 0 ? (
@@ -289,7 +289,7 @@ export default function ProfilePage() {
                   </div>
                 ) : (
                   <div className="text-center p-6 bg-slate-50 rounded-lg">
-                    <p className="text-slate-400">📦 Chưa có đơn hàng nào hoàn thành</p>
+                    <p className="text-slate-400">No orders completed yet</p>
                   </div>
                 )}
               </div>
