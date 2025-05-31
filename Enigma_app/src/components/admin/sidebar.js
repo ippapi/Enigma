@@ -17,8 +17,8 @@ const Sidebar = ({ setActiveTab, activeTab }) => {
               key={item.key}
               className={`p-3 rounded-md cursor-pointer transition-all duration-200 
                 ${isActive 
-                  ? "bg-purple-600 text-white font-semibold" 
-                  : "hover:bg-purple-800 hover:text-white"
+                  ? "bg-custom-purple text-white font-semibold" 
+                  : "hover:bg-custom-purple-dark hover:text-white"
                 }`
               }
               onClick={() => setActiveTab(item.key)}

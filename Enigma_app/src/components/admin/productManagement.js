@@ -40,7 +40,7 @@ const ProductCard = ({ product, onOpenModal, onEdit }) => {
             {product.images.map((image, index) => (
               <img
                 key={index}
-                src={image} // Base64 image string
+                src={image} 
                 alt={`product-image-${index}`}
                 className="w-20 h-20 object-cover rounded mr-2"
               />
@@ -52,7 +52,7 @@ const ProductCard = ({ product, onOpenModal, onEdit }) => {
       </div>
       <p className="mt-2 font-medium">Stock: {product.stock}</p>
       <p className="mt-2 font-medium">Price: {product.price} VND</p>
-      <button onClick={() => onEdit(product)} className="mt-2 text-blue-500">Edit</button>
+      <button onClick={() => onEdit(product)} className="mt-2 text-custom-purple">Edit</button>
     </div>
   );
 };
@@ -188,18 +188,18 @@ const ProductManagement = () => {
   }, [page]); // Fetch products every time the page changes
 
   return (
-    <div className="p-6">
+    <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Product Management</h1>
 
       <button
         onClick={() => setIsAddFormOpen(true)}
-        className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+        className="bg-custom-purple text-white px-4 py-2 rounded mb-4"
       >
         Add Product
       </button>
 
       {isAddFormOpen && (
-        <form onSubmit={editProduct ? handleEditProduct : handleAddProduct} className="bg-white p-6 rounded shadow-md">
+        <form onSubmit={editProduct ? handleEditProduct : handleAddProduct} className="bg-white rounded shadow-md">
           <h2 className="text-xl font-semibold mb-4">{editProduct ? 'Edit Product' : 'Add Product'}</h2>
           <label className="block mb-2">Name</label>
           <input

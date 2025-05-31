@@ -37,8 +37,8 @@ export default function BookingTab({ tab }) {
   if (error) return <p className="text-center text-red-400">Error: {error}</p>;
 
   return (
-    <div className="p-4 space-y-6 text-gray-100">
-      <h1 className="text-2xl font-bold text-center mb-4">Your booking history</h1>
+    <div className="space-y-6 text-gray-100">
+      <h1 className="text-2xl font-bold text-center mb-2">Your booking history</h1>
 
       {bookings.length === 0 ? (
         <p className="text-center text-gray-400">You haven't made any bookings yet.</p>

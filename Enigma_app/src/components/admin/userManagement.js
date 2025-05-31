@@ -77,7 +77,6 @@ const userManagement = () => {
     return (
         <div className="p-4">
             <h2 className="text-2xl font-bold mb-4">User Management</h2>
-
             {/* Search Bar */}
             <form onSubmit={handleSearch} className="mb-4 flex gap-2">
                 <input
@@ -87,7 +86,7 @@ const userManagement = () => {
                     placeholder="Search by ID, Name, or Email"
                     className="border p-2 flex-1"
                 />
-                <button type="submit" className="bg-blue-500 text-white p-2">
+                <button type="submit" className="bg-custom-purple rounded text-white p-2">
                     Search
                 </button>
             </form>

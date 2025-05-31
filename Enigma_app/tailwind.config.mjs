@@ -31,6 +31,11 @@ export default {
         '27px': '27px',
         '22px': '22px',
       },
+      colors: {
+        'custom-purple': '#581C87',
+        'custom-purple-dark': '#7941A4', 
+      },
+
     },         
   },
   plugins: [],

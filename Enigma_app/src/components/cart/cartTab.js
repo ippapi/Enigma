@@ -16,29 +16,29 @@ export default function BookingTab({ tab }) {
       .then(res => res.json())
       .then(data => setData(data))
       .catch(err => {
-        console.error("Lỗi khi lấy giỏ hàng:", err);
-        setError("Không thể tải dữ liệu.");
+        console.error("Error fetching cart:", err);
+        setError("Unable to load data.");
         setData(null);
       })
       .finally(() => setLoading(false));
   }, [tab]);
 
-  if (loading) return <p className="text-center text-gray-400">Đang tải dữ liệu...</p>;
-  if (error) return <p className="text-center text-red-400">Lỗi: {error}</p>;
+  if (loading) return <p className="text-center text-gray-400">Loading data...</p>;
+  if (error) return <p className="text-center text-red-400">Error: {error}</p>;
 
   const isEmpty = !data || data.carts?.length === 0;
 
   return (
     <div className="p-4 space-y-6 text-gray-100">
       <h1 className="text-3xl font-bold text-center mb-4">
-        {tab === "ACTIVE" && "🛒 Giỏ hàng của bạn"}
-        {tab === "ORDERED" && "📦 Đơn hàng đã đặt"}
-        {tab === "COMPLETED" && "✅ Đơn hàng đã hoàn tất"}
-        {tab === "CANCELED" && "❌ Đơn hàng đã huỷ"}
+        {tab === "ACTIVE" && "Your cart"}
+        {tab === "ORDERED" && "Placed orders"}
+        {tab === "COMPLETED" && "Completed orders"}
+        {tab === "CANCELED" && "Cancelled orders"}
       </h1>
   
       {isEmpty ? (
-        <p className="text-center text-gray-400">Bạn chưa có đơn hàng nào.</p>
+        <p className="text-center text-gray-400">You don’t have any orders yet.</p>
       ) : tab === "ACTIVE" ? (
         <CartItem data={data} />
       ) : (

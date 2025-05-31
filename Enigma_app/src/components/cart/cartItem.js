@@ -72,7 +72,7 @@ export default function CartItem({ data }) {
   return (
     <div className="bg-[#1f1b3a] bg-opacity-60 border border-gray-600 rounded-xl p-6 shadow-md text-gray-300">
       <h3 className="text-xl font-semibold mb-3">
-        🛍️ Đơn hàng #{cart._id.slice(-6)}
+        Order #{cart._id.slice(-6)}
       </h3>
 
       <ul className="space-y-4 text-sm">
@@ -91,8 +91,8 @@ export default function CartItem({ data }) {
               </div>
               <div>
                 <p className="font-semibold text-white">{item.product.name}</p>
-                <p className="text-gray-400">Số lượng: {item.quantity}</p>
-                <p className="text-gray-400">Tổng: {item.quantity * item.product.price} VND</p>
+                <p className="text-gray-400">Quantity: {item.quantity}</p>
+                <p className="text-gray-400">Total: {item.quantity * item.product.price} VND</p>
               </div>
             </div>
 
@@ -102,7 +102,7 @@ export default function CartItem({ data }) {
                 className="flex items-center gap-1 px-2 py-1 text-red-500 border border-red-500 rounded hover:bg-red-500 hover:text-white text-xs transition"
               >
                 <Trash2 size={14} />
-                Xóa
+                Delete
               </button>
             )}
           </li>
@@ -111,11 +111,11 @@ export default function CartItem({ data }) {
 
       <div className="mt-4 space-y-1 text-sm">
         <p>
-          <span className="font-medium text-gray-400">📌 Trạng thái:</span>{" "}
+          <span className="font-medium text-gray-400">Status:</span>{" "}
           <span className="uppercase text-blue-400">{cart.status}</span>
         </p>
         <p>
-          <span className="font-medium text-gray-400">💰 Tổng tiền:</span>{" "}
+          <span className="font-medium text-gray-400">Total price:</span>{" "}
           <span className="text-green-400">{totalPrice} VND</span>
         </p>
       </div>
@@ -131,7 +131,7 @@ export default function CartItem({ data }) {
             }`}
             disabled = {totalPrice === 0}
           >
-            Thanh toán ngay
+            Pay now
           </button>
         </div>
       )}
@@ -142,7 +142,7 @@ export default function CartItem({ data }) {
             onClick={() => handleCancelOrder(cart._id)}
             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
           >
-            Hủy đơn hàng
+            Cancel order
           </button>
         </div>
       )}

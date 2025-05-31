@@ -38,8 +38,8 @@ const PaymentManagement = () => {
     };
 
     return (
-        <div className="p-6">
-            <h1 className="text-3xl font-semibold mb-4">Payment Management</h1>
+        <div className="p-4">
+            <h1 className="text-2xl font-semibold mb-4">Payment Management</h1>
     
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-300">
