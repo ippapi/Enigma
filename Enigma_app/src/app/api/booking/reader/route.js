@@ -21,7 +21,7 @@ const GET = async (req) => {
 
         const { searchParams } = new URL(req.url);
         const status = searchParams.get("status");
-        let bookings = await Booking.find({ reader: userId, status }).populate("user");
+        let bookings = await Booking.find({ reader: userId, status: status }).populate("user");
 
         const now = new Date();
         
@@ -34,7 +34,7 @@ const GET = async (req) => {
             }
         }));
 
-        bookings = await Booking.find({ user: userId, status }).populate("reader");
+        bookings = await Booking.find({ reader: userId, status }).populate("reader");
 
         return NextResponse.json(bookings);
     } catch (error) {
