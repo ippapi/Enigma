@@ -55,11 +55,11 @@ export default function ProfileImageUploader({
           className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 h-1/3"
           onClick={() => setShowModal(true)}
         >
-          Dán URL bên dưới
+          Paste the URL below
         </div>
       </div>
 
-      {uploading && <p className="text-sm text-blue-500">Đang tải ảnh...</p>}
+      {uploading && <p className="text-sm text-blue-500">Loading image...</p>}
 
       {/* Modal dán URL */}
       {showModal && (
@@ -79,13 +79,13 @@ export default function ProfileImageUploader({
                 onClick={() => setShowModal(false)}
                 className="px-4 py-2 text-gray-600 hover:underline"
               >
-                Hủy
+                Cancel
               </button>
               <button
                 onClick={handleConfirmUrl}
                 className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
               >
-                Xác nhận
+                Confirm
               </button>
             </div>
           </div>

@@ -40,7 +40,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
     <div className="space-y-3">
       {(tab === "PENDING" || tab === "SCHEDULED") && (
         <div className="flex flex-col gap-2 text-sm text-gray-300">
-          <label className="text-gray-400">📅 Thời gian:</label>
+          <label className="text-gray-400">Time :</label>
           <input
             type="datetime-local"
             className="bg-[#2e2b45] border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -48,7 +48,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
             onChange={(e) => setTime(new Date(e.target.value).toISOString())}
           />
 
-          <label className="text-gray-400">⏳ Thời lượng (phút):</label>
+          <label className="text-gray-400">Duration (minutes):</label>
           <input
             type="number"
             min="1"
@@ -66,7 +66,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
             className="bg-red-600 hover:bg-red-700 disabled:opacity-50 text-white px-4 py-2 rounded shadow-sm"
             onClick={() => handleUpdate("CANCELED")}
           >
-            {loading ? "Đang huỷ..." : "Huỷ lịch"}
+            {loading ? "Cancelling..." : "Cancel booking"}
           </button>
         )}
 
@@ -77,14 +77,14 @@ export default function BookingActions({ tab, booking, onUpdate }) {
               className="bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white px-4 py-2 rounded shadow-sm"
               onClick={() => handleUpdate("COMPLETED")}
             >
-              {loading ? "Đang cập nhật..." : "Hoàn thành"}
+              {loading ? "Updating..." : "Completed"}
             </button>
             <button
               disabled={loading}
               className="bg-yellow-500 hover:bg-yellow-600 disabled:opacity-50 text-white px-4 py-2 rounded shadow-sm"
               onClick={() => handleUpdate("CANCELED")}
             >
-              {loading ? "Đang cập nhật..." : "Huỷ lịch"}
+              {loading ? "Updating..." : "Cancel booking"}
             </button>
           </>
         )}
@@ -94,7 +94,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
             className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded shadow-sm"
             onClick={() => router.push(`/room/${booking.room}`)}
           >
-            🔮 Vào phòng
+            Enter chat room
           </button>
         )}
       </div>

@@ -34,9 +34,6 @@ export default function Home() {
 
       {/* Hero Section */}
       <section className="relative text-center py-20 bg-[url('/images/Home/Background.png')] bg-cover bg-center bg-no-repeat">
-        <div>
-          <Scene />
-        </div>
         <div className="mt-10 flex flex-col lg:flex-row items-center justify-center gap-10 px-6">
           <div className="max-w-xl text-left">
             <h2
@@ -92,7 +89,7 @@ export default function Home() {
         </h2>
         <p className="mb-4">Connecting the Tarot Community</p>
         <p className="text-sm mb-6">
-          Tarot Enigma allows customers to search for and chat with reputable Tarot readers...
+          To provide an authentic and inspiring Tarot experience by connecting users with trusted Tarot readers and offering high-quality spiritual and metaphysical products — empowering individuals to gain clarity, healing, and personal insight.
         </p>
         <Image src="/images/Home/Mission.png" alt="Planet" width={600} height={300} />
       </section>
@@ -115,14 +112,9 @@ export default function Home() {
           </p>
           <button className="bg-pink-500 text-white px-4 py-2 rounded mb-10">ASK PINK PANTHER</button>
         </div>
-        <div className="flex flex-1 flex-col md:flex-row items-start gap-10">
-          <div className="flex-1 pt-[50px]">
-            <p className="mb-4">Bỏ mí lá bài lật lật trang Tarot dô đây</p>
-          </div>
-          <div className="flex-1 flex items-end justify-center">
-            <img src="/images/Home/Tarot reading.png" alt="Pink Panther" className="w-full max-w-sm" />
-          </div>
-        </div>
+        {/* <div>
+          <Scene />
+        </div> */}
       </section>
     </div>
   );

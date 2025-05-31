@@ -1,7 +1,6 @@
 import "./globals.css";
 import NavBar from "@/components/navBar";
 import Footer from "@/components/footer";
-import ChatBubble from "@/components/chat/chatbubble"; 
 
 export const metadata = {
   title: "Enigma",
@@ -18,7 +17,6 @@ export default function RootLayout({ children }) {
         <NavBar />
         {children}
         <Footer />
-        <ChatBubble /> {/* 👈 chat luôn xuất hiện trên tất cả các trang */}
       </body>
     </html>
   );

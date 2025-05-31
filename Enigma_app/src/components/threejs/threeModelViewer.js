@@ -215,16 +215,21 @@ export default function Scene() {
   const lightRef = useRef();
 
   return (
-    <div className="w-screen h-screen pt-20 pb-20">
-      <Canvas className="w-full h-full bg-transparent" shadows camera={{ position: [0, 200, 0], up: [0, 10, 0]}}>
+    <div className="w-full h-full overflow-hidden">
+      <Canvas 
+        className="w-full h-full" 
+        shadows 
+        camera={{ position: [0, 200, 0], up: [0, 10, 0] }}
+        style={{ display: 'block' }} 
+      >
         <RotatingStars />
         <group>
           <ambientLight intensity={1} />
           <Aura />
-          <group rotation ={[Math.PI/2, 0, 0]}>
+          <group rotation={[Math.PI/2, 0, 0]}>
             <RotatingCard />
           </group>
-          <group rotation ={[-Math.PI/2.15, 0, 0]}>
+          <group rotation={[-Math.PI/2.15, 0, 0]}>
             <Planet texturePath={planet_texture[0]} position={[100, 0, 0]} size={1.5} />
             <Planet texturePath={planet_texture[1]} position={[110, 0, 0]} size={2} />
             <Planet texturePath={planet_texture[2]} position={[120, 0, 0]} size={2.5} />
