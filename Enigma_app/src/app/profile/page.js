@@ -70,15 +70,15 @@ export default function ProfilePage() {
     }
   };
 
-  if (loading) return <p className="mt-20 text-center min-h-screen">⏳ Đang tải dữ liệu...</p>;
+  if (loading) return <p className="mt-20 text-center min-h-screen text-white"> Loading data...</p>;
 
   return (
     <div className="min-h-screen mt-20 text-white">
       <div>
-        <div className="pt-12 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div className="pt-2 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           {/* Profile Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl text-white font-bold text-slate-800 mb-4 animate-fade-in">
+          <div className="text-center mb-8">
+            <h1 className="text-xl md:text-3xl text-white font-bold text-slate-800 mb-4 animate-fade-in">
               Hello, {user?.name}!
             </h1>
             <div className="inline-flex items-center bg-white/90 backdrop-blur-sm px-6 py-2 rounded-full shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
@@ -92,7 +92,7 @@ export default function ProfilePage() {
             {/* Left Column - Profile Form */}
             <div className="lg:col-span-2 space-y-8">
               <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow">
-                <h2 className="text-2xl font-bold text-slate-800 mb-6 flex items-center">
+                <h2 className="text-xl font-bold text-slate-800 mb-6 flex items-center">
                   <svg 
                     className="w-6 h-6 mr-2 text-blue-600" 
                     fill="none" 
@@ -199,7 +199,7 @@ export default function ProfilePage() {
             {/* Right Column - Orders */}
             <div className="space-y-8">
               {/* Current Orders */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow">
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow">
                 <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center">
                   <svg 
                     className="w-6 h-6 mr-2 text-yellow-600" 
@@ -247,7 +247,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Order History */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow">
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-slate-100 hover:shadow-xl transition-shadow">
                 <h3 className="text-xl font-bold text-slate-800 mb-4 flex items-center">
                   <svg 
                     className="w-6 h-6 mr-2 text-green-600" 

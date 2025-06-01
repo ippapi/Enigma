@@ -21,12 +21,12 @@ export default function BookingActions({ tab, booking, onUpdate }) {
 
       if (!res.ok) {
         const errorData = await res.json();
-        alert(`Lỗi: ${errorData.error}`);
+        alert(`Error: ${errorData.error}`);
       } else {
         onUpdate(); // refresh list
       }
     } catch (err) {
-      alert('Có lỗi xảy ra khi cập nhật.');
+      alert('An error occurred while updating.');
     } finally {
       setLoading(false);
     }
@@ -40,7 +40,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
           className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
           onClick={() => handleStatusChange("SCHEDULED")}
         >
-          {loading ? "Đang xác nhận..." : "Xác nhận"}
+          {loading ? "Confirming..." : "Confirm"}
         </button>
       )}
 
@@ -51,7 +51,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
             className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600"
             onClick={() => handleStatusChange("COMPLETED")}
           >
-            {loading ? "Đang hoàn tất..." : "Hoàn tất"}
+            {loading ? "Completing..." : "Completed"}
           </button>
 
           <button
@@ -59,7 +59,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
             className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
             onClick={() => handleStatusChange("CANCELED")}
           >
-            {loading ? "Đang huỷ..." : "Huỷ"}
+            {loading ? "Canceling..." : "Canceled"}
           </button>
         </>
       )}
@@ -69,7 +69,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
           className="bg-purple-500 text-white px-3 py-1 rounded hover:bg-purple-600"
           onClick={() => router.push(`/room/${booking.room}`)}
         >
-          Vào phòng
+          Enter chat room
         </button>
       )}
     </div>

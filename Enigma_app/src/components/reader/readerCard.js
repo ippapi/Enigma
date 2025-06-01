@@ -18,7 +18,7 @@ export default function ReaderCard({ reader, onBooking }) {
 
   const handleConfirm = () => {
     if (!time || !duration) {
-      alert('Vui lòng nhập thời gian và thời lượng!');
+      alert('Please enter the time and duration!');
       return;
     }
     onBooking(reader._id, time, duration, notes);
@@ -90,7 +90,7 @@ export default function ReaderCard({ reader, onBooking }) {
             onClick={handleOpen}
             className="bg-purple-600 hover:bg-purple-700 text-white text-sm font-semibold px-5 py-2 rounded-full shadow-md transition duration-200"
           >
-            Đặt lịch
+            Book a schedule
           </button>
         </div>
       </div>
@@ -101,7 +101,7 @@ export default function ReaderCard({ reader, onBooking }) {
           <div className="bg-white rounded-xl p-6 w-[90%] max-w-md space-y-4 shadow-2xl">
             <h2 className="text-lg font-semibold flex items-center gap-2">
               <CalendarClock className="w-5 h-5 text-purple-600" />
-              Đặt lịch với {reader.name}
+              Book a schedule with {reader.name}
             </h2>
 
             <div>
@@ -139,13 +139,13 @@ export default function ReaderCard({ reader, onBooking }) {
                 onClick={handleClose}
                 className="px-4 py-2 rounded border border-gray-300 hover:bg-gray-100 transition"
               >
-                Hủy
+                Cancel
               </button>
               <button
                 onClick={handleConfirm}
                 className="px-4 py-2 rounded bg-purple-600 text-white hover:bg-purple-700 transition"
               >
-                Xác nhận
+                Confirm
               </button>
             </div>
           </div>

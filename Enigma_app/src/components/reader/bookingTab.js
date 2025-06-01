@@ -32,15 +32,15 @@ export default function BookingTab({ tab }) {
     fetchBookings();
   }, []);
 
-  if (loading) return <p className="text-center text-gray-400">Đang tải dữ liệu...</p>;
-  if (error) return <p className="text-center text-red-400">Lỗi: {error}</p>;
+  if (loading) return <p className="text-center text-gray-400">Loading data...</p>;
+  if (error) return <p className="text-center text-red-400">Error: {error}</p>;
 
   return (
     <div className="p-8 space-y-6 text-gray-100">
-      <h1 className="text-3xl font-bold text-center mb-4">Lịch đặt của bạn</h1>
+      <h1 className="text-3xl font-bold text-center mb-4">Your booking schedule</h1>
 
       {bookings.length === 0 ? (
-        <p className="text-center text-gray-400">Bạn chưa có lịch đặt nào.</p>
+        <p className="text-center text-gray-400">You don't have any bookings yet.</p>
       ) : (
         <ul className="space-y-4">
           {bookings.map((booking) => (
@@ -50,10 +50,10 @@ export default function BookingTab({ tab }) {
             >
               <h3 className="text-xl font-semibold">{booking.user.name}</h3>
               <div className="mt-2 space-y-1 text-sm text-gray-300">
-                <p><span className="font-medium text-gray-400">🕒 Thời gian:</span> {new Date(booking.time).toLocaleString()}</p>
-                <p><span className="font-medium text-gray-400">⏳ Kéo dài:</span> {booking.duration} phút</p>
-                <p><span className="font-medium text-gray-400">📝 Ghi chú:</span> {booking.notes}</p>
-                <p><span className="font-medium text-gray-400">📌 Trạng thái:</span> {booking.status}</p>
+                <p><span className="font-medium text-gray-400">Time:</span> {new Date(booking.time).toLocaleString()}</p>
+                <p><span className="font-medium text-gray-400">Duration:</span> {booking.duration} munites</p>
+                <p><span className="font-medium text-gray-400">Notes:</span> {booking.notes}</p>
+                <p><span className="font-medium text-gray-400">Status:</span> {booking.status}</p>
               </div>
 
               <div className="mt-4">
