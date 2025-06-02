@@ -2,24 +2,26 @@
 
 import { useState, useEffect } from "react";
 
-const userManagement = () => {
+const UserManagement = () => {
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [searchQuery, setSearchQuery] = useState("");
     const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(10);
-    const [total, setTotal] = useState(0);
+    const [limit] = useState(10); // Không cần thay đổi limit nếu luôn là 10
+    const [totalUsers, setTotalUsers] = useState(0);
     const [promoting, setPromoting] = useState(null);
 
     useEffect(() => {
         fetchUsers();
-    }, [page, limit]);
+    }, [page, searchQuery]);
 
     const fetchUsers = async () => {
         setLoading(true);
+        setError(null);
+
         try {
-            const params = new URLSearchParams({ page, limit });
+            const params = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
 
             if (searchQuery) {
                 if (searchQuery.includes("@")) {
@@ -33,9 +35,10 @@ const userManagement = () => {
 
             const response = await fetch(`/api/user/promote?${params.toString()}`);
             const data = await response.json();
+
             if (response.ok) {
                 setUsers(data.users || []);
-                setTotal(data.totalPages || 0);
+                setTotalUsers(data.total || 0);
             } else {
                 throw new Error(data.error || "Failed to fetch users");
             }
@@ -48,8 +51,7 @@ const userManagement = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        setPage(1);
-        fetchUsers();
+        setPage(1); // Reset về trang 1 khi tìm kiếm
     };
 
     const handlePromote = async (userId, newRole) => {
@@ -58,7 +60,7 @@ const userManagement = () => {
             const response = await fetch(`/api/user/promote`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId: userId, newRole: newRole }),
+                body: JSON.stringify({ userId, newRole }),
             });
 
             const data = await response.json();
@@ -74,10 +76,13 @@ const userManagement = () => {
         }
     };
 
+    const totalPages = Math.ceil(totalUsers / limit);
+
     return (
-        <div className="p-4">
-            <h2 className="text-2xl font-bold mb-4">User Management</h2>
-            {/* Search Bar */}
+        <div className="p-4 pt-2">
+            <h2 className="text-xl font-bold mb-4">User Management</h2>
+
+            {/* Search */}
             <form onSubmit={handleSearch} className="mb-4 flex gap-2">
                 <input
                     type="text"
@@ -134,9 +139,7 @@ const userManagement = () => {
                                                 {promoting === user._id ? "Demoting..." : "Demote to USER"}
                                             </button>
                                         )}
-                                        {user.role === "ADMIN" && (
-                                            <p>Hello admin!</p>
-                                        )}
+                                        {user.role === "ADMIN" && <p>Hello admin!</p>}
                                     </td>
                                 </tr>
                             ))
@@ -149,7 +152,7 @@ const userManagement = () => {
                 </table>
             )}
 
-            
+            {/* Pagination */}
             <div className="flex justify-between items-center mt-4">
                 <button
                     disabled={page <= 1}
@@ -158,9 +161,9 @@ const userManagement = () => {
                 >
                     Previous
                 </button>
-                <span>Page {page} of {total}</span>
+                <span>Page {page} of {totalPages}</span>
                 <button
-                    disabled={page * limit >= total}
+                    disabled={page >= totalPages}
                     onClick={() => setPage((prev) => prev + 1)}
                     className="bg-gray-300 p-2 disabled:opacity-50"
                 >
@@ -171,4 +174,4 @@ const userManagement = () => {
     );
 };
 
-export default userManagement;
+export default UserManagement;

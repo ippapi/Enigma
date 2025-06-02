@@ -70,8 +70,8 @@ export default function CartItem({ data }) {
   };
 
   return (
-    <div className="bg-[#1f1b3a] bg-opacity-60 border border-gray-600 rounded-xl p-6 pt-0 shadow-md text-gray-300">
-      <h3 className="text-xl font-semibold mb-3">
+    <div className="bg-[#1f1b3a] bg-opacity-60 border border-gray-600 rounded-xl p-6 shadow-md text-gray-300">
+      <h3 className="text-l font-semibold mb-3">
         Order #{cart._id.slice(-6)}
       </h3>
 
@@ -79,7 +79,7 @@ export default function CartItem({ data }) {
         {cart.items.map((item, idx) => (
           <li
             key={idx}
-            className="flex items-center justify-between gap-4 bg-[#1f1b3a] bg-opacity-60 p-4 pt-0 rounded-lg shadow"
+            className="flex items-center justify-between gap-4 bg-[#1f1b3a] bg-opacity-60 p-4 rounded-lg shadow"
           >
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 flex-shrink-0 rounded overflow-hidden">

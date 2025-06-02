@@ -7,7 +7,7 @@ const menuItems = [
 
 const Sidebar = ({ setActiveTab, activeTab }) => {
   return (
-    <div className="w-64 py-10 px-6 ms-4 me-6 bg-white text-black rounded-xl shadow-lg">
+    <div className="w-64 py-10 px-6 ms-4 me-6 bg-white text-black rounded-xl shadow-lg pt-6">
       <ul>
         {menuItems.map((item) => {
           const isActive = activeTab === item.key;
