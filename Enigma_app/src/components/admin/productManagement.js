@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import ImageUploader from '../product/imageUploader';
 
-// Image Modal Component
 const ImageModal = ({ images, currentIndex, onClose, onNext, onPrev, onSelect }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
@@ -31,10 +30,9 @@ const ImageModal = ({ images, currentIndex, onClose, onNext, onPrev, onSelect })
 const ProductCard = ({ product, onOpenModal, onEdit }) => {
   return (
     <div className="border p-4 rounded-lg shadow-md">
-      <h2 className="text-lg font-semibold">{product.name}</h2>
+      <h2 className="text-l font-semibold pb-2">{product.name}</h2>
       <p className="text-sm text-gray-600">{product.description}</p>
       <div className="mt-2 cursor-pointer" onClick={() => onOpenModal(product.images)}>
-        {/* Display first image, or show a gallery of images */}
         {product.images.length > 0 ? (
           <div className="flex overflow-x-auto">
             {product.images.map((image, index) => (
@@ -60,9 +58,9 @@ const ProductCard = ({ product, onOpenModal, onEdit }) => {
 const ProductManagement = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState(1);  // Current page
-  const [limit] = useState(10);         // Number of products per page
-  const [totalPages, setTotalPages] = useState(1);  // Total number of pages
+  const [page, setPage] = useState(1);  
+  const [limit] = useState(6); 
+  const [totalPages, setTotalPages] = useState(1);
   const [selectedImages, setSelectedImages] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -93,7 +91,6 @@ const ProductManagement = () => {
     setLoading(false);
   };
 
-  // Handle page change
   const goToNextPage = () => {
     if (page < totalPages) {
       setPage(page + 1);
@@ -106,7 +103,6 @@ const ProductManagement = () => {
     }
   };
 
-  // Handle Add Product
   const handleAddProduct = async (e) => {
     e.preventDefault();
     const newProduct = {
@@ -123,15 +119,14 @@ const ProductManagement = () => {
         body: JSON.stringify(newProduct),
       });
       if (res.ok) {
-        fetchProducts();  // Refetch products after adding new one
-        setIsAddFormOpen(false);  // Close the Add Product form
+        fetchProducts()
+        setIsAddFormOpen(false);
       }
     } catch (error) {
       console.error('Failed to add product', error);
     }
   };
 
-  // Handle Edit Product
   const handleEditProduct = async (e) => {
     e.preventDefault();
     const updatedProduct = {
@@ -148,9 +143,9 @@ const ProductManagement = () => {
         body: JSON.stringify(updatedProduct),
       });
       if (res.ok) {
-        fetchProducts();  // Refetch products after editing
-        setIsAddFormOpen(false);  // Close the form
-        setEditProduct(null); // Reset edit state
+        fetchProducts();
+        setIsAddFormOpen(false);
+        setEditProduct(null); 
       }
     } catch (error) {
       console.error('Failed to edit product', error);
@@ -161,36 +156,31 @@ const ProductManagement = () => {
     setProductImages(images);
   };
 
-  // Open Modal
   const openModal = (images) => {
     setSelectedImages(images);
     setCurrentImageIndex(0);
     setIsModalOpen(true);
   };
 
-  // Close Modal
   const closeModal = () => {
     setIsModalOpen(false);
   };
 
-  // Next Image in Modal
   const nextImage = () => {
     setCurrentImageIndex((prev) => (prev + 1) % selectedImages.length);
   };
 
-  // Previous Image in Modal
   const prevImage = () => {
     setCurrentImageIndex((prev) => (prev - 1 + selectedImages.length) % selectedImages.length);
   };
 
   useEffect(() => {
     fetchProducts();
-  }, [page]); // Fetch products every time the page changes
+  }, [page]); 
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Product Management</h1>
-
+    <div className="p-4 pt-2">
+      <h1 className="text-xl font-bold mb-4">Product Management</h1>
       <button
         onClick={() => setIsAddFormOpen(true)}
         className="bg-custom-purple text-white px-4 py-2 rounded mb-4"
@@ -245,7 +235,7 @@ const ProductManagement = () => {
               type="button"
               onClick={() => {
                 setIsAddFormOpen(false);
-                setEditProduct(null);  // Reset edit product when closing the form
+                setEditProduct(null); 
               }}
               className="bg-red-500 text-white px-4 py-2 rounded"
             >

@@ -54,7 +54,7 @@ export default function ProfilePage() {
     } else if(res.status === 403){
       router.route('/auth')
     } else {
-      alert("Lỗi: " + data.error);
+      alert("Error: " + data.error);
     }
   };
 
