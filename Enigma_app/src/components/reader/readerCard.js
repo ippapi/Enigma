@@ -80,7 +80,7 @@ export default function ReaderCard({ reader, onBooking }) {
             {reader.name || 'Phuong Vo Hoang Thao'}
           </h3>
           <p className="text-sm text-white opacity-90 mt-1 line-clamp-2">
-            {reader.description || 'With her dynamic personality and attentive listening, she is loved by clients for her dedication, empathy, and accuracy.'}
+            {reader.bio ? reader.bio.slice(0, 128) : 'With her dynamic personality and attentive listening, she is loved by clients for her dedication, empathy, and accuracy.'}
           </p>
         </div>
 
