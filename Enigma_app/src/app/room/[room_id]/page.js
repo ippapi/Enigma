@@ -114,7 +114,7 @@ const ChatRoom = () => {
   };
 
   if (roomValid === null) {
-    return <div className="text-center text-white p-10">🔄 Đang kiểm tra phòng...</div>;
+    return <div className="text-center text-white p-10">Checking room...</div>;
   }
 
   if (!roomValid) {
@@ -132,8 +132,8 @@ const ChatRoom = () => {
   }
 
   return (
-    <div className="min-h-screen text-white flex flex-col items-center p-6">
-      <h1 className="text-xl font-bold mb-4 pt-4">Chat Room</h1>
+    <div className="text-white flex flex-col items-center p-6 mt-8">
+      <h1 className="text-2xl font-bold mb-4">Chat Room</h1>
 
       <div className="w-full max-w-2xl h-96 overflow-y-auto bg-[#2a243d] border border-purple-700 rounded-lg p-4 shadow-lg mb-4">
         {receivedMessages?.map((msg, idx) => (
@@ -175,7 +175,7 @@ const ChatRoom = () => {
           onClick={sendMessage}
           className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded"
         >
-          Gửi
+          Send
         </button>
       </div>
     </div>
