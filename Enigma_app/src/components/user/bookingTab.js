@@ -57,7 +57,6 @@ export default function BookingTab({ tab }) {
                 <p><span className="font-medium text-gray-400">Status:</span> {booking.status}</p>
 
               </div>
-
               <div className="mt-4">
                 <BookingActions tab={tab} booking={booking} onUpdate={fetchBookings} />
               </div>

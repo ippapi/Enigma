@@ -101,3 +101,4 @@ export default function BookingActions({ tab, booking, onUpdate }) {
     </div>
   );
 }
+ 

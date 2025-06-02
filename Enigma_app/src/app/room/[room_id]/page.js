@@ -120,12 +120,12 @@ const ChatRoom = () => {
   if (!roomValid) {
     return (
       <div className="text-center p-10 text-red-400">
-        ❌ Phòng không tồn tại hoặc đã bị huỷ.{" "}
+        Room does not exist or has been declared.{" "}
         <button
           onClick={() => router.push("/booking")}
           className="underline text-purple-400 hover:text-purple-300"
         >
-          Quay lại trang Join
+          Back to Join
         </button>
       </div>
     );
@@ -133,7 +133,7 @@ const ChatRoom = () => {
 
   return (
     <div className="min-h-screen text-white flex flex-col items-center p-6">
-      <h1 className="text-2xl font-bold mb-4">💬 Chat Room</h1>
+      <h1 className="text-xl font-bold mb-4 pt-4">Chat Room</h1>
 
       <div className="w-full max-w-2xl h-96 overflow-y-auto bg-[#2a243d] border border-purple-700 rounded-lg p-4 shadow-lg mb-4">
         {receivedMessages?.map((msg, idx) => (
@@ -163,7 +163,7 @@ const ChatRoom = () => {
           value={sendingMessage}
           onChange={(e) => setSendingMessage(e.target.value)}
           className="flex-1 bg-[#322b4b] text-white border border-purple-600 px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
-          placeholder="Nhập tin nhắn..."
+          placeholder="Enter messager..."
         />
         <button
           onClick={() => setShowEmojiPicker(!showEmojiPicker)}

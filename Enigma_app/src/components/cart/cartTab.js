@@ -30,9 +30,9 @@ export default function BookingTab({ tab }) {
 
   return (
     <div className="p-4 space-y-6 text-gray-100">
-      <h1 className="text-3xl font-bold text-center mb-4">
+      <h1 className="text-xl font-bold text-center mb-4">
         {tab === "ACTIVE" && "Your cart"}
-        {tab === "ORDERED" && "Placed orders"}
+        {tab === "ORDERED" && "Placed orders"} 
         {tab === "COMPLETED" && "Completed orders"}
         {tab === "CANCELED" && "Cancelled orders"}
       </h1>
