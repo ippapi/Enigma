@@ -11,9 +11,14 @@ const Header = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await fetch("/api/auth/verify");
+        const res = await fetch("/api/auth/verify", {
+          method: "GET",
+          credentials: "include",
+          cache: "no-store", // tránh cache cũ
+        });
         if (res.ok) {
           const data = await res.json();
+          console.log("Fetched user:", data); // debug
           setUser(data.user);
         }
       } catch (err) {
@@ -53,6 +58,14 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  if (loading) {
+    return (
+      <header className="py-4 px-8 text-white">
+        <span className="italic opacity-75">Loading...</span>
+      </header>
+    );
+  }
+
   return (
     <header className="bg-transparent absolute top-0 left-0 w-full z-50 text-white py-4 px-8 flex justify-between items-center font-light tracking-wider">
       <a href="/" className="text-xl tracking-wide">Tarot Enigma</a>
@@ -77,9 +90,7 @@ const Header = () => {
           Contacts
         </a>
 
-        {loading ? (
-          <span className="opacity-75 italic">...</span>
-        ) : user ? (
+        {user ? (
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setDropdownOpen((prev) => !prev)}
