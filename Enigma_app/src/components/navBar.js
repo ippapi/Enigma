@@ -18,7 +18,9 @@ const fetchUser = async () => {
 
   try {
 
-    const res = await fetch("/api/auth/verify");
+    const res = await fetch("/api/auth/verify", {
+      credentials: "include"
+    });
 
     if (res.ok) {
 
@@ -40,9 +42,9 @@ const fetchUser = async () => {
 
 };
 
-
-
-fetchUser();
+setTimeout(() => {
+  fetchUser();
+}, 500); 
 
 }, []);
 

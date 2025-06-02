@@ -21,19 +21,15 @@ const POST = async (req) => {
             return NextResponse.json({ error: "No refresh token" }, { status: 401 });
         
         const decoded = await verifyToken(refreshToken);
+        console.log(decoded)
         if (!decoded)
             return NextResponse.json({ error: "Invalid refresh token" }, { status: 403 });
 
         const user = await User.findOne({ _id: decoded.id });
-        if (!user || !user.refreshToken)
-            return NextResponse.json({ error: "User not found" }, { status: 403 });
-
-        const isTokenValid = await bcrypt.compare(refreshToken, user.refreshToken);
-        if (!isTokenValid)
-            return NextResponse.json({ error: "Invalid refresh token" }, { status: 403 });
-
-        user.refreshToken = "";
-        await user.save();
+        if(user){
+            user.refreshToken = "";
+            await user.save();
+        }
 
         const response = NextResponse.json({ message: "Logged out successfully" });
         response.cookies.delete("token");

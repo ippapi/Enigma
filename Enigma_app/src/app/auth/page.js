@@ -130,7 +130,7 @@ const AuthPage = () => {
             setAgree(false);
             setIsLoging(false);
             setIsRegitering(false);
-            router.push("/");
+            window.location.href = "/"; 
         }
     };
 
