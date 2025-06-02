@@ -60,13 +60,13 @@ export default function ProfileImageUploader({
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
-            <h2 className="text-lg font-semibold mb-4">New img</h2>
+            <h2 className="text-lg font-semibold mb-4 text-black">New image</h2>
             <input
               type="text"
               value={urlInput}
               onChange={(e) => setUrlInput(e.target.value)}
               placeholder="https://example.com/image.jpg"
-              className="w-full p-2 border rounded mb-4"
+              className="w-full p-2 border rounded mb-4 text-black"
               autoFocus
             />
             <div className="flex justify-end space-x-2">

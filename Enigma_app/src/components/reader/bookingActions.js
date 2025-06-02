@@ -23,7 +23,7 @@ export default function BookingActions({ tab, booking, onUpdate }) {
         const errorData = await res.json();
         alert(`Error: ${errorData.error}`);
       } else {
-        onUpdate(); // refresh list
+        onUpdate(); 
       }
     } catch (err) {
       alert('An error occurred while updating.');

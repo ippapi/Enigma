@@ -36,32 +36,35 @@ export default function BookingTab({ tab }) {
   if (error) return <p className="text-center text-red-400">Error: {error}</p>;
 
   return (
-    <div className="p-8 space-y-6 text-gray-100">
-      <h1 className="text-3xl font-bold text-center mb-4">Your booking schedule</h1>
+    <div className="p-8 pt-2 space-y-6 text-gray-100">
+      <h1 className="text-xl font-bold text-center mb-4">Your booking schedule</h1>
 
       {bookings.length === 0 ? (
         <p className="text-center text-gray-400">You don't have any bookings yet.</p>
       ) : (
-        <ul className="space-y-4">
-          {bookings.map((booking) => (
-            <li
-              key={booking._id}
-              className="bg-[#1f1b3a] bg-opacity-60 border border-gray-600 rounded-xl p-6 shadow-md"
-            >
-              <h3 className="text-xl font-semibold">{booking.user.name}</h3>
-              <div className="mt-2 space-y-1 text-sm text-gray-300">
-                <p><span className="font-medium text-gray-400">Time:</span> {new Date(booking.time).toLocaleString()}</p>
-                <p><span className="font-medium text-gray-400">Duration:</span> {booking.duration} munites</p>
-                <p><span className="font-medium text-gray-400">Notes:</span> {booking.notes}</p>
-                <p><span className="font-medium text-gray-400">Status:</span> {booking.status}</p>
-              </div>
+        // Bọc ul trong div có chiều cao cố định, bật scroll dọc
+        <div className="h-[600px] overflow-y-auto pr-2">
+          <ul className="space-y-4">
+            {bookings.map((booking) => (
+              <li
+                key={booking._id}
+                className="bg-[#1f1b3a] bg-opacity-60 border border-gray-600 rounded-xl p-6 shadow-md"
+              >
+                <h3 className="text-xl font-semibold">{booking.user.name}</h3>
+                <div className="mt-2 space-y-1 text-sm text-gray-300">
+                  <p><span className="font-medium text-gray-400">Time:</span> {new Date(booking.time).toLocaleString()}</p>
+                  <p><span className="font-medium text-gray-400">Duration:</span> {booking.duration} minutes</p>
+                  <p><span className="font-medium text-gray-400">Notes:</span> {booking.notes}</p>
+                  <p><span className="font-medium text-gray-400">Status:</span> {booking.status}</p>
+                </div>
 
-              <div className="mt-4">
-                <BookingActions tab={tab} booking={booking} onUpdate={fetchBookings} />
-              </div>
-            </li>
-          ))}
-        </ul>
+                <div className="mt-4">
+                  <BookingActions tab={tab} booking={booking} onUpdate={fetchBookings} />
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

@@ -1,7 +1,3 @@
-/* 
-    API routes for product management
-*/
-
 import dbConnect from "@/lib/dbConnect";
 import Product from "@/lib/models/product";
 import { NextResponse } from "next/server";

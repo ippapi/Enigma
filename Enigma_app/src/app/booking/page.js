@@ -29,7 +29,7 @@ export default function TarotBookingPage() {
 
     const result = await res.json();
     if (res.ok) {
-      alert('Đặt lịch thành công! Vui lòng chờ reader xác nhận.');
+      alert('Scheduled successfully! Please wait for reader confirmation.');
     } else if (res.status === 403) {
       router.push('/auth');
     } else {

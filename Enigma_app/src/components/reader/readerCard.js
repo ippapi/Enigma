@@ -27,17 +27,14 @@ export default function ReaderCard({ reader, onBooking }) {
 
   return (
     <div className="relative rounded-2xl overflow-hidden shadow-xl w-auto h-[450px] bg-black group text-white ml-2 mr-2">
-      {/* Ảnh nền */}
       <img
         src={reader.profilePicture || '/default-avatar.jpg'}
         alt={reader.name}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
       />
 
-      {/* Overlay gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
-      {/* Nút phóng to (giả lập) */}
       <div className="absolute top-3 left-3 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
         <svg
           className="w-3 h-3 text-white"
@@ -49,7 +46,6 @@ export default function ReaderCard({ reader, onBooking }) {
         </svg>
       </div>
 
-      {/* Nút like */}
       <button
         className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md transition-colors duration-200 hover:bg-gray-100"
         onClick={() => setIsLiked(!isLiked)}
@@ -62,9 +58,7 @@ export default function ReaderCard({ reader, onBooking }) {
         />
       </button>
 
-      {/* Content Overlay */}
       <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/40 to-black/0 px-4 py-4 space-y-2">
-        {/* Badges */}
         <div className="flex gap-2">
           <span className="bg-yellow-400 text-black text-[10px] font-semibold px-2 py-1 rounded-full">
             Pro Reader
@@ -74,7 +68,6 @@ export default function ReaderCard({ reader, onBooking }) {
           </span>
         </div>
 
-        {/* Tên & mô tả */}
         <div>
           <h3 className="text-lg font-bold leading-tight">
             {reader.name || 'Phuong Vo Hoang Thao'}
@@ -84,7 +77,6 @@ export default function ReaderCard({ reader, onBooking }) {
           </p>
         </div>
 
-        {/* Nút đặt lịch */}
         <div className="flex justify-end">
           <button
             onClick={handleOpen}
@@ -94,8 +86,7 @@ export default function ReaderCard({ reader, onBooking }) {
           </button>
         </div>
       </div>
-
-      {/* Modal */}
+      
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center text-black">
           <div className="bg-white rounded-xl p-6 w-[90%] max-w-md space-y-4 shadow-2xl">
@@ -105,7 +96,7 @@ export default function ReaderCard({ reader, onBooking }) {
             </h2>
 
             <div>
-              <label className="block text-sm font-medium">⏰ Thời gian bắt đầu</label>
+              <label className="block text-sm font-medium">Start time</label>
               <input
                 type="datetime-local"
                 value={time}
@@ -115,7 +106,7 @@ export default function ReaderCard({ reader, onBooking }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium">⏱️ Thời gian kéo dài (phút)</label>
+              <label className="block text-sm font-medium">Duration (munites)</label>
               <input
                 type="number"
                 min="1"
@@ -126,7 +117,7 @@ export default function ReaderCard({ reader, onBooking }) {
             </div>
 
             <div>
-              <label className="block text-sm font-medium">📝 Ghi chú</label>
+              <label className="block text-sm font-medium">Notes</label>
               <textarea
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
