@@ -173,8 +173,19 @@ export default function TarotBookingPage() {
             ))}
           </div>
           <div className="flex justify-center space-x-4 mt-6">
-            <button onClick={() => setPage((p) => Math.max(1, p - 1))} className="px-4 py-2 bg-gray-200 rounded">Prev</button>
-            <button onClick={() => setPage((p) => p + 1)} className="px-4 py-2 bg-gray-200 rounded">Next</button>
+            <button
+              onClick={() => setPage(p => Math.max(1, p - 1))}
+              className="px-4 py-2 bg-gray-200 rounded text-black hover:bg-black hover:text-white transition"
+            >
+              Prev
+            </button>
+
+            <button
+              onClick={() => setPage(p => p + 1)}
+              className="px-4 py-2 bg-gray-200 rounded text-black hover:bg-black hover:text-white transition"
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

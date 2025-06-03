@@ -83,7 +83,7 @@ const RotatingStars = () => {
       const x = (e.clientX / window.innerWidth - 0.5) * 2
       const y = (e.clientY / window.innerHeight - 0.5) * -2
 
-      setVelocity({ x: (x - lastX) * 2, y: (y - lastY) * 2 }) // Increase effect
+      setVelocity({ x: (x - lastX) * 2, y: (y - lastY) * 2 }) 
 
       lastX = x
       lastY = y
@@ -122,8 +122,8 @@ const Aura = () => {
       uniforms: {
           time: { value: 0.0 },
           color: { value: new THREE.Color(1.0, 0.8, 0.5) },
-          intensity: { value: 1.75 }, // Light intensity
-          glow: { value: 1.55 }, // Glow effect
+          intensity: { value: 1.75 }, 
+          glow: { value: 1.55 }, 
       },
       vertexShader: `
           varying vec2 vUv;
@@ -215,7 +215,7 @@ export default function Scene() {
   const lightRef = useRef();
 
   return (
-    <div className="w-full h-full overflow-hidden">
+    <div className="w-full h-full overflow-hidden mt-4">
       <Canvas 
         className="w-full h-full" 
         shadows 
